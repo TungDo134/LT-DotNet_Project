@@ -8,9 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 // sau khi generate ra model moi dang ki
+var connectionString = builder.Configuration.GetConnectionString("laptop_shop");
 builder.Services.AddDbContext<LaptopShopContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("laptop_shop"));
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 
 // Đăng ký IHttpClientFactory
