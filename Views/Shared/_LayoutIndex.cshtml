@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Grocery Mart</title>
+    <title>@ViewBag.Title</title>
 
     <!-- Favicon -->
     <link rel="apple-touch-icon" sizes="76x76" href="./assets/favicon/apple-touch-icon.png" />
@@ -14,28 +14,24 @@
     <meta name="theme-color" content="#ffffff" />
 
     <!-- Fonts -->
-    <link rel="stylesheet" href="./assets/fonts/stylesheet.css" />
+    <link rel="stylesheet" href="~/assets/fonts/stylesheet.css" />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="./assets/css/main.css" />
+    <link rel="stylesheet" href="~/assets/css/main.css" />
 
     <!-- Scripts -->
-    <script src="./assets/js/scripts.js"></script>
+    <script src="~/assets/js/scripts.js"></script>
 </head>
 <body>
     <!-- Header -->
-    <header id="header" class="header"></header>
-    <script>
-        load("#header", "./templates/header.html");
-    </script>
+    @await Html.PartialAsync("_Header")
 
-    @RenderBody();
+
+    @RenderBody()
 
     <!-- Footer -->
-    <footer id="footer" class="footer"></footer>
-    <script>
-        load("#footer", "./templates/footer.html");
-    </script>
+    @await Html.PartialAsync("_Footer")
+
 </body>
 </html>
 
