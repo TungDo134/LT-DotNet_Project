@@ -198,9 +198,9 @@
                 <div class="col">
                     <article class="product-card">
                         <div class="product-card__img-wrap">
-                          @*   <a href="./product-detail.html">
-                                <img src="~/assets/img_laptop/@product.Img" alt="" class="product-card__thumb" />
-                            </a> *@
+                            @*   <a href="./product-detail.html">
+                        <img src="~/assets/img_laptop/@product.Img" alt="" class="product-card__thumb" />
+                        </a> *@
 
                             <a asp-controller="Product" asp-action="ProductDetail" asp-route-id="@product.Id">
                                 <img src="~/assets/img_laptop/@product.Img" alt="" class="product-card__thumb" />
@@ -213,9 +213,9 @@
                         </div>
                         <h3 class="product-card__title">
                             <a asp-controller="Product" asp-action="ProductDetail" asp-route-id="@product.Id">@product.Name</a>
-                           
+
                         </h3>
-                        <p class="product-card__brand">Lavazza</p>
+                        @*  <p class="product-card__brand">Lavazza</p> *@
                         <div class="product-card__row">
                             <span class="product-card__price">@product.Price</span>
                             <img src="./assets/icons/star.svg" alt="" class="product-card__star" />
