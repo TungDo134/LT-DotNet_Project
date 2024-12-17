@@ -1,0 +1,88 @@
+﻿@model WebBanLapTop.ViewModels.RegisterVM
+
+
+    <div class="auth__content-inner">
+        <h1 class="auth__heading">Sign Up</h1>
+        <form asp-action="Register" asp-controller="Account" method="post" class="form auth__form">
+            <!-- Hiển thị lỗi chung của model -->
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <!-- Username -->
+            <div class="form__group">
+                <div class="form__text-input">
+                    <input asp-for="TenDn" class="form__input" placeholder="Username" />
+                </div>
+                <span asp-validation-for="TenDn" class="form__error text-danger"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form__group">
+                <div class="form__text-input">
+                    <input asp-for="Email" class="form__input" placeholder="Email" />
+                </div>
+                <span asp-validation-for="Email" class="form__error text-danger"></span>
+            </div>
+
+            <!-- Phone Number -->
+            <div class="form__group">
+                <div class="form__text-input">
+                    <input asp-for="Sdt" class="form__input" placeholder="Phone Number" />
+                </div>
+                <span asp-validation-for="Sdt" class="form__error text-danger"></span>
+            </div>
+
+            <!-- Password -->
+            <div class="form__group">
+                <div class="form__text-input">
+                    <input asp-for="MatkhauDn" type="password" class="form__input" placeholder="Password" value="@Model?.MatkhauDn" />
+                    <img src="./assets/icons/lock.svg" alt="" class="form__input-icon" />
+                    <img src="./assets/icons/form-error.svg" alt="" class="form__input-icon-error" />
+                </div>
+                <span asp-validation-for="MatkhauDn" class="form__error text-danger"></span>
+            </div>
+            <!-- Confirm Password -->
+            <div class="form__group">
+                <div class="form__text-input">
+                    <input asp-for="ConfirmPassword" type="password" class="form__input" placeholder="Confirm Password" />
+                </div>
+                <span asp-validation-for="ConfirmPassword" class="form__error text-danger"></span>
+            </div>
+            <!-- Submit Button -->
+            <div class="form__group auth__btn-group">
+                <button type="submit" class="btn btn--primary auth__btn form__submit-btn">Sign Up</button>
+            </div>
+        </form>
+
+        <p class="auth__text">
+            You have an account yet?
+            <a asp-action="SignIn" asp-controller="Account" class="auth__link auth__text-link">Sign In</a>
+        </p>
+    </div>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/jquery.validate.unobtrusive.min.js"></script>
+}
+<style>
+    .text-danger {
+        color: red;
+        font-size: 13px;
+        margin-top: 4px;
+    }
+
+    .form__input {
+        margin-bottom: 0; 
+    }
+
+    .form__group {
+        margin-bottom: 16px;
+    }
+
+    .form__error {
+        display: block; 
+        margin-top: 4px;
+    }
+
+</style>
+
