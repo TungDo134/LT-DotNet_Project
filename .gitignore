@@ -64,6 +64,8 @@ artifacts/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
+
+# Local configuration file
 appsettings.json
 appsettings.Development.json
 
