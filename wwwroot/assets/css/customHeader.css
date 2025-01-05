@@ -1,0 +1,17 @@
+﻿.test-css {
+    color: darkred
+}
+
+.top-menu__main {
+    height: unset;
+    border-right: 0
+}
+
+.navbar__item:hover .dropdown {
+    width: 300px
+}
+
+.dropdown {
+    left: 350px;
+    top: 32px;
+}

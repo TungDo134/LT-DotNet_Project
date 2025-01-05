@@ -53,13 +53,10 @@
 
 .top-menu {
     --main-column-width: 292px;
-    --max-inner-height: calc(min(582px, 100vh - 158px) - var(--inner-padding) * 2);
-
     position: relative;
 
     &__main {
         width: var(--main-column-width);
-        height: var(--max-inner-height);
         border-right: 1px solid var(--top-menu-border-color);
         overflow-y: auto;
 

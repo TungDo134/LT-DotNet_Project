@@ -1,6 +1,4 @@
-﻿@model WebBanLapTop.ViewModel.HomeVM
-
-   
+﻿@model WebBanLapTop.ViewModel.ProductVM
 
 @{
     ViewData["Title"] = "Chi tiết sản phẩm";
@@ -15,7 +13,7 @@
             <div class="search-bar d-none d-md-flex">
                 <input type="text" name="" id="" placeholder="Search for item" class="search-bar__input" />
                 <button class="search-bar__submit">
-                    <img src="./assets/icons/search.svg" alt="" class="search-bar__icon icon" />
+                    <img src="~/assets/icons/search.svg" alt="" class="search-bar__icon icon" />
                 </button>
             </div>
         </div>
@@ -26,19 +24,19 @@
                 <li>
                     <a href="#!" class="breadcrumbs__link">
                         Departments
-                        <img src="./assets/icons/arrow-right.svg" alt="" />
+                        <img src="~/assets/icons/arrow-right.svg" alt="" />
                     </a>
                 </li>
                 <li>
                     <a href="#!" class="breadcrumbs__link">
                         Coffee
-                        <img src="./assets/icons/arrow-right.svg" alt="" />
+                        <img src="~/assets/icons/arrow-right.svg" alt="" />
                     </a>
                 </li>
                 <li>
                     <a href="#!" class="breadcrumbs__link">
                         Coffee Beans
-                        <img src="./assets/icons/arrow-right.svg" alt="" />
+                        <img src="~/assets/icons/arrow-right.svg" alt="" />
                     </a>
                 </li>
                 <li>
@@ -85,7 +83,7 @@
                             <div class="row">
                                 <div class="col-5 col-xxl-6 col-xl-12">
                                     <div class="prod-prop">
-                                        <img src="./assets/icons/star.svg" alt="" class="prod-prop__icon" />
+                                        <img src="~/assets/icons/star.svg" alt="" class="prod-prop__icon" />
                                         <h4 class="prod-prop__title">(3.5) 1100 reviews</h4>
                                     </div>
                                     <label for="" class="form__label prod-info__label">Size/Weight</label>
@@ -93,36 +91,30 @@
                                         <div class="form__select-wrap">
                                             <div class="form__select" style="--width: 146px">
                                                @Model.KhoiLuong kg
-                                                <img src="./assets/icons/select-arrow.svg"
+                                                <img src="~/assets/icons/select-arrow.svg"
                                                      alt=""
                                                      class="form__select-arrow icon" />
                                             </div>
                                             <div class="form__select">
                                                 Kg
-                                                <img src="./assets/icons/select-arrow.svg"
+                                                <img src="~/assets/icons/select-arrow.svg"
                                                      alt=""
                                                      class="form__select-arrow icon" />
                                             </div>
                                         </div>
                                     </div>
-                                   @*  <div class="filter__form-group">
-                                        <div class="form__tags">
-                                            <button class="form__tag prod-info__tag">Small</button>
-                                            <button class="form__tag prod-info__tag">Medium</button>
-                                            <button class="form__tag prod-info__tag">Large</button>
-                                        </div>
-                                    </div> *@
+                                  
                                 </div>
                                 <div class="col-7 col-xxl-6 col-xl-12">
                                     <div class="prod-props">
                                         <div class="prod-prop">
-                                            <img src="./assets/icons/document.svg"
+                                            <img src="~/assets/icons/document.svg"
                                                  alt=""
                                                  class="prod-prop__icon icon" />
                                             <h4 class="prod-prop__title">Compare</h4>
                                         </div>
                                         <div class="prod-prop">
-                                            <img src="./assets/icons/buy.svg"
+                                            <img src="~/assets/icons/buy.svg"
                                                  alt=""
                                                  class="prod-prop__icon icon" />
                                             <div>
@@ -131,7 +123,7 @@
                                             </div>
                                         </div>
                                         <div class="prod-prop">
-                                            <img src="./assets/icons/bag.svg"
+                                            <img src="~/assets/icons/bag.svg"
                                                  alt=""
                                                  class="prod-prop__icon icon" />
                                             <div>
@@ -144,7 +136,7 @@
                                                 <span class="prod-info__price">@Model.Price</span>
                                                  <span class="prod-info__tax">10%</span>
                                             </div>
-                                            <p class="prod-info__total-price">@Model.Price</p>
+                                            <p class="prod-info__total-price">@Model.Price.ToString("#,##0.00")</p>
                                             <div class="prod-info__row">
                                                 <button class="btn btn--primary prod-info__add-to-cart">
                                                     Add to cart
@@ -198,7 +190,7 @@
                                 <div class="col">
                                     <div class="review-card">
                                         <div class="review-card__content">
-                                            <img src="./assets/img/avatar/avatar-1.png"
+                                            <img src="~/assets/img/avatar/avatar-1.png"
                                                  alt=""
                                                  class="review-card__avatar" />
                                             <div class="review-card__info">
@@ -210,19 +202,19 @@
                                         </div>
                                         <div class="review-card__rating">
                                             <div class="review-card__star-list">
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star-half.svg"
+                                                <img src="~/assets/icons/star-half.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star-blank.svg"
+                                                <img src="~/assets/icons/star-blank.svg"
                                                      alt=""
                                                      class="review-card__star" />
                                             </div>
@@ -235,7 +227,7 @@
                                 <div class="col">
                                     <div class="review-card">
                                         <div class="review-card__content">
-                                            <img src="./assets/img/avatar/avatar-2.png"
+                                            <img src="~/assets/img/avatar/avatar-2.png"
                                                  alt=""
                                                  class="review-card__avatar" />
                                             <div class="review-card__info">
@@ -247,19 +239,19 @@
                                         </div>
                                         <div class="review-card__rating">
                                             <div class="review-card__star-list">
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star-half.svg"
+                                                <img src="~/assets/icons/star-half.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star-blank.svg"
+                                                <img src="~/assets/icons/star-blank.svg"
                                                      alt=""
                                                      class="review-card__star" />
                                             </div>
@@ -272,7 +264,7 @@
                                 <div class="col">
                                     <div class="review-card">
                                         <div class="review-card__content">
-                                            <img src="./assets/img/avatar/avatar-3.png"
+                                            <img src="~/assets/img/avatar/avatar-3.png"
                                                  alt=""
                                                  class="review-card__avatar" />
                                             <div class="review-card__info">
@@ -284,19 +276,19 @@
                                         </div>
                                         <div class="review-card__rating">
                                             <div class="review-card__star-list">
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star.svg"
+                                                <img src="~/assets/icons/star.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star-half.svg"
+                                                <img src="~/assets/icons/star-half.svg"
                                                      alt=""
                                                      class="review-card__star" />
-                                                <img src="./assets/icons/star-blank.svg"
+                                                <img src="~/assets/icons/star-blank.svg"
                                                      alt=""
                                                      class="review-card__star" />
                                             </div>
@@ -316,15 +308,15 @@
                                     <article class="product-card">
                                         <div class="product-card__img-wrap">
                                             <a href="./product-detail.html">
-                                                <img src="./assets/img/product/item-1.png"
+                                                <img src="~/assets/img/product/item-1.png"
                                                      alt=""
                                                      class="product-card__thumb" />
                                             </a>
                                             <button class="like-btn product-card__like-btn">
-                                                <img src="./assets/icons/heart.svg"
+                                                <img src="~/assets/icons/heart.svg"
                                                      alt=""
                                                      class="like-btn__icon icon" />
-                                                <img src="./assets/icons/heart-red.svg"
+                                                <img src="~/assets/icons/heart-red.svg"
                                                      alt=""
                                                      class="like-btn__icon--liked" />
                                             </button>
@@ -335,7 +327,7 @@
                                         <p class="product-card__brand">Lavazza</p>
                                         <div class="product-card__row">
                                             <span class="product-card__price">$47.00</span>
-                                            <img src="./assets/icons/star.svg"
+                                            <img src="~/assets/icons/star.svg"
                                                  alt=""
                                                  class="product-card__star" />
                                             <span class="product-card__score">4.3</span>
@@ -348,15 +340,15 @@
                                     <article class="product-card">
                                         <div class="product-card__img-wrap">
                                             <a href="./product-detail.html">
-                                                <img src="./assets/img/product/item-2.png"
+                                                <img src="~/assets/img/product/item-2.png"
                                                      alt=""
                                                      class="product-card__thumb" />
                                             </a>
                                             <button class="like-btn product-card__like-btn">
-                                                <img src="./assets/icons/heart.svg"
+                                                <img src="~/assets/icons/heart.svg"
                                                      alt=""
                                                      class="like-btn__icon icon" />
-                                                <img src="./assets/icons/heart-red.svg"
+                                                <img src="~/assets/icons/heart-red.svg"
                                                      alt=""
                                                      class="like-btn__icon--liked" />
                                             </button>
@@ -367,7 +359,7 @@
                                         <p class="product-card__brand">Lavazza</p>
                                         <div class="product-card__row">
                                             <span class="product-card__price">$53.00</span>
-                                            <img src="./assets/icons/star.svg"
+                                            <img src="~/assets/icons/star.svg"
                                                  alt=""
                                                  class="product-card__star" />
                                             <span class="product-card__score">3.4</span>
@@ -380,15 +372,15 @@
                                     <article class="product-card">
                                         <div class="product-card__img-wrap">
                                             <a href="./product-detail.html">
-                                                <img src="./assets/img/product/item-3.png"
+                                                <img src="~/assets/img/product/item-3.png"
                                                      alt=""
                                                      class="product-card__thumb" />
                                             </a>
                                             <button class="like-btn like-btn--liked product-card__like-btn">
-                                                <img src="./assets/icons/heart.svg"
+                                                <img src="~/assets/icons/heart.svg"
                                                      alt=""
                                                      class="like-btn__icon icon" />
-                                                <img src="./assets/icons/heart-red.svg"
+                                                <img src="~/assets/icons/heart-red.svg"
                                                      alt=""
                                                      class="like-btn__icon--liked" />
                                             </button>
@@ -399,7 +391,7 @@
                                         <p class="product-card__brand">Welikecoffee</p>
                                         <div class="product-card__row">
                                             <span class="product-card__price">$99.99</span>
-                                            <img src="./assets/icons/star.svg"
+                                            <img src="~/assets/icons/star.svg"
                                                  alt=""
                                                  class="product-card__star" />
                                             <span class="product-card__score">5.0</span>
@@ -412,15 +404,15 @@
                                     <article class="product-card">
                                         <div class="product-card__img-wrap">
                                             <a href="./product-detail.html">
-                                                <img src="./assets/img/product/item-4.png"
+                                                <img src="~/assets/img/product/item-4.png"
                                                      alt=""
                                                      class="product-card__thumb" />
                                             </a>
                                             <button class="like-btn product-card__like-btn">
-                                                <img src="./assets/icons/heart.svg"
+                                                <img src="~/assets/icons/heart.svg"
                                                      alt=""
                                                      class="like-btn__icon icon" />
-                                                <img src="./assets/icons/heart-red.svg"
+                                                <img src="~/assets/icons/heart-red.svg"
                                                      alt=""
                                                      class="like-btn__icon--liked" />
                                             </button>
@@ -431,7 +423,7 @@
                                         <p class="product-card__brand">Lavazza</p>
                                         <div class="product-card__row">
                                             <span class="product-card__price">$38.65</span>
-                                            <img src="./assets/icons/star.svg"
+                                            <img src="~/assets/icons/star.svg"
                                                  alt=""
                                                  class="product-card__star" />
                                             <span class="product-card__score">4.4</span>
@@ -444,15 +436,15 @@
                                     <article class="product-card">
                                         <div class="product-card__img-wrap">
                                             <a href="./product-detail.html">
-                                                <img src="./assets/img/product/item-1.png"
+                                                <img src="~/assets/img/product/item-1.png"
                                                      alt=""
                                                      class="product-card__thumb" />
                                             </a>
                                             <button class="like-btn product-card__like-btn">
-                                                <img src="./assets/icons/heart.svg"
+                                                <img src="~/assets/icons/heart.svg"
                                                      alt=""
                                                      class="like-btn__icon icon" />
-                                                <img src="./assets/icons/heart-red.svg"
+                                                <img src="~/assets/icons/heart-red.svg"
                                                      alt=""
                                                      class="like-btn__icon--liked" />
                                             </button>
@@ -463,7 +455,7 @@
                                         <p class="product-card__brand">Lavazza</p>
                                         <div class="product-card__row">
                                             <span class="product-card__price">$47.00</span>
-                                            <img src="./assets/icons/star.svg"
+                                            <img src="~/assets/icons/star.svg"
                                                  alt=""
                                                  class="product-card__star" />
                                             <span class="product-card__score">4.3</span>
@@ -476,15 +468,15 @@
                                     <article class="product-card">
                                         <div class="product-card__img-wrap">
                                             <a href="./product-detail.html">
-                                                <img src="./assets/img/product/item-2.png"
+                                                <img src="~/assets/img/product/item-2.png"
                                                      alt=""
                                                      class="product-card__thumb" />
                                             </a>
                                             <button class="like-btn product-card__like-btn">
-                                                <img src="./assets/icons/heart.svg"
+                                                <img src="~/assets/icons/heart.svg"
                                                      alt=""
                                                      class="like-btn__icon icon" />
-                                                <img src="./assets/icons/heart-red.svg"
+                                                <img src="~/assets/icons/heart-red.svg"
                                                      alt=""
                                                      class="like-btn__icon--liked" />
                                             </button>
@@ -495,7 +487,7 @@
                                         <p class="product-card__brand">Lavazza</p>
                                         <div class="product-card__row">
                                             <span class="product-card__price">$53.00</span>
-                                            <img src="./assets/icons/star.svg"
+                                            <img src="~/assets/icons/star.svg"
                                                  alt=""
                                                  class="product-card__star" />
                                             <span class="product-card__score">3.4</span>

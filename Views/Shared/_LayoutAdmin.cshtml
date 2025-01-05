@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
@@ -26,28 +27,28 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="~/assets/css/main.css" asp-append-version="true" />
-    @* <link rel="stylesheet" href="~/assets/css/main.css" /> *@
+  
 
     <!-- Scripts -->
     <script src="~/assets/js/scripts.js"></script>
 
-    @await RenderSectionAsync("Css", false)
-  
+    @await RenderSectionAsync("CssAdmin", false)
+
 </head>
 <body>
- 
+
     <!-- Header -->
-    @await Html.PartialAsync("_Header")
+    @await Html.PartialAsync("_HeaderAdmin")
 
 
     @RenderBody()
 
     <!-- Footer -->
-    @await Html.PartialAsync("_Footer")
+    @* @await Html.PartialAsync("_Footer") *@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @await RenderSectionAsync("Scripts", false)
-   
+    @await RenderSectionAsync("ScriptsAdmin", false)
+
 </body>
 </html>
 

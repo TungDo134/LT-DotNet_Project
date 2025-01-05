@@ -23,8 +23,8 @@ namespace WebBanLapTop.ViewModels
         [MinLength(6, ErrorMessage = "Password must be at least 6 characters long.")]
         [RegularExpression(@"^(?=.*[A-Za-z])(?=.*\d)(?=.*[\W_]).{6,}$", ErrorMessage = "Password must contain at least one letter, one number, and one special character.")]
         [Display(Name = "Password")]
-
         public string MatkhauDn { get; set; }
+
         // Thêm thuộc tính ConfirmPassword để so sánh với MatkhauDn
         [Required(ErrorMessage = "Confirm password is required")]
         [DataType(DataType.Password)]

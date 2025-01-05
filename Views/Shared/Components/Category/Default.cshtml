@@ -1,0 +1,12 @@
+﻿@model IEnumerable<WebBanLapTop.ViewModel.CateVM>
+
+@foreach (var c in Model)
+{
+    <li class="menu-column__item">
+
+        <a asp-controller="Product" asp-action="ProductByCate" asp-route-Id="@c.Id" class="menu-column__link">
+            @c.Name
+        </a>
+
+    </li>
+}

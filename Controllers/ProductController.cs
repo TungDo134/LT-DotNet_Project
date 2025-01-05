@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using WebBanLapTop.Data;
 using WebBanLapTop.ViewModel;
 
@@ -24,8 +25,45 @@ namespace WebBanLapTop.Controllers
                 return View("Error", new { Message = "Product not found" }); // Xử lý lỗi nếu không tìm thấy sản phẩm
             }
 
-            var product = await response.Content.ReadFromJsonAsync<HomeVM>();
+            var product = await response.Content.ReadFromJsonAsync<ProductVM>();
             return View(product); // Trả về View với thông tin sản phẩm
         }
+
+
+        public async Task<IActionResult> ProductByCate(int id)
+        {
+          
+            var client = _httpClientFactory.CreateClient();
+
+            // Gọi API để lấy danh sách sản phẩm
+            var responseP = await client.GetAsync($"https://localhost:7258/api/DetailAPI/pByCid/{id}");
+            IEnumerable<ProductVM> products = null;
+
+            if (responseP.IsSuccessStatusCode)
+            {
+                var jsonResponseP = await responseP.Content.ReadAsStringAsync();
+                products = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonResponseP);
+            }
+
+            // Gọi API để lấy danh sách danh mục
+            var responseC = await client.GetAsync($"https://localhost:7258/api/CateAPI");
+            IEnumerable<CateVM> categories = null;
+
+            if (responseC.IsSuccessStatusCode)
+            {
+                var jsonResponseC = await responseC.Content.ReadAsStringAsync();
+                categories = JsonConvert.DeserializeObject<IEnumerable<CateVM>>(jsonResponseC);
+            }
+
+            // Tạo ViewModel và truyền dữ liệu vào View
+            var viewModel = new HomeVM
+            {
+                Products = products ?? new List<ProductVM>(), 
+                Categories = categories ?? new List<CateVM>()
+            };
+
+            return View(viewModel);
+        }
+
     }
 }

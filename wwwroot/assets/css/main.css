@@ -1,4 +1,4 @@
-/* http://meyerweb.com/eric/tools/css/reset/ 
+﻿/* http://meyerweb.com/eric/tools/css/reset/ 
    v2.0 | 20110126
    License: none (public domain)
 */
@@ -1681,8 +1681,8 @@ html {
   gap: 6px;
   height: 50px;
   padding: 0 15px;
-  font-size: 1.5rem;
-  font-weight: 500;
+  font-size: 1.6rem;
+  font-weight: 550;
   line-height: 146.667%;
 }
 @media (max-width: 991.98px) {
@@ -2144,7 +2144,7 @@ html {
   box-shadow: 0px 40px 90px 20px var(--dropdown-shadow-color);
 }
 .dropdown__inner::before {
-  content: url("../icons/dropdown-arrow.svg");
+  content: url("../../icons/dropdown-arrow.svg");
   position: absolute;
   top: -13px;
   left: var(--arrow-left-pos);
@@ -2170,12 +2170,10 @@ html {
 
 .top-menu {
   --main-column-width: 292px;
-  --max-inner-height: calc(min(582px, 100vh - 158px) - var(--inner-padding) * 2);
   position: relative;
 }
 .top-menu__main {
   width: var(--main-column-width);
-  height: var(--max-inner-height);
   border-right: 1px solid var(--top-menu-border-color);
   overflow-y: auto;
 }
@@ -3766,6 +3764,7 @@ html {
   flex-direction: column;
   min-height: 80vh;
   padding-bottom: 50px;
+  margin-bottom: 10px;
   background: var(--product-detail-bg);
 }
 
@@ -4159,13 +4158,13 @@ html {
   appearance: none;
 }
 .cart-info__checkbox-input::before {
-  content: url("../icons/checkbox-uncheck.svg");
+  content: url("../../icons/checkbox-uncheck.svg");
 }
 .cart-info__checkbox-input:not(:checked)::before {
   filter: var(--icon-color);
 }
 .cart-info__checkbox-input:checked::before {
-  content: url("../icons/checkbox-checked.svg");
+  content: url("../../icons/checkbox-checked.svg");
 }
 .cart-info__form-row {
   flex-direction: row;
@@ -4534,7 +4533,7 @@ html {
   flex-direction: column;
   align-items: center;
   padding: 40px 20px 20px;
-  background: linear-gradient(180deg, rgba(26, 22, 46, 0) 0%, #1a162e 100%), url("../img/profile/cover.png") no-repeat center/cover;
+  background: linear-gradient(180deg, rgba(26, 22, 46, 0) 0%, #1a162e 100%), url("../../img/profile/cover.png") no-repeat center/cover;
   box-shadow: 0px 20px 60px 10px var(--profile-sidebar-shadow);
   color: #fff;
 }
@@ -4605,5 +4604,3 @@ html {
   justify-content: flex-end;
   margin-top: 30px;
 }
-
-/*# sourceMappingURL=main.css.map */

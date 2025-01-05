@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "About Us";
+    Layout = "_LayoutIndex";
+}
+
+
+@section Css {
+    <link rel="stylesheet" href="~/assets/css/styleContactUs.css" />
+}
+
+<main id="contact-us-container">
+    <div class="contact spad">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col_contact_1 col">
+                    <div class="contact_text">
+                        <div class="section-title">
+                            <span>Thông tin</span>
+                            <h2>Liên hệ với chúng tôi</h2>
+                            <p>
+                                Chúng tôi sẽ đáp ứng những tốt nhất như bạn mong đợi, chúng
+                                tôi đặc biệt chú ý đến trải nghiệm cũng như chất lượng sản
+                                phẩm
+                            </p>
+                        </div>
+                        <ul>
+                            <li>
+                                <h4>TP.Hồ Chí Minh</h4>
+                                <p>
+                                    23 Phạm Văn Đồng, Phường Hiệp Bình Chánh, Quận Thủ Đức
+                                    <br />+84 982-314-0958
+                                </p>
+                            </li>
+                            <li>
+                                <h4>Hà Nội</h4>
+                                <p>
+                                    19 Nguyễn Trãi, Phường Thanh Xuân Trung, Quận Thanh Xuân
+                                    <br />+84 345-423-9893
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col_contact_2 col">
+                    <div class="contact_form">
+                        <form action="#">
+                            <div class="row_second">
+                                <div class="col_contact_3">
+                                    <input type="text"
+                                           placeholder="Tên của bạn"
+                                           required="" />
+                                    <input type="text" placeholder="Email" required="" />
+                                </div>
+                                <div class="col_contact_5">
+                                    <textarea placeholder="Bạn muốn nói gì với chúng tôi"
+                                              required=""></textarea>
+                                    <button type="submit" class="site-btn">
+                                        Gửi tin nhắn
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="faq">
+        <div class="head-title-faq">
+            <p class="content-title-faq" style="font-size: 2rem !important">
+                CÂU HỎI THƯỜNG GẶP
+            </p>
+        </div>
+        <!--  -->
+ 
+        <div class="faq-content">
+            <!--  -->
+            <div class="ques-as" onclick=toggleFAQ(this)>
+                <div class="question-content">
+                    <p>Làm sao để tôi có thể liên lạc được với chúng tôi?</p>
+                    <i class="fa-solid fa-chevron-down icon-down"
+                       style="transform: rotateX(0deg)"></i>
+                </div>
+                <div class="answer">
+                    <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Pariatur, repellendus!
+                    </p>
+                </div>
+            </div>
+
+              <!--  -->
+            <div class="ques-as" onclick="toggleFAQ(this)">
+            <div class="question-content">
+            <p>
+            Tôi có thể mong đợi phản hồi nhanh như thế nào nếu tôi liên hệ
+            với dịch vụ khách hàng?
+            </p>
+            <i class="fa-solid fa-chevron-down icon-down"
+            style="transform: rotateX(0deg)"></i>
+            </div>
+            <div class="answer">
+            <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Pariatur, repellendus!
+            </p>
+            </div>
+            </div>
+            <!--  -->
+
+            <div class="ques-as" onclick="toggleFAQ(this)">
+            <div class="question-content">
+            <p>Làm cách nào để liên hệ với một cửa hàng cụ thể?</p>
+            <i onclick="toggleFAQ(this)"
+            class="fa-solid fa-chevron-down icon-down"
+            style="transform: rotateX(0deg)"></i>
+            </div>
+            <div class="answer" onclick="toggleFAQ(this)">
+            <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Pariatur, repellendus!
+            </p>
+            </div>
+            </div>
+            <!--  -->
+
+            <div class="ques-as" onclick="toggleFAQ(this)">
+            <div class="question-content">
+            <p>
+            Bạn có cung cấp dịch vụ khách hàng bằng nhiều ngôn ngữ không?
+            </p>
+            <i onclick="toggleFAQ(this)"
+            class="fa-solid fa-chevron-down icon-down"
+            style="transform: rotateX(0deg)"></i>
+            </div>
+            <div class="answer">
+            <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Pariatur, repellendus!
+            </p>
+            </div>
+            </div>
+            <!--  -->
+        </div>
+    </div>
+</main>
+@section Scripts {
+    <script>
+        // JS cho FAQ (Contact Us)
+       function toggleFAQ(para) {
+
+            var j = jQuery.noConflict();
+            const answer = j(para).find(".answer");
+            const icon = j(para).find(".icon-down");
+
+            if (icon.css("transform") == "matrix(1, 0, 0, 1, 0, 0)") {
+                icon.css("transform", "rotateX(180deg)");
+                answer.slideToggle("normal");
+            } else {
+                icon.css("transform", "rotateX(0deg)");
+                answer.slideToggle("normal");
+            }
+        }
+    </script>
+  
+} 
