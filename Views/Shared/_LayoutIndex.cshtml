@@ -28,6 +28,9 @@
     <link rel="stylesheet" href="~/assets/css/main.css" asp-append-version="true" />
     @* <link rel="stylesheet" href="~/assets/css/main.css" /> *@
 
+    <!-- jQuery -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <!-- Scripts -->
     <script src="~/assets/js/scripts.js"></script>
 
@@ -45,7 +48,7 @@
     <!-- Footer -->
     @await Html.PartialAsync("_Footer")
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    
     @await RenderSectionAsync("Scripts", false)
    
 </body>

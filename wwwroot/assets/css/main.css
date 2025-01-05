@@ -2620,7 +2620,7 @@ html {
   margin-top: 30px;
 }
 .filter__form-group {
-  margin-top: 20px;
+  margin: 20px 0px;
 }
 .filter__form-group--inline {
   display: grid;

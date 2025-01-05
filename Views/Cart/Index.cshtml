@@ -1,0 +1,249 @@
+﻿@model IEnumerable<WebBanLapTop.ViewModel.CartItem>
+
+@{
+    ViewData["Title"] = "Giỏ hàng";
+    Layout = "_LayoutIndex";
+}
+
+<!-- MAIN -->
+<main class="checkout-page">
+    <div class="container">
+        <!-- Search bar -->
+        <div class="checkout-container">
+            <div class="search-bar d-none d-md-flex">
+                <input type="text" name="" id="" placeholder="Search for item" class="search-bar__input" />
+                <button class="search-bar__submit">
+                    <img src="./assets/icons/search.svg" alt="" class="search-bar__icon icon" />
+                </button>
+            </div>
+        </div>
+
+        <!-- Breadcrumbs -->
+        <div class="checkout-container">
+            <ul class="breadcrumbs checkout-page__breadcrumbs">
+                <li>
+                    <a href="./" class="breadcrumbs__link">
+                        Trang chủ
+                        <img src="./assets/icons/arrow-right.svg" alt="" />
+                    </a>
+                </li>
+                <li>
+                    <a href="#!" class="breadcrumbs__link breadcrumbs__link--current">Giỏ hàng</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Checkout content -->
+        <div class="checkout-container">
+            <div class="row gy-xl-3">
+                <div class="col-8 col-xl-12">
+                    <div class="cart-info">
+                        <div class="cart-info__list">
+
+                            @foreach (var c in Model)
+                            {
+                                <!-- Cart item 1 -->
+                                <article class="cart-item">
+
+                                    <a asp-controller="Product" asp-action="ProductDetail" asp-route-id="@c.id">
+                                        <img src="~/assets/img_laptop/@c.image"
+                                             alt=""
+                                             class="cart-item__thumb" />
+                                    </a>
+                                    <form asp-action="UpdateCart" asp-controller="Cart" asp-route-id="@c.id" style="width:100%">
+                                        <div class="cart-item__content">
+                                            <div class="cart-item__content-left">
+                                                <h3 class="cart-item__title">
+                                                    <a asp-controller="Product" asp-action="ProductDetail" asp-route-id="@c.id">
+                                                        @c.name
+                                                    </a>
+                                                </h3>
+                                                <p class="cart-item__price-wrap">
+                                                    @c.price.ToString("#,#")<span class="cart-item__status"> Còn hàng</span>
+                                                </p>
+                                                <div class="cart-item__ctrl cart-item__ctrl--md-block">
+                                                    <input type="hidden" name="id" value="@c.id" />
+                                                    <div class="cart-item__input quantity">
+                                                        <button type="button" class="cart-item__input-btn" id="decrease">
+                                                            <img class="icon" src="./assets/icons/minus.svg" alt="" />
+                                                        </button>
+                                                        <input class="p-quantity" name="quantity" value="@c.quantity" style="margin: 0px 16px;
+                                                               width: 10px;
+                                                               font-size: 18px " />
+                                                        <button type="button" class="cart-item__input-btn" id="increase">
+                                                            <img class="icon" src="./assets/icons/plus.svg" alt="" />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="cart-item__content-right">
+                                                <p class="cart-item__total-price">@c.totalPrice.ToString("#,# VND")</p>
+                                                <div class="cart-item__ctrl">
+
+                                                    <button type="submit"
+                                                            class="cart-item__ctrl-btn">
+                                                        <img src="./assets/icons/heart-2.svg" alt="" />
+                                                        Lưu
+                                                    </button>
+
+
+                                                    <a asp-action="RemoveCart" asp-controller="Cart" asp-route-id="@c.id"
+                                                       class="cart-item__ctrl-btn js-toggle"
+                                                       toggle-target="#delete-confirm">
+                                                        <img src="./assets/icons/trash.svg" alt="" />
+                                                        Xóa
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </article>
+
+                            }
+
+
+
+                        </div>
+                        <div class="cart-info__bottom d-md-none">
+                            <div class="row">
+                                <div class="col-8 col-xxl-7">
+                                    <div class="cart-info__continue">
+                                        <a href="./" class="cart-info__continue-link">
+                                            <img class="cart-info__continue-icon icon"
+                                                 src="./assets/icons/arrow-down-2.svg"
+                                                 alt="" />
+                                            Tiếp tục mua sắm
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-xxl-5">
+                                    <div class="cart-info__row">
+                                        <span>Tạm tính:</span>
+                                        <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
+                                    </div>
+                                    <div class="cart-info__row">
+                                        <span>Phí vận chuyển:</span>
+                                        <span>$10.00</span>
+                                    </div>
+                                    <div class="cart-info__separate"></div>
+                                    <div class="cart-info__row cart-info__row--bold" style="width:268px">
+                                        <span>Tổng:</span>
+                                        <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4 col-xl-12">
+                    <div class="cart-info">
+                        <div class="cart-info__row">
+                            <span>Tạm tính <span class="cart-info__sub-label">(items)</span></span>
+                            <span>@Model.Sum(p => p.quantity)</span>
+                        </div>
+                        <div class="cart-info__row">
+                            <span>Tổng tiền <span class="cart-info__sub-label">(Total)</span></span>
+                            <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
+                        </div>
+                        <div class="cart-info__row">
+                            <span>Vận chuyển</span>
+                            <span>$10.00</span>
+                        </div>
+                        <div class="cart-info__separate"></div>
+                        <div class="cart-info__row">
+                            <span>Cái giá cuối cùng nè</span>
+                            <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
+                        </div>
+                        <a href="./shipping.html" class="cart-info__next-btn btn btn--primary btn--rounded">
+                            Tiếp tục thanh toán
+                        </a>
+                    </div>
+                    <div class="cart-info">
+                        <a href="#!">
+                            <article class="gift-item">
+                                <div class="gift-item__icon-wrap">
+                                    <img src="./assets/icons/gift.svg" alt="" class="gift-item__icon" />
+                                </div>
+                                <div class="gift-item__content">
+                                    <h3 class="gift-item__title">Send this order as a gift.</h3>
+                                    <p class="gift-item__desc">
+                                        Available items will be shipped to your gift recipient.
+                                    </p>
+                                </div>
+                            </article>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Modal: confirm remove shopping cart item -->
+<div id="delete-confirm" class="modal modal--small hide">
+    <div class="modal__content">
+        <p class="modal__text">Do you want to remove this item from shopping cart?</p>
+        <div class="modal__bottom">
+            <button class="btn btn--small btn--outline modal__btn js-toggle" toggle-target="#delete-confirm">
+                Cancel
+            </button>
+            <a asp-action="RemoveCart" asp-controller="Cart" asp-route-id="" class="btn btn--small btn--danger btn--primary modal__btn btn--no-margin js-toggle"
+               toggle-target="#delete-confirm">
+                Xóa
+            </a>
+        </div>
+    </div>
+    <div class="modal__overlay js-toggle" toggle-target="#delete-confirm"></div>
+</div>
+
+@section Scripts {
+    @*  <script>
+         var j = jQuery.noConflict();
+         j(document).ready(function () {
+             j(".js-toggle").click(function () {
+                 let txt = j(this).text().trim();
+                 console.log(txt)
+                 if (txt === 'Xóa') {
+                     j("#delete-confirm").css({
+                         opacity: 1,
+                         visibility: 'visible'
+                     });
+                 } else {
+                    j("#delete-confirm").css({
+                        opacity: 0,
+                        visibility: 'hidden'
+                    });
+                 }
+             });
+         });
+     </script> *@
+
+
+
+    <script>
+        // JS cho phần tăng giảm số lượng sp ng dùng chọn
+        var j = jQuery.noConflict();
+
+        j("button").click(function () {
+            let upOrDown = j(this).attr("id");
+
+
+            console.log(upOrDown)
+            // Tăng số lượng hoặc giảm số lượng
+            let quantity = j(this).parent();
+            let value = parseInt(quantity.find(".p-quantity").val(), 10);
+            if ("increase" === upOrDown) {
+                value++;
+            } else {
+                value--;
+                if (value < 1) return;
+            }
+            // Cập nhật số lượng
+            quantity.find(".p-quantity").val(value);
+        })
+
+    </script>
+
+
+
+}

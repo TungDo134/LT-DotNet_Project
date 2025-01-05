@@ -1,9 +1,8 @@
-﻿
-@model WebBanLapTop.ViewModel.HomeVM
+﻿@model WebBanLapTop.ViewModel.HomeVM
 
 @{
     ViewData["Title"] = "Home Page";
-  
+
 }
 
 <main class="container home">
@@ -31,23 +30,23 @@
         </div>
 
         <div class="home__cate row row-cols-3 row-cols-md-1">
-             @foreach (var cate in Model.Categories)
-            { 
-            <!-- Category item 1 -->
-            <div class="col">
-                <a href="#!">
-                    <article class="cate-item">
-                        <img src="~/assets/img_laptop/@cate.Hinh" alt="" class="cate-item__thumb" />
-                        <div class="cate-item__info">
-                            <p class="cate-item__desc">@cate.Name</p>
-                        </div>
-                    </article>
-                </a>
-            </div>
+            @foreach (var cate in Model.Categories)
+            {
+                <!-- Category item 1 -->
+                <div class="col">
+                    <a href="#!">
+                        <article class="cate-item">
+                            <img src="~/assets/img_laptop/@cate.Hinh" alt="" class="cate-item__thumb" />
+                            <div class="cate-item__info">
+                                <p class="cate-item__desc">@cate.Name</p>
+                            </div>
+                        </article>
+                    </a>
+                </div>
             }
-         
 
-           
+
+
         </div>
     </section>
 
@@ -183,9 +182,9 @@
                             </a>
 
                             @* <button class="like-btn product-card__like-btn">
-                                <img src="~/assets/icons/heart.svg" alt="" class="like-btn__icon icon" />
-                                <img src="~/assets/icons/heart-red.svg" alt="" class="like-btn__icon--liked" />
-                            </button> *@
+                        <img src="~/assets/icons/heart.svg" alt="" class="like-btn__icon icon" />
+                        <img src="~/assets/icons/heart-red.svg" alt="" class="like-btn__icon--liked" />
+                        </button> *@
                         </div>
                         <h3 class="product-card__title">
                             <a asp-controller="Product" asp-action="ProductDetail" asp-route-id="@product.Id">@product.Name</a>
@@ -196,6 +195,11 @@
                             <span class="product-card__price">@product.Price.ToString("#,##0.00")</span>
                             <img src="~/assets/icons/star.svg" alt="" class="product-card__star" />
                             <span class="product-card__score">4.3</span>
+                            <a style="margin-left:10px" asp-action="AddToCart"  asp-controller="Cart" asp-route-id="@product.Id"  >
+                                
+                                
+                                
+                                <img src="~/assets/icons/buy.svg" /> </a>
                         </div>
                     </article>
                 </div>

@@ -5,6 +5,58 @@
     Layout = "_LayoutIndex";
 }
 
+@section Css{
+    <style>
+         .btn_quantity {
+            display: grid;
+            grid-template-columns: repeat(3, 50px);
+        }
+
+         .quantity > button {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .quantity .p-quantity {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #ddd;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 18px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .qty-cart .btn_add {
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px 15px;
+            border: 1px solid #000;
+            color: #fff;
+            background-color: #000;
+            text-transform: uppercase;
+            border-radius: 50px;
+        }
+
+        .btn_add:hover {
+            background-color: #fff;
+            color: #111;
+            transition: all 0.5s;
+        }
+
+    </style>
+}
+
 <!-- MAIN -->
 <main class="product-page">
     <div class="container">
@@ -68,14 +120,14 @@
                             <img src="~/assets/img_laptop/@Model.Img"
                                  alt=""
                                  class="prod-preview__thumb-img prod-preview__thumb-img--current" />
-                             <img src="~/assets/img_laptop/@Model.Img" alt="@Model.Name" class="prod-preview__thumb-img" />
+                            <img src="~/assets/img_laptop/@Model.Img" alt="@Model.Name" class="prod-preview__thumb-img" />
                             <img src="~/assets/img_laptop/@Model.Img" alt="@Model.Name" class="prod-preview__thumb-img" />
                             <img src="~/assets/img_laptop/@Model.Img" alt="@Model.Name" class="prod-preview__thumb-img" />
                         </div>
                     </div>
                 </div>
                 <div class="col-7 col-xl-6 col-lg-12">
-                    <form action="" class="form">
+                    <form asp-action="AddToCart" asp-controller="Cart" asp-route-id="@Model.Id" class="form">
                         <section class="prod-info">
                             <h1 class="prod-info__heading">
                                 @Model.Name
@@ -90,7 +142,7 @@
                                     <div class="filter__form-group">
                                         <div class="form__select-wrap">
                                             <div class="form__select" style="--width: 146px">
-                                               @Model.KhoiLuong kg
+                                                @Model.KhoiLuong kg
                                                 <img src="~/assets/icons/select-arrow.svg"
                                                      alt=""
                                                      class="form__select-arrow icon" />
@@ -103,7 +155,15 @@
                                             </div>
                                         </div>
                                     </div>
-                                  
+                                    <div class="quantity">
+                                        <button type="button" class="decrease">-</button>
+                                        <input type="text"
+                                               name="quantity"
+                                               class="p-quantity"
+                                               value="1" />
+                                        <button type="button" class="increase">+</button>
+                                    </div>
+                                    
                                 </div>
                                 <div class="col-7 col-xxl-6 col-xl-12">
                                     <div class="prod-props">
@@ -134,20 +194,12 @@
                                         <div class="prod-info__card">
                                             <div class="prod-info__row">
                                                 <span class="prod-info__price">@Model.Price</span>
-                                                 <span class="prod-info__tax">10%</span>
+                                                <span class="prod-info__tax">10%</span>
                                             </div>
                                             <p class="prod-info__total-price">@Model.Price.ToString("#,##0.00")</p>
                                             <div class="prod-info__row">
-                                                <button class="btn btn--primary prod-info__add-to-cart">
+                                                <button type="submit" class="btn btn--primary prod-info__add-to-cart">
                                                     Add to cart
-                                                </button>
-                                                <button class="like-btn prod-info__like-btn">
-                                                    <img src="~/assets/icons/heart.svg"
-                                                         alt=""
-                                                         class="like-btn__icon icon" />
-                                                    <img src="~/assets/icons/heart-red.svg"
-                                                         alt=""
-                                                         class="like-btn__icon--liked" />
                                                 </button>
                                             </div>
                                         </div>
@@ -155,6 +207,9 @@
                                 </div>
                             </div>
                         </section>
+                    </form>
+                    <form id="form_pro" action="#">
+                       
                     </form>
                 </div>
             </div>
@@ -175,9 +230,9 @@
                                 <div class="text-content prod-tab__text-content">
                                     <h2>@Model.Name</h2>
                                     <p>
-                                       @Model.Description
+                                        @Model.Description
                                     </p>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -502,3 +557,28 @@
         </div>
     </div>
 </main>
+@section Scripts {
+    <script>
+        // JS cho phần tăng giảm số lượng sp ng dùng chọn
+        var j = jQuery.noConflict();
+
+        j("button").click(function () {
+            let upOrDown = j(this).attr("class");
+            console.log(upOrDown);
+
+            // Tăng số lượng hoặc giảm số lượng
+            let quantity = j(this).parent();
+            let value = parseInt(quantity.find(".p-quantity").val(), 10);
+            if ("increase" === upOrDown) {
+                value++;
+            } else {
+                value--;
+                if (value < 1) return;
+            }
+            // Cập nhật số lượng
+            quantity.find(".p-quantity").val(value);
+        })
+
+    </script>
+
+}
