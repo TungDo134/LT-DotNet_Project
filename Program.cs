@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 using WebBanLapTop.Data;
 
 
@@ -27,6 +28,17 @@ builder.Services.AddSession(options =>
 
 // Đăng ký IHttpClientFactory
 builder.Services.AddHttpClient();
+
+// 
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options=>
+{
+
+    options.LoginPath= "/Account/SignIn";
+
+    // chua co quyen se chuyen den dia chi nay
+    options.AccessDeniedPath= "/AccessDenied";
+}
+);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,6 +55,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
