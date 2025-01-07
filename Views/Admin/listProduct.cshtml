@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<WebBanLapTop.ViewModel.ProductVM>
+
+@{
     ViewData["Title"] = "Admin";
     Layout = "_LayoutAdmin";
 }
@@ -26,30 +28,30 @@
                                 <th>Sản phẩm</th>
                                 <th>ID sản phẩm</th>
                                 <th>Giá</th>
-                                <th>Tổng kho</th>
-                                <th>Bán ra</th>
-                                <th>Tồn kho</th>
+                                <th>Khối lượng</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <tr>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>
-                                    <a class="btn btn-success btn-customize" href="#" role="button">Chỉnh sửa</a>
+                            @foreach (var p in Model)
+                            {
+                                <tr>
+                                    <td><img src="~/assets/img_laptop/@p.Img" style="width:100px" /></td>
+                                    <td>@p.Name</td>
+                                    <td>@p.Id</td>
+                                    <td>@p.Price</td>
+                                    <td>@p.KhoiLuong</td>
 
-                                    <a class="btn btn-danger btn-customize"
-                                       href="#" role="button">Xóa</a>
+                                    <td>
+                                        <a class="btn btn-success btn-customize" href="#" role="button">Chỉnh sửa</a>
 
-                                </td>
-                            </tr>
+                                        <a class="btn btn-danger btn-customize"
+                                           href="#" onclick="deleteProduct(@p.Id)" role="button">Xóa</a>
+
+                                    </td>
+                                </tr>
+                            }
 
                         </tbody>
                     </table>
@@ -57,5 +59,27 @@
             </div>
         </div>
     </div>
+    @section ScriptsAdmin {
+        // đoạn script
+        <script>
+            var j = jQuery.noConflict();
+            function deleteProduct(id) {
+                const url = 'https://localhost:7258/api/AdminAPI/delById/' + id;
+                console.log(url);
 
+                j.ajax({
+                    url: url,
+                    type: "DELETE", // Sử dụng "type" thay vì "method"
+                    success: function (response) {
+                        alert(response.message); // Thông báo kết quả xóa
+                        location.reload(); // Tải lại trang nếu cần
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.responseText);
+                        alert("Có lỗi xảy ra trong quá trình xóa sản phẩm.");
+                    }
+                });
+            }
+        </script>
+    }
 </body>

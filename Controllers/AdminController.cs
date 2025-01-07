@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using WebBanLapTop.Data;
+using WebBanLapTop.ViewModel;
 
 namespace WebBanLapTop.Controllers
 {
@@ -28,9 +30,21 @@ namespace WebBanLapTop.Controllers
 
 
         // ds sp
-        public IActionResult listProduct()
+        public async Task<IActionResult> listProduct()
         {
-            return View();
+            var client = _httpClientFactory.CreateClient();
+
+            // Gọi API để lấy danh sách sản phẩm
+            var responseP = await client.GetAsync($"https://localhost:7258/api/ProductAPI");
+            IEnumerable<ProductVM> products = null;
+
+            if (responseP.IsSuccessStatusCode)
+            {
+                var jsonResponseP = await responseP.Content.ReadAsStringAsync();
+                products = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonResponseP);
+            }
+
+            return View(products);
         }
 
         // them sp
