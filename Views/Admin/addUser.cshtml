@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Chi tiet don hang";
+    Layout = "_LayoutAdmin";
+}
+
+@section CssAdmin{
+    <link rel="stylesheet" href="~/assets/css/admin/styleAddUser.css">
+}
+
+<body class="dark-theme">
+    <main id="main-content">
+        <div class="main-container">
+            <div class="container">
+                <h1>Thêm người dùng</h1>
+                <span class="text-info">  </span>
+
+
+                <form action="" method="">
+
+                    <label for="username">Tên đăng nhập</label>
+                    <input type="text" value=""
+                           placeholder="Nhập tên người dùng" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" value=""
+                           placeholder="Nhập email người dùng" required>
+
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" value=""
+                           placeholder="Nhập password người dùng" required>
+
+                    <label for="numberPhone">Số điện thoại</label>
+                    <input type="tel" value=""
+                           placeholder="Nhập số điện thoại người dùng">
+
+                    <label for="Address">Địa chỉ</label>
+                    <input type="text" value=""
+                           placeholder="Nhập địa chỉ người dùng">
+
+                    <label for="role">Vai trò</label>
+                    <select id="role" name="role">
+                        <option value="0">Người dùng</option>
+                        <option value="1">Admin</option>
+                    </select>
+
+                    <button type="submit">Thêm người dùng</button>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>

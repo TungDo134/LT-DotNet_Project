@@ -120,9 +120,7 @@
                             <img src="~/assets/img_laptop/@Model.Img"
                                  alt=""
                                  class="prod-preview__thumb-img prod-preview__thumb-img--current" />
-                            <img src="~/assets/img_laptop/@Model.Img" alt="@Model.Name" class="prod-preview__thumb-img" />
-                            <img src="~/assets/img_laptop/@Model.Img" alt="@Model.Name" class="prod-preview__thumb-img" />
-                            <img src="~/assets/img_laptop/@Model.Img" alt="@Model.Name" class="prod-preview__thumb-img" />
+                            
                         </div>
                     </div>
                 </div>
@@ -193,10 +191,10 @@
                                         </div>
                                         <div class="prod-info__card">
                                             <div class="prod-info__row">
-                                                <span class="prod-info__price">@Model.Price</span>
-                                                <span class="prod-info__tax">10%</span>
+                                                <span class="prod-info__price">@Model.Price.ToString("#,##0")</span>
+                                                @* <span class="prod-info__tax">10%</span> *@
                                             </div>
-                                            <p class="prod-info__total-price">@Model.Price.ToString("#,##0.00")</p>
+                                            <p class="prod-info__total-price">@Model.Price.ToString("#,##0")</p>
                                             <div class="prod-info__row">
                                                 <button type="submit" class="btn btn--primary prod-info__add-to-cart">
                                                     Add to cart

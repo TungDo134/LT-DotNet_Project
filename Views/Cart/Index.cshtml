@@ -121,10 +121,10 @@
                                         <span>Tạm tính:</span>
                                         <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
                                     </div>
-                                    <div class="cart-info__row">
+                                  @*   <div class="cart-info__row">
                                         <span>Phí vận chuyển:</span>
                                         <span>$10.00</span>
-                                    </div>
+                                    </div> *@
                                     <div class="cart-info__separate"></div>
                                     <div class="cart-info__row cart-info__row--bold" style="width:268px">
                                         <span>Tổng:</span>
@@ -145,13 +145,13 @@
                             <span>Tổng tiền <span class="cart-info__sub-label">(Total)</span></span>
                             <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
                         </div>
-                        <div class="cart-info__row">
+                      @*   <div class="cart-info__row">
                             <span>Vận chuyển</span>
                             <span>$10.00</span>
-                        </div>
+                        </div> *@
                         <div class="cart-info__separate"></div>
                         <div class="cart-info__row">
-                            <span>Cái giá cuối cùng nè</span>
+                            <span>Tổng tiền</span>
                             <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
                         </div>
                         <a href="./shipping.html" class="cart-info__next-btn btn btn--primary btn--rounded">
