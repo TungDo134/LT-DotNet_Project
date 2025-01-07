@@ -1,9 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebBanLapTop.Data;
 
 namespace WebBanLapTop.Controllers
 {
+
     public class AdminController : Controller
     {
+
+        private readonly ILogger<HomeController> _logger;
+        private readonly LaptopShopContext db;
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public AdminController(ILogger<HomeController> logger, LaptopShopContext context, IHttpClientFactory httpClientFactory)
+        {
+            _logger = logger;
+            db = context;
+            _httpClientFactory = httpClientFactory;
+        }
+
+
+
+
         public IActionResult Index()
         {
             return View();
