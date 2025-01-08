@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using WebBanLapTop.Data;
@@ -82,6 +83,8 @@ namespace WebBanLapTop.Controllers
                 return View("Error", new { Message = "Categrogy not found" }); // Xử lý lỗi nếu không tìm thấy danh mục
             }
         }
+
+      
 
 
         public IActionResult Privacy()

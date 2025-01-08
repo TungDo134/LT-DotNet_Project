@@ -159,7 +159,7 @@
 
                         <ul class="user-menu__list">
                             <li>
-                                <a href="./profile.html" class="user-menu__link">Profile</a>
+                                <a asp-controller="Account" asp-action="Profile" class="user-menu__link">Profile</a>
                             </li>
                             <li class="user-menu__separate">
                                 <a href="#!" class="user-menu__link" id="switch-theme-btn">
@@ -170,6 +170,8 @@
                             <li class="user-menu__separate">
                                 <a asp-controller="Account" asp-action="AdminPage" class="user-menu__link">Admin</a>
                             </li>
+                            
+
 
                             @* check quyen de vo admin *@
                             @*  @if (!Context.IsUserLoggedIn())

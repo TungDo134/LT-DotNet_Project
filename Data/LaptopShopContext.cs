@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
 namespace WebBanLapTop.Data;
 
@@ -15,88 +16,108 @@ public partial class LaptopShopContext : DbContext
     {
     }
 
-    public virtual DbSet<ChiTietHoaDon> ChiTietHoaDons { get; set; }
+    public virtual DbSet<Chitiethoadon> Chitiethoadons { get; set; }
 
-    public virtual DbSet<ChiTietSanPham> ChiTietSanPhams { get; set; }
+    public virtual DbSet<Chitietsanpham> ChiTietSanPhams { get; set; }
 
-    public virtual DbSet<DanhMucSanPham> DanhMucSanPhams { get; set; }
+    public virtual DbSet<Danhmucsanpham> Danhmucsanphams { get; set; }
 
-    public virtual DbSet<HoaDon> HoaDons { get; set; }
+    public virtual DbSet<Hoadon> Hoadons { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
-//    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-//        => optionsBuilder.UseSqlServer("Data Source=TUNGDO\\SQLEXPRESS;Initial Catalog=laptop_shop;Integrated Security=True;Trust Server Certificate=True");
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseMySql("server=localhost;database=laptop_shop;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<ChiTietHoaDon>(entity =>
-        {
-            entity.HasKey(e => new { e.Idhd, e.MaSp }).HasName("pk");
+        modelBuilder
+            .UseCollation("utf8mb4_0900_as_ci")
+            .HasCharSet("utf8mb4");
 
-            entity.ToTable("ChiTietHoaDon");
+        modelBuilder.Entity<Chitiethoadon>(entity =>
+        {
+            entity.HasKey(e => new { e.Idhd, e.MaSp })
+                .HasName("PRIMARY")
+                .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
+
+            entity.ToTable("chitiethoadon");
+
+            entity.HasIndex(e => e.MaSp, "fk_ChiTietHoaDonSP");
 
             entity.Property(e => e.Idhd).HasColumnName("IDHD");
             entity.Property(e => e.MaSp).HasColumnName("maSP");
             entity.Property(e => e.DonGia).HasColumnName("donGia");
             entity.Property(e => e.SoLuong).HasColumnName("soLuong");
 
-            entity.HasOne(d => d.IdhdNavigation).WithMany(p => p.ChiTietHoaDons)
+            entity.HasOne(d => d.IdhdNavigation).WithMany(p => p.Chitiethoadons)
                 .HasForeignKey(d => d.Idhd)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_ChiTietHoaDon");
 
-            entity.HasOne(d => d.MaSpNavigation).WithMany(p => p.ChiTietHoaDons)
+            entity.HasOne(d => d.MaSpNavigation).WithMany(p => p.Chitiethoadons)
                 .HasForeignKey(d => d.MaSp)
+                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_ChiTietHoaDonSP");
         });
 
-        modelBuilder.Entity<ChiTietSanPham>(entity =>
+        modelBuilder.Entity<Chitietsanpham>(entity =>
         {
-            entity.HasKey(e => e.MaSp).HasName("PK__ChiTietS__7A227A7A44FF419A");
+            entity.HasKey(e => e.MaSp).HasName("PRIMARY");
 
-            entity.ToTable("ChiTietSanPham");
+            entity.ToTable("chitietsanpham");
+
+            entity.HasIndex(e => e.MaDanhMuc, "fk_ChiTietSanPham_LoaiMyPham");
 
             entity.Property(e => e.MaSp).HasColumnName("maSP");
-            entity.Property(e => e.DonGia).HasColumnName("donGia");
+            entity.Property(e => e.DonGia)
+                .HasPrecision(10, 2)
+                .HasColumnName("donGia");
             entity.Property(e => e.HinhAnh).HasColumnName("hinhAnh");
             entity.Property(e => e.KhoiLuong)
-                .HasColumnType("decimal(5, 2)")
+                .HasPrecision(5, 2)
                 .HasColumnName("khoiLuong");
             entity.Property(e => e.KhuyenMai).HasColumnName("khuyenMai");
             entity.Property(e => e.MaDanhMuc).HasColumnName("maDanhMuc");
             entity.Property(e => e.TenSp)
                 .HasMaxLength(250)
                 .HasColumnName("tenSP");
-            entity.Property(e => e.ThongTinSp)
-                .HasColumnType("ntext")
-                .HasColumnName("thongTinSP");
+            entity.Property(e => e.ThongTinSp).HasColumnName("thongTinSP");
 
-            entity.HasOne(d => d.MaDanhMucNavigation).WithMany(p => p.ChiTietSanPhams)
+            entity.HasOne(d => d.MaDanhMucNavigation).WithMany(p => p.Chitietsanphams)
                 .HasForeignKey(d => d.MaDanhMuc)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_ChiTietSanPham_LoaiMyPham");
         });
 
-        modelBuilder.Entity<DanhMucSanPham>(entity =>
+        modelBuilder.Entity<Danhmucsanpham>(entity =>
         {
-            entity.HasKey(e => e.MaDanhMuc).HasName("PK__DanhMucS__6B0F914C6F8D8266");
+            entity.HasKey(e => e.MaDanhMuc).HasName("PRIMARY");
 
-            entity.ToTable("DanhMucSanPham");
+            entity.ToTable("danhmucsanpham");
 
-            entity.Property(e => e.MaDanhMuc).HasColumnName("maDanhMuc");
+            entity.Property(e => e.MaDanhMuc)
+                .ValueGeneratedNever()
+                .HasColumnName("maDanhMuc");
+            entity.Property(e => e.HinhDanhMuc)
+                .HasMaxLength(255)
+                .HasColumnName("hinhDanhMuc");
             entity.Property(e => e.TenDanhMuc)
                 .HasMaxLength(100)
                 .HasColumnName("tenDanhMuc");
         });
 
-        modelBuilder.Entity<HoaDon>(entity =>
+        modelBuilder.Entity<Hoadon>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__HoaDon__3214EC2742E1EEFE");
+            entity.HasKey(e => e.Id).HasName("PRIMARY");
 
-            entity.ToTable("HoaDon");
+            entity.ToTable("hoadon");
 
-            entity.Property(e => e.Id).HasColumnName("ID");
+            entity.HasIndex(e => e.Iddn, "fk_HoaDon_KH");
+
+            entity.Property(e => e.Id)
+                .ValueGeneratedNever()
+                .HasColumnName("ID");
             entity.Property(e => e.DiaChiNhan)
                 .HasMaxLength(30)
                 .HasColumnName("diaChiNhan");
@@ -113,17 +134,20 @@ public partial class LaptopShopContext : DbContext
             entity.Property(e => e.TongTien).HasColumnName("tongTien");
             entity.Property(e => e.TrangThai).HasColumnName("trangThai");
 
-            entity.HasOne(d => d.IddnNavigation).WithMany(p => p.HoaDons)
+            entity.HasOne(d => d.IddnNavigation).WithMany(p => p.Hoadons)
                 .HasForeignKey(d => d.Iddn)
-                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_HoaDon_KH");
         });
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Iddn).HasName("PK__Users__B87DB89243224B74");
+            entity.HasKey(e => e.Iddn).HasName("PRIMARY");
 
-            entity.Property(e => e.Iddn).HasColumnName("IDDN");
+            entity.ToTable("users");
+
+            entity.Property(e => e.Iddn)
+                .ValueGeneratedNever()
+                .HasColumnName("IDDN");
             entity.Property(e => e.DiaChi)
                 .HasMaxLength(30)
                 .HasColumnName("diaChi");
@@ -131,7 +155,7 @@ public partial class LaptopShopContext : DbContext
                 .HasMaxLength(30)
                 .HasColumnName("email");
             entity.Property(e => e.MatkhauDn)
-                .HasMaxLength(30)
+                .HasMaxLength(255)
                 .HasColumnName("matkhauDN");
             entity.Property(e => e.Quyen).HasColumnName("quyen");
             entity.Property(e => e.Sdt)

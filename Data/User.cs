@@ -19,5 +19,5 @@ public partial class User
 
     public bool? Quyen { get; set; }
 
-    public virtual ICollection<HoaDon> HoaDons { get; set; } = new List<HoaDon>();
+    public virtual ICollection<Hoadon> Hoadons { get; set; } = new List<Hoadon>();
 }

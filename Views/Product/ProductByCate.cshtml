@@ -196,6 +196,9 @@
                             <span class="product-card__price">@product.Price.ToString("#,##0.00")</span>
                             <img src="~/assets/icons/star.svg" alt="" class="product-card__star" />
                             <span class="product-card__score">4.3</span>
+                            <a style="margin-left:10px" asp-action="AddToCart" asp-controller="Cart" asp-route-id="@product.Id">
+                                <img src="~/assets/icons/buy.svg" />
+                            </a>
                         </div>
                     </article>
                 </div>

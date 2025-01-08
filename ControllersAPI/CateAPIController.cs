@@ -19,7 +19,7 @@ namespace WebBanLapTop.ControllersAPI
         public IActionResult Index()
         {
             // lay ra danh muc 
-            var cates = db.DanhMucSanPhams.Select(c => new CateVM
+            var cates = db.Danhmucsanphams.Select(c => new CateVM
             {
                 Id = c.MaDanhMuc,
                 Name = c.TenDanhMuc ?? "",

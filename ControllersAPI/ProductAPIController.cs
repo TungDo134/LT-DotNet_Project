@@ -66,7 +66,7 @@ namespace WebBanLapTop.ControllersAPI
         // thêm 1 sản phẩm (ADMIN)
         [HttpPost]
         [Route("add")]
-        public IActionResult AddProduct([FromBody] ChiTietSanPham product)
+        public IActionResult AddProduct([FromBody] Chitietsanpham product)
         {
             if (product == null)
             {
@@ -89,7 +89,7 @@ namespace WebBanLapTop.ControllersAPI
         // chỉnh sửa sản phẩm (ADMIN)
         [HttpPut]
         [Route("edit")]
-        public IActionResult EditProduct([FromBody] ChiTietSanPham product)
+        public IActionResult EditProduct([FromBody] Chitietsanpham product)
         {
             if (product == null || product.MaSp <= 0) 
             {

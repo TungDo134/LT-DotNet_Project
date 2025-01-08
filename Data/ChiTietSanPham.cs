@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebBanLapTop.Data;
 
-public partial class ChiTietSanPham
+public partial class Chitietsanpham
 {
     public int MaSp { get; set; }
 
@@ -11,7 +11,7 @@ public partial class ChiTietSanPham
 
     public string? TenSp { get; set; }
 
-    public int? DonGia { get; set; }
+    public decimal? DonGia { get; set; }
 
     public string? KhuyenMai { get; set; }
 
@@ -21,7 +21,7 @@ public partial class ChiTietSanPham
 
     public string? HinhAnh { get; set; }
 
-    public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; } = new List<ChiTietHoaDon>();
+    public virtual ICollection<Chitiethoadon> Chitiethoadons { get; set; } = new List<Chitiethoadon>();
 
-    public virtual DanhMucSanPham? MaDanhMucNavigation { get; set; }
+    public virtual Danhmucsanpham? MaDanhMucNavigation { get; set; }
 }

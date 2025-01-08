@@ -9,6 +9,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
+using WebBanLapTop.Helpers;
 
 namespace WebBanLapTop.Controllers
 {
@@ -54,7 +55,7 @@ namespace WebBanLapTop.Controllers
                         TenDn = model.TenDn,
                         Email = model.Email,
                         Sdt = model.Sdt,
-                        MatkhauDn = model.MatkhauDn // Mã hóa mật khẩu
+                        MatkhauDn = MaHoaMK.ToSHA1(model.MatkhauDn) // Mã hóa mật khẩu
                     };
 
                     db.Users.Add(user);
@@ -83,7 +84,7 @@ namespace WebBanLapTop.Controllers
             ViewBag.ReturnUrl = ReturnUrl;
             if (ModelState.IsValid)
             {
-                var customers = db.Users.SingleOrDefault(p => p.TenDn == model.Username && p.MatkhauDn == model.Password);
+                var customers = db.Users.SingleOrDefault(p => p.TenDn == model.Username && p.MatkhauDn == MaHoaMK.ToSHA1(model.Password));
                 if (customers == null)
                 {
                     ModelState.AddModelError("error", "Sai thông tin đăng nhập");
@@ -96,6 +97,8 @@ namespace WebBanLapTop.Controllers
                         new Claim(ClaimTypes.Name, customers.TenDn??""),
                         new Claim(ClaimTypes.Email, customers.Email??""),
                         new Claim("MatKhau", customers.MatkhauDn),
+                        new Claim(ClaimTypes.MobilePhone, customers.Sdt),
+                        new Claim (ClaimTypes.StreetAddress,customers.DiaChi),
                         new Claim(ClaimTypes.Role, (bool)customers.Quyen ? "Admin" : "User"),
                     };
 
@@ -125,6 +128,16 @@ namespace WebBanLapTop.Controllers
         [Authorize]
         public IActionResult Profile()
         {
+
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            ViewBag.Email = string.IsNullOrEmpty(email) ? "" : email;
+
+            var address = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.StreetAddress)?.Value;
+            ViewBag.Address = string.IsNullOrEmpty(address) ? "" : address;
+
+            var phone = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
+            ViewBag.Phone = string.IsNullOrEmpty(phone) ? "" : phone;
+
             return View();
         }
 

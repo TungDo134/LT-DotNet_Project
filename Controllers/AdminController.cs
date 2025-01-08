@@ -9,11 +9,11 @@ namespace WebBanLapTop.Controllers
     public class AdminController : Controller
     {
 
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<AdminController> _logger;
         private readonly LaptopShopContext db;
         private readonly IHttpClientFactory _httpClientFactory;
 
-        public AdminController(ILogger<HomeController> logger, LaptopShopContext context, IHttpClientFactory httpClientFactory)
+        public AdminController(ILogger<AdminController> logger, LaptopShopContext context, IHttpClientFactory httpClientFactory)
         {
             _logger = logger;
             db = context;

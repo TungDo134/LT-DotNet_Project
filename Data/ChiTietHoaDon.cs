@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebBanLapTop.Data;
 
-public partial class ChiTietHoaDon
+public partial class Chitiethoadon
 {
     public int Idhd { get; set; }
 
@@ -13,7 +13,7 @@ public partial class ChiTietHoaDon
 
     public int? SoLuong { get; set; }
 
-    public virtual HoaDon IdhdNavigation { get; set; } = null!;
+    public virtual Hoadon IdhdNavigation { get; set; } = null!;
 
-    public virtual ChiTietSanPham MaSpNavigation { get; set; } = null!;
+    public virtual Chitietsanpham MaSpNavigation { get; set; } = null!;
 }

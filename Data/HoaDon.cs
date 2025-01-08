@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace WebBanLapTop.Data;
 
-public partial class HoaDon
+public partial class Hoadon
 {
     public int Id { get; set; }
 
@@ -21,7 +21,7 @@ public partial class HoaDon
 
     public bool? TrangThai { get; set; }
 
-    public virtual ICollection<ChiTietHoaDon> ChiTietHoaDons { get; set; } = new List<ChiTietHoaDon>();
+    public virtual ICollection<Chitiethoadon> Chitiethoadons { get; set; } = new List<Chitiethoadon>();
 
     public virtual User? IddnNavigation { get; set; }
 }

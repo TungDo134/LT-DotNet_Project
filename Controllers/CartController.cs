@@ -41,7 +41,7 @@ namespace WebBanLapTop.Controllers
                         id = _itemAdd.MaSp,
                         image = _itemAdd.HinhAnh ?? String.Empty,
                         name = _itemAdd.TenSp ?? String.Empty,
-                        price = _itemAdd.DonGia ?? 0,
+                        price = (double)(_itemAdd.DonGia ?? 0),
                         quantity = quantity
                     };
                     cart.Add(item);
@@ -56,6 +56,7 @@ namespace WebBanLapTop.Controllers
             HttpContext.Session.Set(CART_KEY, cart);
 
             return RedirectToAction("Index");
+            //return new EmptyResult();
         }
 
         public IActionResult RemoveCart(int id)
