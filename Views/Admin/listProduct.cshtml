@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<WebBanLapTop.ViewModel.ProductVM>
+
+@{
     ViewData["Title"] = "Admin";
     Layout = "_LayoutAdmin";
 }
@@ -16,40 +18,39 @@
             </div>
             <div id="list-product-container">
                 <a class="btn btn-primary btn-customize px-5 py-2 mb-2"
-                   href="#" role="button">Thêm</a>
+                   asp-controller="Admin" asp-action="addProduct" role="button">Thêm</a>
                 <div class="product-list">
 
                     <table id="myTable" class="display" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Ảnh</th>
-                                <th>Sản phẩm</th>
                                 <th>ID sản phẩm</th>
+                                <th>Sản phẩm</th>
                                 <th>Giá</th>
-                                <th>Tổng kho</th>
-                                <th>Bán ra</th>
-                                <th>Tồn kho</th>
+                                <th>Khối lượng</th>
                                 <th>Hành động</th>
                             </tr>
                         </thead>
                         <tbody>
 
-                            <tr>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>
-                                    <a class="btn btn-success btn-customize" href="#" role="button">Chỉnh sửa</a>
+                            @foreach (var p in Model)
+                            {
+                                <tr>
+                                    <td><img src="~/assets/img_laptop/@p.Img" style="width:100px" /></td>
+                                    <td>@p.Id</td>
+                                    <td>@p.Name</td>
+                                    <td>@p.Price.ToString("#,##0")</td>
+                                    <td>@p.KhoiLuong</td>
+                                    <td>
+                                        <a class="btn btn-success btn-customize" asp-controller="Admin" asp-action="EditProduct" asp-route-id="@p.Id" role="button">Chỉnh sửa</a>
 
-                                    <a class="btn btn-danger btn-customize"
-                                       href="#" role="button">Xóa</a>
+                                        <a class="btn btn-danger btn-customize"
+                                           href="#" onclick="deleteProduct(@p.Id)" role="button">Xóa</a>
 
-                                </td>
-                            </tr>
+                                    </td>
+                                </tr>
+                            }
 
                         </tbody>
                     </table>
@@ -57,5 +58,27 @@
             </div>
         </div>
     </div>
+    @section ScriptsAdmin {
+        // đoạn script
+        <script>
+            var j = jQuery.noConflict();
+            function deleteProduct(id) {
+                const url = 'https://localhost:7258/api/ProductAPI/delById/' + id;
+                console.log(url);
 
+                j.ajax({
+                    url: url,
+                    type: "DELETE", 
+                    success: function (response) {
+                        alert(response.message); // Thông báo kết quả 
+                        location.reload(); 
+                    },
+                    error: function (xhr) {
+                        console.error("Error:", xhr.responseText);
+                        alert("Có lỗi xảy ra trong quá trình xóa sản phẩm.");
+                    }
+                });
+            }
+        </script>
+    }
 </body>
