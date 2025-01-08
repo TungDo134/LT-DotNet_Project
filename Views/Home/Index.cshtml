@@ -192,7 +192,7 @@
                         </h3>
                         @*  <p class="product-card__brand">Lavazza</p> *@
                         <div class="product-card__row">
-                            <span class="product-card__price">@product.Price.ToString("#,##0.00")</span>
+                            <span class="product-card__price">@product.Price.ToString("#,##0")</span>
                             <img src="~/assets/icons/star.svg" alt="" class="product-card__star" />
                             <span class="product-card__score">4.3</span>
                             <a style="margin-left:10px" asp-action="AddToCart"  asp-controller="Cart" asp-route-id="@product.Id"  >

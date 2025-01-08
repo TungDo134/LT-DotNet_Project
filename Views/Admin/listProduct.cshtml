@@ -18,15 +18,15 @@
             </div>
             <div id="list-product-container">
                 <a class="btn btn-primary btn-customize px-5 py-2 mb-2"
-                   href="#" role="button">Thêm</a>
+                   asp-controller="Admin" asp-action="addProduct" role="button">Thêm</a>
                 <div class="product-list">
 
                     <table id="myTable" class="display" style="width:100%">
                         <thead>
                             <tr>
                                 <th>Ảnh</th>
-                                <th>Sản phẩm</th>
                                 <th>ID sản phẩm</th>
+                                <th>Sản phẩm</th>
                                 <th>Giá</th>
                                 <th>Khối lượng</th>
                                 <th>Hành động</th>
@@ -38,13 +38,12 @@
                             {
                                 <tr>
                                     <td><img src="~/assets/img_laptop/@p.Img" style="width:100px" /></td>
-                                    <td>@p.Name</td>
                                     <td>@p.Id</td>
-                                    <td>@p.Price</td>
+                                    <td>@p.Name</td>
+                                    <td>@p.Price.ToString("#,##0")</td>
                                     <td>@p.KhoiLuong</td>
-
                                     <td>
-                                        <a class="btn btn-success btn-customize" href="#" role="button">Chỉnh sửa</a>
+                                        <a class="btn btn-success btn-customize" asp-controller="Admin" asp-action="EditProduct" asp-route-id="@p.Id" role="button">Chỉnh sửa</a>
 
                                         <a class="btn btn-danger btn-customize"
                                            href="#" onclick="deleteProduct(@p.Id)" role="button">Xóa</a>
@@ -64,15 +63,15 @@
         <script>
             var j = jQuery.noConflict();
             function deleteProduct(id) {
-                const url = 'https://localhost:7258/api/AdminAPI/delById/' + id;
+                const url = 'https://localhost:7258/api/ProductAPI/delById/' + id;
                 console.log(url);
 
                 j.ajax({
                     url: url,
-                    type: "DELETE", // Sử dụng "type" thay vì "method"
+                    type: "DELETE", 
                     success: function (response) {
-                        alert(response.message); // Thông báo kết quả xóa
-                        location.reload(); // Tải lại trang nếu cần
+                        alert(response.message); // Thông báo kết quả 
+                        location.reload(); 
                     },
                     error: function (xhr) {
                         console.error("Error:", xhr.responseText);
