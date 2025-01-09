@@ -1,0 +1,287 @@
+﻿@model List<WebBanLapTop.ViewModel.CartItem>
+
+@{
+    ViewData["Title"] = "Vận chuyển";
+    Layout = "_LayoutIndex";
+}
+<main class="checkout-page">
+    <div class="container">
+        <!-- Search bar -->
+        <div class="checkout-container">
+            <div class="search-bar d-none d-md-flex">
+                <input type="text" name="" id="" placeholder="Search for item" class="search-bar__input" />
+                <button class="search-bar__submit">
+                    <img src="./assets/icons/search.svg" alt="" class="search-bar__icon icon" />
+                </button>
+            </div>
+        </div>
+
+        <!-- Breadcrumbs -->
+        <div class="checkout-container">
+            <ul class="breadcrumbs checkout-page__breadcrumbs">
+                <li>
+                    <a href="./" class="breadcrumbs__link">
+                        Trang Chủ
+                        <img src="./assets/icons/arrow-right.svg" alt="" />
+                    </a>
+                </li>
+                <li>
+                    <a href="./checkout.html" class="breadcrumbs__link">
+                        Thanh toán
+                        <img src="./assets/icons/arrow-right.svg" alt="" />
+                    </a>
+                </li>
+                <li>
+                    <a href="#!" class="breadcrumbs__link breadcrumbs__link--current">Vận chuyển</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Checkout content -->
+        <div class="checkout-container">
+            <form asp-action="DatHang" method="post">
+
+            <div class="row gy-xl-3">
+                <div class="col-8 col-xl-12">
+                    <div class="cart-info">
+                        <h2 class="cart-info__sub-heading" style="font-weight:bold">Danh sách sản phẩm</h2>
+                        <div class="cart-info__list">
+                            <div class="cart-item-header" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 2px solid #ccc; font-weight: bold;">
+                                <!-- Tiêu đề Cột Hình ảnh và Tên -->
+                                <div class="cart-item__header-image-name" style="flex: 3;">
+                                    Sản phẩm
+                                </div>
+
+                                <!-- Tiêu đề Cột Số lượng -->
+                                <div class="cart-item__header-quantity" style="flex: 1; text-align: center;">
+                                    Số lượng
+                                </div>
+
+                                <!-- Tiêu đề Cột Giá -->
+                                <div class="cart-item__header-price" style="flex: 1; text-align: center;">
+                                    Giá
+                                </div>
+                            </div>
+                            @foreach (var c in Model)
+                            {
+                                <article class="cart-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #ccc;">
+                                    <!-- Cột Hình ảnh -->
+                                    <div class="cart-item__image" style="flex: 1;">
+                                        <a asp-controller="Product" asp-action="ProductDetail" asp-route-id="@c.id">
+                                            <img src="~/assets/img_laptop/@c.image" alt="@c.name" class="cart-item__thumb" style="width: 100px; height: auto;" />
+                                        </a>
+                                    </div>
+
+                                    <!-- Cột Tên -->
+                                    <div class="cart-item__name" style="flex: 2; display: flex; align-items: center;">
+                                        <h3 class="cart-item__title" style="margin: 0;">
+                                            <a asp-controller="Product" asp-action="ProductDetail" asp-route-id="@c.id" style="text-decoration: none;">
+                                                @c.name
+                                            </a>
+                                        </h3>
+                                    </div>
+
+                                    <!-- Cột Số lượng -->
+                                    <div class="cart-item__quantity" style="flex: 1; display: flex; align-items: center; justify-content: center;">
+                                        <form asp-action="UpdateCart" asp-controller="Cart" asp-route-id="@c.id" style="margin: 0;">
+                                            <input type="hidden" name="id" value="@c.id" />
+                                            <input class="p-quantity" name="quantity" value="@c.quantity" style="width: 40px; text-align: center; font-size: 18px;" />
+                                        </form>
+                                    </div>
+
+                                    <!-- Cột Giá -->
+                                    <div class="cart-item__price" style="align-items: center; justify-content: center;">
+                                        <p class="cart-item__total-price" style="margin: 0; font-size: 20px; font-weight: normal;">
+                                            @c.totalPrice.ToString("#,# VND")
+                                        </p>
+                                    </div>
+
+                                </article>
+                            }
+                        </div>
+                    </div>
+                    <div class="cart-info">
+                            <article class="gift-item">
+                                <div class="checkout__location container">
+                                    <!-- Customer Info: Name and Phone -->
+                                    <div class="checkout__customer-info" style="padding-bottom: 20px;">
+                                        <div class="row g-3">
+                                            <!-- Customer Name -->
+                                            <div class="col-md-6">
+                                                <label for="customerName" class="form-label" style="font-size: 13px; font-weight: 600;">Tên người nhận<span class="text-danger" style="color:red">*</span></label>
+                                                <input type="text" id="customerName" name="customerName" class="form-control" placeholder="Nhập tên người nhận"  style="height: 50px; font-size: 13px; padding: 10px; background-color: #f5f5f5;" required>
+
+                                            </div>
+
+                                            <!-- Phone Number -->
+                                            <div class="col-md-6">
+                                                <label for="phone" class="form-label" style="font-size: 13px; font-weight: 600;">Số điện thoại<span class="text-danger" style="color:red">*</span></label>
+                                                <input type="text" id="sdt" name="sdt" class="form-control" placeholder="Nhập số điện thoại" style="height: 50px; font-size: 13px; padding: 10px; background-color: #f5f5f5;" required>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3" style="padding-top:10px;">
+                                        <!-- Chọn Tỉnh/Thành phố -->
+                                        <div class="col-md-6">
+                                            <label for="city" class="form-label" style="font-size: 13px; font-weight: 600;">Chọn tỉnh/thành phố<span class="text-danger" style="color:red">*</span></label>
+                                            <select class="form-select" id="city" name="city" onchange="clearError('city-error')"
+                                                    style="height: 50px; font-size: 13px; padding: 10px; background-color: #f5f5f5;">
+                                                <option value="" selected>Chọn tỉnh/thành phố</option>
+                                            </select>
+                                            <div class="error-message text-danger small" id="city-error" style="font-size: 1rem; display: none;color:red;">
+                                                Vui lòng chọn tỉnh/thành phố.
+                                            </div>
+                                        </div>
+
+                                        <!-- Chọn Quận/Huyện -->
+                                        <div class="col-md-6">
+                                            <label for="district" class="form-label" style="font-size: 13px; font-weight: 600;">Chọn quận/huyện<span class="text-danger" style="color:red">*</span></label>
+                                            <select class="form-select" id="district" name="district" onchange="clearError('district-error')"
+                                                    style="height: 50px; font-size: 13px; padding: 10px; background-color: #f5f5f5;">
+                                                <option value="" selected>Chọn quận/huyện</option>
+                                            </select>
+                                            <div class="error-message text-danger small" id="district-error" style="font-size: 1rem; display: none;color:red;">
+                                                Vui lòng chọn quận/huyện.
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <!-- Chọn Phường/Xã -->
+                                    <div class="row g-3 mt-3" style="padding-top:30px;">
+                                        <div class="col-md-6">
+                                            <label for="ward" class="form-label" style="font-size: 13px; font-weight: 600;">Chọn phường/xã<span class="text-danger" style="color:red">*</span></label>
+                                            <select class="form-select" id="ward" name="ward" onchange="clearError('ward-error')" 
+                                            style="height: 50px; font-size: 13px; padding: 10px; background-color: #f5f5f5;">
+                                                <option value="" selected>Chọn phường/xã</option>
+                                            </select>
+                                            <div class="error-message text-danger small" id="ward-error" style="font-size: 1rem; display: none;">Vui lòng chọn phường/xã.</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Địa chỉ nhà -->
+                                    <div class="checkout__input mt-4" style="padding-top:30px;">
+                                        <label for="address" class="form-label" style="font-size: 13px; font-weight: 600;">Địa chỉ nhà<span class="text-danger" style="color:red">*</span></label>
+                                        <input type="text" id="houseAddress" name="houseAddress" class="form-control" placeholder="Nhập địa chỉ nhà" oninput="clearError('address-error')" style="height: 50px;width:700px; font-size: 13px; padding: 10px; background-color: #f5f5f5;" required>
+                                        <div class="error-message text-danger small" id="address-error" style="font-size: 1rem; display: none;">Vui lòng nhập địa chỉ nhà.</div>
+                                    </div>
+                                </div>
+                            </article>
+
+                    </div>
+                  
+                </div>
+
+                <!-- Right Side with Order Total -->
+                <div class="col-4 col-xl-12">
+                    <div class="cart-info">
+                        <div class="cart-info__row">
+                            <span>Tạm tính </span>
+                            <span>@ViewBag.Subtotal.ToString("#,# VND")</span>
+                        </div>
+                        <div class="cart-info__row">
+                            <span>Tiền vận chuyển</span>
+                            <span>@ViewBag.ShippingFee.ToString("#,# VND")</span>
+                        </div>
+                        <div class="cart-info__separate"></div>
+                        <div class="cart-info__row">
+                            <span>Tổng tiền thanh toán</span>
+                            <span>@ViewBag.EstimatedTotal.ToString("#,# VND")</span>
+                        </div>
+                            <button id="orderButton" class="cart-info__next-btn btn btn--primary btn--rounded" style="margin-left:35px;width:300px;">Đặt hàng</button>
+
+
+                    </div>
+                   
+                </div>
+        </div>
+         </form>
+    </div>
+    </div>
+</main>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+ @section Scripts {
+    <script>
+
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const citySelect = document.getElementById('city');
+            const districtSelect = document.getElementById('district');
+            const wardSelect = document.getElementById('ward');
+            const addressInput = document.getElementById('address');
+
+            // Tải dữ liệu JSON từ URL
+            fetch('https://raw.githubusercontent.com/kenzouno1/DiaGioiHanhChinhVN/master/data.json')
+                .then(response => {
+                    if (!response.ok) throw new Error('Không thể tải dữ liệu từ URL');
+                    return response.json();
+                })
+                .then(data => {
+                    populateCity(data);
+                })
+                .catch(error => console.error('Lỗi khi tải dữ liệu:', error));
+
+            function populateCity(data) {
+                for (const x of data) {
+                    const option = document.createElement('option');
+                    option.value = x.Name; // Lấy tên thay vì ID
+                    option.text = x.Name;
+                    citySelect.appendChild(option);
+                }
+
+                citySelect.addEventListener('change', function () {
+                    districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+                    wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+
+                    if (this.value !== "") {
+                        const selectedCity = data.find(n => n.Name === this.value); // So sánh tên
+                        for (const district of selectedCity.Districts) {
+                            const option = document.createElement('option');
+                            option.value = district.Name; // Lấy tên thay vì ID
+                            option.text = district.Name;
+                            districtSelect.appendChild(option);
+                        }
+                    }
+                    clearError('city-error');
+                });
+
+                districtSelect.addEventListener('change', function () {
+                    wardSelect.innerHTML = '<option value="">Chọn phường/xã</option>';
+
+                    const selectedCity = data.find(n => n.Name === citySelect.value);
+                    if (this.value !== "") {
+                        const selectedDistrict = selectedCity.Districts.find(n => n.Name === this.value);
+                        for (const ward of selectedDistrict.Wards) {
+                            const option = document.createElement('option');
+                            option.value = ward.Name; // Lấy tên thay vì ID
+                            option.text = ward.Name;
+                            wardSelect.appendChild(option);
+                        }
+                    }
+                    clearError('district-error');
+                });
+
+                wardSelect.addEventListener('change', function () {
+                    clearError('ward-error');
+                });
+
+                addressInput.addEventListener('input', function () {
+                    clearError('address-error');
+                });
+            }
+
+            // Function to clear error message
+            function clearError(errorId) { 
+                const errorElement = document.getElementById(errorId);
+                if (errorElement) {
+                    errorElement.style.display = 'none';
+                }
+            }
+        });
+
+    </script>
+
+                                        }

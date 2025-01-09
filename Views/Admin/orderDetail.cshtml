@@ -1,14 +1,14 @@
 ﻿@{
-    ViewData["Title"] = "Chi tiet don hang";
+    ViewData["Title"] = "Chi tiết đơn hàng";
     Layout = "_LayoutAdmin";
 }
 
-@section CssAdmin{
+@section CssAdmin {
     <link rel="stylesheet" href="~/assets/css/admin/styleOrderDetail.css" />
 }
 
 <body class="dark-theme">
-   
+
     <div id="main-content">
         <div class="main-container">
             <div class="header">
@@ -19,57 +19,26 @@
                     <div class="wg-box">
                         <div class="table-order">
                             <ul class="flex-column">
-                                <li class="product-item">
-                                    <img src="/assets/pic/highlights_pen.avif" />
-                                    <div class="items-center">
-                                        <div class="name">
-                                            <div class="text-tiny">Product name</div>
-                                            <a href="#">Bút highlights</a>
+                                @foreach (var product in Model.Products)
+                                {
+                                    <li class="product-item">
+                                        <img src="@Url.Content("~/assets/img_laptop/" + product.HinhAnh)" alt="@product.TenSp" />
+                                        <div class="items-center">
+                                            <div class="name">
+                                                <div class="text-tiny">Tên sản phẩm</div>
+                                                <a href="#">@product.TenSp</a>
+                                            </div>
+                                            <div class="name">
+                                                <div class="text-tiny">Số lượng</div>
+                                                <a href="#">@product.SoLuong</a>
+                                            </div>
+                                            <div class="name">
+                                                <div class="text-tiny">Giá</div>
+                                                <a href="#">@String.Format("{0:#,0}đ", product.DonGia)</a>
+                                            </div>
                                         </div>
-                                        <div class="name">
-                                            <div class="text-tiny">Số lượng</div>
-                                            <a href="#">1</a>
-                                        </div>
-                                        <div class="name">
-                                            <div class="text-tiny">Giá</div>
-                                            <a href="#">15.000đ</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product-item">
-                                    <img src="/assets/pic/highlights_pen.avif" />
-                                    <div class="items-center">
-                                        <div class="name">
-                                            <div class="text-tiny">Product name</div>
-                                            <a href="#">Bút highlights</a>
-                                        </div>
-                                        <div class="name">
-                                            <div class="text-tiny">Số lượng</div>
-                                            <a href="#">1</a>
-                                        </div>
-                                        <div class="name">
-                                            <div class="text-tiny">Giá</div>
-                                            <a href="#">15.000đ</a>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="product-item">
-                                    <img src="/assets/pic/highlights_pen.avif" />
-                                    <div class="items-center">
-                                        <div class="name">
-                                            <div class="text-tiny">Product name</div>
-                                            <a href="#">Bút highlights</a>
-                                        </div>
-                                        <div class="name">
-                                            <div class="text-tiny">Số lượng</div>
-                                            <a href="#">1</a>
-                                        </div>
-                                        <div class="name">
-                                            <div class="text-tiny">Giá</div>
-                                            <a href="#">15.000đ</a>
-                                        </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -79,51 +48,39 @@
                         <div class="body-title">Thông tin</div>
                         <div class="summary-item">
                             <div class="body-text">ID đơn hàng</div>
-                            <div class="body-title">#192847</div>
-                        </div>
-                        <div class="summary-item">
-                            <div class="body-text">ID khách hàng</div>
-                            <div class="body-title">#192847</div>
+                            <div class="body-title">#@Model.Id</div>
                         </div>
                         <div class="summary-item">
                             <div class="body-text">Tên khách hàng</div>
-                            <div class="body-title">Tùng Đỗ</div>
+                            <div class="body-title">@Model.TenDn</div>
+                        </div>
+                        <div class="summary-item">
+                            <div class="body-text">Số điện thoại</div>
+                            <div class="body-title">@Model.Sdt</div>
                         </div>
                         <div class="summary-item">
                             <div class="body-text">Ngày tạo đơn</div>
-                            <div class="body-title">20 tháng 11 năm 2023</div>
+                            <div class="body-title">@Model.NgayDat?.ToString("dd MMM yyyy")</div>
                         </div>
                         <div class="summary-item">
                             <div class="body-text">Địa chỉ giao hàng</div>
-                            <div class="body-title">
-                                13C chung cư Hiệp Bình Chánh, đường số 23 Phạm Văn Đồng, Thành
-                                phố Thủ Đức
-                            </div>
+                            <div class="body-title">@Model.DiaChiNhan</div>
                         </div>
                         <div class="summary-item">
                             <div class="body-text">Tổng cộng</div>
-                            <div class="tf-color-1">710.000đ</div>
+                            <div class="tf-color-1">@String.Format("{0:#,0}đ", Model.TongTien)</div>
                         </div>
                     </div>
-                    <!-- <div class="wg-box" style="gap: 10px; margin-top: 38px">
-                      <div class="body-title"></div>
-                      <div class="body-text"></div>
-                    </div> -->
-                    <!-- <div class="wg-box" style="gap: 10px">
-                      <div class="body-title">Phương thức thanh toán</div>
-                      <div class="body-text" style="width: 300px">COD</div>
-                    </div> -->
-                    <!-- <div class="wg-box" style="gap: 10px; display: none">
-                      <div class="body-title">Ngày giao hàng dự kiến</div>
-                      <div class="tf-color-2">22 tháng 11 năm 2023</div>
-                      <a class="tf-button" href="#">
-                        <i class="fa-solid fa-truck"></i>
-                        theo dõi đơn hàng
-                      </a>
-                    </div> -->
                 </div>
             </div>
         </div>
+        <!-- Nút thoát -->
+        <div class="exit-button-container" style="text-align: right; margin-right: 30px;">
+            <a href="@Url.Action("listOrder", "Admin")" class="exit-button" style="padding: 10px 20px; background-color: #f44336; color: white; text-decoration: none; border-radius: 5px; font-size: 16px;">
+                Thoát
+            </a>
+        </div>
+
     </div>
 
 </body>

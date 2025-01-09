@@ -1,14 +1,15 @@
-﻿@{
-    ViewData["Title"] = "Danh sach don hang";
+﻿@model IEnumerable<WebBanLapTop.Data.HoaDon>
+
+@{
+    ViewData["Title"] = "Danh sách đơn hàng";
     Layout = "_LayoutAdmin";
 }
 
-@section CssAdmin{
+@section CssAdmin {
     <link rel="stylesheet" href="~/assets/css/admin/styleOrderlist.css" />
 }
 
 <body class="dark-theme">
-  
     <div id="main-content">
         <div class="main-container">
             <div class="header">
@@ -21,30 +22,44 @@
                             <tr>
                                 <th>ID đơn hàng</th>
                                 <th>IDDN</th>
-                                <th>Tên khách hàng</th>
+                                <th>Tên đăng nhập</th>
                                 <th>Số điện thoại</th>
                                 <th>Ngày đặt</th>
                                 <th>Địa chỉ nhận</th>
                                 <th>Tổng tiền</th>
                                 <th>Trạng thái</th>
+                                <th>Thao tác</th>
                             </tr>
                         </thead>
                         <tbody>
-
-                            <tr>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>
-                                    <a class="btn btn-info btn-customize"
-                                       href="#" role="button">Xem chi tiết</a>
-                                </td>
-                            </tr>
-
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var order in Model)
+                                {
+                                    <tr>
+                                        <td>@order.Id</td>
+                                        <td>@order.Iddn</td>
+                                        <td>@order.TenDn</td>
+                                        <td>@order.Sdt</td>
+                                        <td>@order.NgayDat?.ToString("dd/MM/yyyy")</td>
+                                        <td>@order.DiaChiNhan</td>
+                                        <td>@order.TongTien?.ToString("N0") đ</td>
+                                        <td>@(order.TrangThai == true ? "Đã xử lý" : "Chưa xử lý")</td>
+                                        <td>
+                                            <a class="btn btn-info btn-customize"
+                                               href="@Url.Action("orderDetail", "Admin", new { id = order.Id })" role="button">
+                                                Xem chi tiết
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td colspan="9" class="text-center">Không có đơn hàng nào</td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
