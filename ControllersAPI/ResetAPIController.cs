@@ -13,6 +13,8 @@ namespace WebBanLapTop.ControllersAPI
         {
             db = context;
         }
+
+        // API reset mật khẩu
         [HttpPost("reset-password/{userId}")]
         public IActionResult ResetPassword(int userId, [FromBody] string newPassword)
         {
@@ -21,22 +23,14 @@ namespace WebBanLapTop.ControllersAPI
             {
                 return Unauthorized("Bạn không có quyền thực hiện hành động này.");
             }
-            // 2. Liệt kê danh sách id  người dùng
-            var users = db.Users.Select(u => new
-            {
-                u.Iddn,
-               
-            }).ToList();
 
-            // 3. Xác thực giá trị của mật khẩu
+            // 2. Xác thực giá trị của mật khẩu
             if (newPassword != "0" && newPassword != "1")
             {
                 return BadRequest("Mật khẩu mới phải là '0' hoặc '1'.");
             }
 
-            return Ok(users);
-
-            // 4. Tìm người dùng theo userId
+            // 3. Tìm người dùng theo userId
             var user = db.Users.FirstOrDefault(u => u.Iddn == userId);
             if (user == null)
             {
@@ -55,6 +49,26 @@ namespace WebBanLapTop.ControllersAPI
                 Message = $"Mật khẩu của người dùng {user.TenDn} đã được reset.",
                 NewPassword = user.MatkhauDn
             });
+        }
+
+        // API để liệt kê danh sách người dùng
+        [HttpGet("users")]
+        public IActionResult GetUsers()
+        {
+            // Kiểm tra quyền admin
+            if (!IsAdmin())
+            {
+                return Unauthorized("Bạn không có quyền truy cập.");
+            }
+
+            // Truy vấn danh sách người dùng
+            var users = db.Users.Select(u => new
+            {
+                u.Iddn,
+                u.TenDn
+            }).ToList();
+
+            return Ok(users);
         }
 
         // Phương thức kiểm tra quyền admin
