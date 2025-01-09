@@ -21,14 +21,22 @@ namespace WebBanLapTop.ControllersAPI
             {
                 return Unauthorized("Bạn không có quyền thực hiện hành động này.");
             }
+            // 2. Liệt kê danh sách id  người dùng
+            var users = db.Users.Select(u => new
+            {
+                u.Iddn,
+               
+            }).ToList();
 
-            // 2. Xác thực giá trị của mật khẩu
+            // 3. Xác thực giá trị của mật khẩu
             if (newPassword != "0" && newPassword != "1")
             {
                 return BadRequest("Mật khẩu mới phải là '0' hoặc '1'.");
             }
 
-            // 3. Tìm người dùng theo userId
+            return Ok(users);
+
+            // 4. Tìm người dùng theo userId
             var user = db.Users.FirstOrDefault(u => u.Iddn == userId);
             if (user == null)
             {
