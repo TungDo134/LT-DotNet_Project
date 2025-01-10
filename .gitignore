@@ -65,8 +65,7 @@ artifacts/
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
 
-# Local configuration file
-appsettings.*.json
+
 
 # StyleCop
 StyleCopReport.xml
@@ -399,3 +398,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+
+/appsettings.json

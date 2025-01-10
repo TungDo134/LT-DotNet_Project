@@ -1,0 +1,62 @@
+﻿@{
+    ViewData["Title"] = "Vận chuyển";
+    Layout = "_LayoutIndex";
+}
+
+<main class="checkout-page">
+    <div class="container">
+        <!-- Search bar -->
+        <div class="checkout-container py-3">
+            <div class="search-bar d-none d-md-flex">
+                <input type="text"
+                       placeholder="Tìm kiếm sản phẩm..."
+                       class="search-bar__input form-control" />
+                <button class="search-bar__submit btn btn-primary ms-2">
+                    <img src="./assets/icons/search.svg" alt="Tìm kiếm" class="search-bar__icon icon" />
+                </button>
+            </div>
+        </div>
+
+        <!-- Breadcrumbs -->
+        <div class="checkout-container mb-4">
+            <ul class="breadcrumbs checkout-page__breadcrumbs list-unstyled d-flex align-items-center">
+                <li class="me-2">
+                    <a href="./" class="breadcrumbs__link text-decoration-none">
+                        Trang Chủ
+                    </a>
+                </li>
+                <li class="me-2">
+                    <a href="./checkout.html" class="breadcrumbs__link text-decoration-none">
+                        Giỏ hàng
+                    </a>
+                </li>
+                <li class="me-2">
+                    <a href="#!" class="breadcrumbs__link text-decoration-none">
+                        Thanh toán
+                    </a>
+                </li>
+                <li>
+                    <span class="breadcrumbs__link breadcrumbs__link--current fw-bold">
+                        Đặt hàng thành công
+                    </span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Checkout content -->
+        <div class="checkout-container text-center mt-5">
+            <div class="row gy-xl-3 justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="success-box p-5 rounded shadow-sm" ">
+                        <h1 class="text-success display-4 mb-4" style="align-content:center;font-size:25px;padding-left:500px;padding-top:50px;">🎉 Đặt hàng thành công!</h1>
+                        <p class="fs-4 fw-light" style="align-content:center;font-size:25px;padding-left:150px">
+                            Cảm ơn bạn đã mua sắm tại cửa hàng của chúng tôi. Đơn hàng của bạn đang được xử lý.
+                        </p>
+                        <img src="/assets/img/avatar/thank.png" alt="Cảm ơn" style="width:150px;height:auto;margin-left:600px;margin-top:50px;"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>

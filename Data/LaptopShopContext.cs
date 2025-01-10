@@ -119,7 +119,7 @@ public partial class LaptopShopContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("ID");
             entity.Property(e => e.DiaChiNhan)
-                .HasMaxLength(30)
+                .HasMaxLength(300)
                 .HasColumnName("diaChiNhan");
             entity.Property(e => e.Iddn).HasColumnName("IDDN");
             entity.Property(e => e.NgayDat)

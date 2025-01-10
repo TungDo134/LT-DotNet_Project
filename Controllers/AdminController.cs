@@ -101,17 +101,47 @@ namespace WebBanLapTop.Controllers
         }
 
 
-        // ds don hang
-        public IActionResult listOrder()
+        // Lấy danh sách đơn hàng
+        public async Task<IActionResult> ListOrder()
         {
-            return View();
+            var client = _httpClientFactory.CreateClient();
+
+            // Gọi API để lấy danh sách đơn hàng
+            var response = await client.GetAsync("https://localhost:7258/api/OrderAPI");
+            IEnumerable<Hoadon> orders = null;
+
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                orders = JsonConvert.DeserializeObject<IEnumerable<Hoadon>>(jsonResponse);
+            }
+            else
+            {
+                ViewBag.ErrorMessage = $"Không thể tải danh sách đơn hàng. Mã lỗi: {response.StatusCode}";
+                orders = new List<Hoadon>(); // Trả về danh sách rỗng nếu không thành công
+            }
+
+            return View(orders);
+        }
+        //chi tiet hoa don
+        public async Task<IActionResult> OrderDetail(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7258/api/OrderAPI/detail/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error", new { Message = "Không tìm thấy đơn hàng" });
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            // Sử dụng JsonSerializer để giải mã JSON vào đối tượng OrderDetailVM
+            var orderDetail = JsonConvert.DeserializeObject<OrderDetailVM>(jsonResponse);
+
+            return View(orderDetail);
         }
 
-        // ctdh
-        public IActionResult orderDetail()
-        {
-            return View();
-        }
 
         // ds ng dung
         public IActionResult listUser()

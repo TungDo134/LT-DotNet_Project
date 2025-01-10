@@ -154,9 +154,10 @@
                             <span>Tổng tiền</span>
                             <span>@Model.Sum(p => p.totalPrice).ToString("#,# VND")</span>
                         </div>
-                        <a href="./shipping.html" class="cart-info__next-btn btn btn--primary btn--rounded">
+                        <a href="@Url.Action("Checkout", "Checkout")" class="cart-info__next-btn btn btn--primary btn--rounded">
                             Tiếp tục thanh toán
                         </a>
+
                     </div>
                     <div class="cart-info">
                         <a href="#!">

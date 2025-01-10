@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿
+using Microsoft.AspNetCore.Mvc;
 using WebBanLapTop.Data;
 using WebBanLapTop.ViewModels;
 using System.Linq;
@@ -76,8 +77,6 @@ namespace WebBanLapTop.Controllers
             ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
-
-
         [HttpPost]
         public async Task<IActionResult> SignIn(LoginVM model, String? ReturnUrl)
         {
@@ -91,16 +90,20 @@ namespace WebBanLapTop.Controllers
                 }
                 else
                 {
-                    // lưu thông tin ng dùng để xác thực và phân quyền 
+
+                    // Tạo claims để xác thực và phân quyền
                     var claims = new List<Claim>
-                    {
-                        new Claim(ClaimTypes.Name, customers.TenDn??""),
-                        new Claim(ClaimTypes.Email, customers.Email??""),
-                        new Claim("MatKhau", customers.MatkhauDn),
-                        new Claim(ClaimTypes.MobilePhone, customers.Sdt),
-                        new Claim (ClaimTypes.StreetAddress,customers.DiaChi),
-                        new Claim(ClaimTypes.Role, (bool)customers.Quyen ? "Admin" : "User"),
-                    };
+
+            {
+                new Claim(ClaimTypes.NameIdentifier, customers.Iddn.ToString()), // Lưu userId vào claim
+                new Claim(ClaimTypes.Name, customers.TenDn ?? ""),
+                new Claim(ClaimTypes.Email, customers.Email ?? ""),
+                new Claim("MatKhau", customers.MatkhauDn),
+                new Claim(ClaimTypes.MobilePhone, customers.Sdt),
+                new Claim (ClaimTypes.StreetAddress,customers.DiaChi),
+                new Claim(ClaimTypes.Role, (bool)customers.Quyen ? "Admin" : "User"),
+            };
+
 
                     var claimsIndetity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     var claimsPrinciple = new ClaimsPrincipal(claimsIndetity);
@@ -109,21 +112,19 @@ namespace WebBanLapTop.Controllers
 
                     if (Url.IsLocalUrl(ReturnUrl))
                     {
-                        // về url mà cần đăng nhập trước đó
+                        // Về url mà cần đăng nhập trước đó
                         return Redirect(ReturnUrl);
                     }
                     else
                     {
-                        // về trang chủ
+                        // Về trang chủ
                         return RedirectToAction("Index", "Home");
-
                     }
                 }
-
-
             }
             return View();
         }
+
 
         [Authorize]
         public IActionResult Profile()
