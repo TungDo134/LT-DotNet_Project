@@ -1,88 +1,300 @@
-﻿@model WebBanLapTop.ViewModels.RegisterVM
-
-
-    <div class="auth__content-inner">
-        <h1 class="auth__heading">Sign Up</h1>
-        <form asp-action="Register" asp-controller="Account" method="post" class="form auth__form">
-            <!-- Hiển thị lỗi chung của model -->
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <!-- Username -->
-            <div class="form__group">
-                <div class="form__text-input">
-                    <input asp-for="TenDn" class="form__input" placeholder="Username" />
-                </div>
-                <span asp-validation-for="TenDn" class="form__error text-danger"></span>
-            </div>
-
-            <!-- Email -->
-            <div class="form__group">
-                <div class="form__text-input">
-                    <input asp-for="Email" class="form__input" placeholder="Email" />
-                </div>
-                <span asp-validation-for="Email" class="form__error text-danger"></span>
-            </div>
-
-            <!-- Phone Number -->
-            <div class="form__group">
-                <div class="form__text-input">
-                    <input asp-for="Sdt" class="form__input" placeholder="Phone Number" />
-                </div>
-                <span asp-validation-for="Sdt" class="form__error text-danger"></span>
-            </div>
-
-            <!-- Password -->
-            <div class="form__group">
-                <div class="form__text-input">
-                    <input asp-for="MatkhauDn" type="password" class="form__input" placeholder="Password" value="@Model?.MatkhauDn" />
-                    <img src="./assets/icons/lock.svg" alt="" class="form__input-icon" />
-                    <img src="./assets/icons/form-error.svg" alt="" class="form__input-icon-error" />
-                </div>
-                <span asp-validation-for="MatkhauDn" class="form__error text-danger"></span>
-            </div>
-            <!-- Confirm Password -->
-            <div class="form__group">
-                <div class="form__text-input">
-                    <input asp-for="ConfirmPassword" type="password" class="form__input" placeholder="Confirm Password" />
-                </div>
-                <span asp-validation-for="ConfirmPassword" class="form__error text-danger"></span>
-            </div>
-            <!-- Submit Button -->
-            <div class="form__group auth__btn-group">
-                <button type="submit" class="btn btn--primary auth__btn form__submit-btn">Sign Up</button>
-            </div>
-        </form>
-
-        <p class="auth__text">
-            You have an account yet?
-            <a asp-action="SignIn" asp-controller="Account" class="auth__link auth__text-link">Sign In</a>
-        </p>
-    </div>
-
-@section Scripts {
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery-validation-unobtrusive@4.0.0/jquery.validate.unobtrusive.min.js"></script>
+﻿@{
+    Layout = null;
 }
-<style>
-    .text-danger {
-        color: red;
-        font-size: 13px;
-        margin-top: 4px;
-    }
 
-    .form__input {
-        margin-bottom: 0; 
-    }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up | Grocery Mart</title>
 
-    .form__group {
-        margin-bottom: 16px;
-    }
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="76x76" href="~/assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/favicon/favicon-16x16.png" />
+    <link rel="manifest" href="~/assets/favicon/site.webmanifest" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
 
-    .form__error {
-        display: block; 
-        margin-top: 4px;
-    }
+    <!-- Fonts -->
+    <link rel="stylesheet" href="~/assets/fonts/stylesheet.css" />
 
-</style>
+    <!-- Styles -->
+    <link rel="stylesheet" href="~/assets/css/main.css" />
 
+</head>
+<body>
+    <main class="auth">
+        <!-- Auth intro -->
+        <div class="auth__intro">
+            <a href="./" class="logo auth__intro-logo d-none d-md-flex">
+                <img src="~/assets/icons/logo.svg" alt="grocerymart" class="logo__img" />
+                <h1 class="logo__title">grocerymart</h1>
+            </a>
+            <img src="~/assets/img/auth/intro.svg" alt="" class="auth__intro-img" />
+            <p class="auth__intro-text">
+                The best of luxury brand values, high quality products, and innovative services
+            </p>
+            <button class="auth__intro-next d-none d-md-flex js-toggle" toggle-target="#auth-content">
+                <img src="~/assets/img/auth/intro-arrow.svg" alt="" />
+            </button>
+        </div>
+
+        <!-- Auth content -->
+        <div id="auth-content" class="auth__content hide">
+            <div class="auth__content-inner">
+                <a href="./" class="logo">
+                    <img src="~/assets/icons/logo.svg" alt="grocerymart" class="logo__img" />
+                    <h1 class="logo__title">grocerymart</h1>
+                </a>
+                <h1 class="auth__heading">Sign Up</h1>
+                <form id="registerForm">
+                    <!-- Username -->
+                    <div class="form__group">
+                        <div class="form__text-input">
+                            <input type="text" name="TenDn" class="form-control" id="userName"
+                                   placeholder="Enter your username"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkUserName" style="display: block; color: red; font-size: 0.9em; margin-top: 2px;"></small>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form__group">
+                        <div class="form__text-input">
+                            <input type="email" name="Email" class="form-control" id="email"
+                                   placeholder="Enter your email"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkEmail" style="display: block; color: red; font-size: 0.9em; margin-top: 2px;"></small>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="form__group">
+                        <div class="form__text-input">
+                            <input type="text" name="Sdt" class="form-control" id="phone"
+                                   placeholder="Enter your phone number"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkPhone" style="display: block; color: red; font-size: 0.9em; margin-top: 2px;"></small>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form__group">
+                        <div class="form__text-input">
+                            <input type="password" name="MatkhauDn" class="form-control" id="password"
+                                   placeholder="Enter your password"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkPassword" style="display: block; color: red; font-size: 0.9em;"></small>
+                        <img src="./assets/icons/lock.svg" alt="" class="form__input-icon" />
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="form__group" style="margin-top:15px;">
+                        <div class="form__text-input">
+                            <input type="password" class="form-control" id="confirmPassword"
+                                   placeholder="Confirm your password"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkConfirmPassword" style="display: block; color: red; font-size: 0.9em; margin-top: 2px;"></small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form__group auth__btn-group">
+                        <button type="button" id="registerButton" class="btn btn--primary auth__btn form__submit-btn"
+                                disabled
+                                style="padding: 10px 20px; font-size: 1em;">
+                            Đăng ký
+                        </button>
+                    </div>
+                </form>
+
+                <p class="auth__text" style="margin-top:10px;">
+                    Bạn đã có tài khoản?
+                    <a href="/Account/SignIn" class="auth__link auth__text-link">Đăng nhập</a>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Hàm kiểm tra tính hợp lệ của tất cả các trường
+            function checkValidity() {
+                const userNameValid = $('#checkUserName').hasClass('text-warning');
+                const emailValid = $('#checkEmail').hasClass('text-warning');
+                const phoneValid = $('#checkPhone').hasClass('text-warning');
+                const passwordValid = $('#checkPassword').hasClass('text-warning');
+                const confirmPasswordValid = $('#checkConfirmPassword').hasClass('text-warning') && $('#confirmPassword').val().trim() === $('#password').val().trim();
+
+                const allFieldsValid = userNameValid && emailValid && phoneValid && passwordValid && confirmPasswordValid;
+
+                if (allFieldsValid) {
+                    $('#registerButton').removeAttr('disabled');  // Kích hoạt nút
+                } else {
+                    $('#registerButton').attr('disabled', true);  // Vô hiệu hóa nút
+                }
+            }
+
+            // Kiểm tra tính hợp lệ của trường khi có sự kiện nhập liệu hoặc mất focus
+            $('input').on('blur input', function () {
+                const value = $(this).val().trim();
+                if (value === '') {
+                    $(this).next('small').attr('class', 'text-danger').text('Trường này không được để trống.');
+                } else {
+                    $(this).next('small').attr('class', 'form-text').text('');
+                }
+                checkValidity();
+            });
+
+            // Kiểm tra khi trường bị để trống và hiển thị thông báo lỗi
+            $('input').blur(function () {
+                if ($(this).val() === '') {
+                    $(this).next('small').attr('class', 'text-danger').text('Trường này không được để trống.');
+                }
+            });
+
+            // Kiểm tra username qua AJAX
+            $('#userName').blur(function () {
+                var userName = $('#userName').val();
+                $.ajax({
+                    url: '/Account/checkUserName',
+                    type: "GET",
+                    contentType: 'text/plain; charset=utf-8',
+                    data: { userName: userName },
+                    success: function (response) {
+                        if (response === "Tên người dùng đã tồn tại") {
+                            $('#checkUserName').attr('class', 'text-danger');
+                        } else {
+                            $('#checkUserName').attr('class', 'text-warning');
+                        }
+                        $('#checkUserName').text(response);
+                        checkValidity();
+                    },
+                    error: function () {
+                        $('#checkUserName').attr('class', 'text-danger');
+                        $('#checkUserName').text('Error while checking username.');
+                        checkValidity();
+                    }
+                });
+            });
+
+            // Kiểm tra email qua AJAX
+            $('#email').blur(function () {
+                var email = $('#email').val();
+                $.ajax({
+                    url: '/Account/checkEmail',
+                    type: "GET",
+                    contentType: 'text/plain; charset=utf-8',
+                    data: { email: email },
+                    success: function (response) {
+                        if (response === "Email đã tồn tại") {
+                            $('#checkEmail').attr('class', 'text-danger');
+                        } else {
+                            $('#checkEmail').attr('class', 'text-warning');
+                        }
+                        $('#checkEmail').text(response);
+                        checkValidity();
+                    },
+                    error: function () {
+                        $('#checkEmail').attr('class', 'text-danger');
+                        $('#checkEmail').text('Error while checking email.');
+                        checkValidity();
+                    }
+                });
+            });
+
+            // Kiểm tra số điện thoại qua AJAX
+            $('#phone').blur(function () {
+                var phone = $('#phone').val();
+                $.ajax({
+                    url: '/Account/checkPhone',
+                    type: 'GET',
+                    contentType: 'text/plain; charset=utf-8',
+                    data: { phone: phone },
+                    success: function (response) {
+                        if (response.includes("không hợp lệ")) {
+                            $('#checkPhone').attr('class', 'text-danger');
+                        } else {
+                            $('#checkPhone').attr('class', 'text-warning');
+                        }
+                        $('#checkPhone').text(response);
+                        checkValidity();
+                    },
+                    error: function () {
+                        $('#checkPhone').attr('class', 'text-danger');
+                        $('#checkPhone').text('Error while checking phone number.');
+                        checkValidity();
+                    }
+                });
+            });
+
+            // Kiểm tra mật khẩu qua AJAX
+            $('#password').blur(function () {
+                var password = $('#password').val();
+                $.ajax({
+                    url: '/Account/checkPassword',
+                    type: 'GET',
+                    contentType: 'text/plain; charset=utf-8',
+                    data: { password: password },
+                    success: function (response) {
+                        if (response.includes("không hợp lệ")) {
+                            $('#checkPassword').attr('class', 'text-danger');
+                        } else {
+                            $('#checkPassword').attr('class', 'text-warning');
+                        }
+                        $('#checkPassword').text(response);
+                        checkValidity();
+                    },
+                    error: function () {
+                        $('#checkPassword').attr('class', 'text-danger');
+                        $('#checkPassword').text('Error while checking password.');
+                        checkValidity();
+                    }
+                });
+            });
+
+            // Kiểm tra Confirm Password
+            $('#confirmPassword').blur(function () {
+                var password = $('#password').val();
+                var confirmPassword = $('#confirmPassword').val();
+                if (password !== confirmPassword) {
+                    $('#checkConfirmPassword').attr('class', 'text-danger');
+                    $('#checkConfirmPassword').text('Mật khẩu xác nhận phải khớp với mật khẩu.');
+                } else {
+                    $('#checkConfirmPassword').attr('class', 'text-warning');
+                    $('#checkConfirmPassword').text('');
+                }
+                checkValidity();
+            });
+            // Xử lý nút đăng ký
+            $('#registerButton').click(function () {
+                const formData = {
+                    TenDn: $('#userName').val(),
+                    Email: $('#email').val(),
+                    Sdt: $('#phone').val(),
+                    MatkhauDn: $('#password').val()
+                };
+
+                $.ajax({
+                    url: '/Account/Register',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function () {
+                        window.location.href = '/Account/SignIn';
+                    },
+                    error: function () {
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+
+        window.dispatchEvent(new Event("template-loaded"));
+    </script>
+</body>
+</html>

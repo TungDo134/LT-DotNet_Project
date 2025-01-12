@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebBanLapTop.Data;
 using WebBanLapTop.ViewModels;
 using System.Linq;
@@ -29,46 +28,105 @@ namespace WebBanLapTop.Controllers
         {
             return View(new RegisterVM());
         }
-
-        // Xử lý đăng ký
-        [HttpPost]
-        public IActionResult Register(RegisterVM model)
+        [HttpGet]
+        public ContentResult checkUserName(string userName)
         {
-            if (ModelState.IsValid)
+            if (string.IsNullOrEmpty(userName))
             {
-                // Kiểm tra nếu email hoặc tên đăng nhập đã tồn tại (gộp truy vấn)
-                var existingUser = db.Users.FirstOrDefault(u => u.Email == model.Email || u.TenDn == model.TenDn);
-
-                if (existingUser != null)
-                {
-                    if (existingUser.Email == model.Email)
-                        ModelState.AddModelError("Email", "This email is already registered.");
-                    if (existingUser.TenDn == model.TenDn)
-                        ModelState.AddModelError("TenDn", "This username is already taken.");
-                }
-
-                // Xác nhận lại ModelState
-                if (ModelState.IsValid)
-                {
-                    // Lưu thông tin người dùng vào cơ sở dữ liệu
-                    var user = new User
-                    {
-                        TenDn = model.TenDn,
-                        Email = model.Email,
-                        Sdt = model.Sdt,
-                        MatkhauDn = MaHoaMK.ToSHA1(model.MatkhauDn) // Mã hóa mật khẩu
-                    };
-
-                    db.Users.Add(user);
-                    db.SaveChanges();
-
-                    // Điều hướng về trang đăng nhập
-                    return RedirectToAction("SignIn", "Account");
-                }
+                return Content("Tên người dùng không được để trống.");
             }
 
-            // Trả về view với thông báo lỗi
-            return View(model);
+            var user = db.Users.FirstOrDefault(u => u.TenDn == userName);
+            if (user != null)
+            {
+                return Content("Tên người dùng đã tồn tại");
+            }
+
+            return Content("");
+        }
+
+        [HttpGet]
+        public ContentResult checkEmail(string email)
+        {
+            // Kiểm tra email không được để trống
+            if (string.IsNullOrEmpty(email))
+            {
+                return Content("Email không được để trống.");
+            }
+
+            // Kiểm tra định dạng email hợp lệ
+            var emailRegex = new System.Text.RegularExpressions.Regex(@"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$");
+            if (!emailRegex.IsMatch(email))
+            {
+                return Content("Định dạng email không hợp lệ.");
+            }
+
+            // Kiểm tra email đã tồn tại trong cơ sở dữ liệu chưa
+            var user = db.Users.FirstOrDefault(u => u.Email == email);
+            if (user != null)
+            {
+                return Content("Email đã tồn tại");
+            }
+
+            return Content("");
+        }
+
+        [HttpGet]
+        public ContentResult checkPhone(string phone)
+        {
+            if (string.IsNullOrEmpty(phone))
+            {
+                return Content("Số điện thoại không được để trống.");
+            }
+
+            var phonePattern = new System.Text.RegularExpressions.Regex(@"^0\d{9}$");
+            if (!phonePattern.IsMatch(phone))
+            {
+                return Content("Số điện thoại không hợp lệ (Phải bắt đầu bằng 0 và có 10 chữ số).");
+            }
+
+            return Content("");
+        }
+
+        [HttpGet]
+        public ContentResult checkPassword(string password)
+        {
+            if (string.IsNullOrEmpty(password))
+            {
+                return Content("Mật khẩu không được để trống.");
+            }
+
+            var passwordPattern = new System.Text.RegularExpressions.Regex(@"^(?=.*[!@#$%^&*])(?=.{6,})");
+            if (!passwordPattern.IsMatch(password))
+            {
+                return Content("Mật khẩu phải có ít nhất 6 ký tự và chứa ký tự đặc biệt.");
+            }
+
+            return Content("");
+        }
+
+        [HttpPost]
+        public IActionResult Register([FromBody] RegisterVM model)
+        {
+            Console.WriteLine($"TenDn: {model.TenDn}, Email: {model.Email}, Sdt: {model.Sdt}, MatkhauDn: {model.MatkhauDn}");
+
+            var maxId = db.Users.Max(u => u.Iddn);
+            int newId = maxId + 1;
+
+            var user = new User
+            {
+                Iddn = newId,
+                TenDn = model.TenDn,
+                Email = model.Email,
+                Sdt = model.Sdt,
+                MatkhauDn = MaHoaMK.ToSHA1(model.MatkhauDn), // Mã hóa mật khẩu
+                Quyen = false
+            };
+
+            db.Users.Add(user);
+            db.SaveChanges();
+
+            return RedirectToAction("SignIn", "Account");
         }
 
         [HttpGet]
