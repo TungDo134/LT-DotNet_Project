@@ -201,7 +201,7 @@ namespace WebBanLapTop.Controllers
             var phone = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
             ViewBag.Phone = string.IsNullOrEmpty(phone) ? "" : phone;
 
-            var id= User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            var id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
 
             // lấy ra danh sách lịch sử mua hàng của người dùng
             var client = _httpClientFactory.CreateClient();
@@ -218,14 +218,81 @@ namespace WebBanLapTop.Controllers
             var orders = JsonConvert.DeserializeObject<List<Hoadon>>(jsonResponse);
 
             return View(orders);
-            
+
         }
+
+        [Authorize]
+        public IActionResult EditProfile()
+        {
+
+            var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+            ViewBag.Email = string.IsNullOrEmpty(email) ? "" : email;
+
+            var address = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.StreetAddress)?.Value;
+            ViewBag.Address = string.IsNullOrEmpty(address) ? "" : address;
+
+            var phone = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
+            ViewBag.Phone = string.IsNullOrEmpty(phone) ? "" : phone;
+
+            var id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            ViewBag.Id = string.IsNullOrEmpty(id) ? "" : id;
+
+            return View();
+
+        }
+
+
+        public async Task<IActionResult> UpdateProfile(int id, String fullname, String email, String phone, String address)
+        {
+
+            
+            var user = db.Users.Find(id);
+            if (user == null)
+            {
+                return NotFound(); // Trả về lỗi nếu không tìm thấy User
+            }
+
+            // Cập nhật các thuộc tính
+            user.TenDn = fullname;
+            user.Email = email;
+            user.Sdt = phone;
+            user.DiaChi = address;
+
+            // Lưu thay đổi
+            db.Users.Update(user);
+            db.SaveChanges();
+
+            // Tạo claims để xác thực và phân quyền
+            var claims = new List<Claim>
+
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Iddn.ToString()), // Lưu userId vào claim
+                new Claim(ClaimTypes.Name, user.TenDn ?? ""),
+                new Claim(ClaimTypes.Email, user.Email ?? ""),
+                new Claim("MatKhau", user.MatkhauDn),
+                new Claim(ClaimTypes.MobilePhone, user.Sdt),
+                new Claim (ClaimTypes.StreetAddress,user.DiaChi),
+                new Claim(ClaimTypes.Role, (bool)user.Quyen ? "Admin" : "User"),
+            };
+
+
+            var claimsIndetity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsPrinciple = new ClaimsPrincipal(claimsIndetity);
+
+            await HttpContext.SignOutAsync();
+            await HttpContext.SignInAsync(claimsPrinciple);
+
+
+            return RedirectToAction("Profile");
+
+        }
+
+
 
 
         [Authorize]
         public async Task<IActionResult> GetOrderDetail(int id)
         {
-
 
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync($"https://localhost:7258/api/OrderAPI/detail/{id}");

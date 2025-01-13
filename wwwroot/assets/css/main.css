@@ -4581,7 +4581,7 @@ html {
   line-height: 146.667%;
   transition: background-color 0.2s;
 }
-.profile-menu__link:hover {
+.profile-menu__link.profile-menu {
   background: var(--profile-sidebar-link-hover);
 }
 .profile-menu__icon {
