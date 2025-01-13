@@ -89,16 +89,171 @@ namespace WebBanLapTop.Controllers
 
 
         // ds the loai
-        public IActionResult listCategory()
+        public IActionResult ListCategory()
         {
-            return View();
+            var categories = db.Danhmucsanphams
+                .Select(c => new CateVM
+                {
+                    Id = c.MaDanhMuc,
+                    Name = c.TenDanhMuc,
+                    Hinh = c.HinhDanhMuc
+                })
+                .ToList();
+
+            return View(categories); // Trả về view ListCategory với danh sách danh mục
         }
 
+
+
         // them the loai
-        public IActionResult addCategory()
+
+        public IActionResult ShowAddCate()
         {
+
             return View();
+
         }
+        public IActionResult AddCate(String name, String cateImg, String cateID)
+        {
+            // Lấy giá trị từ form
+            String _name = name;
+            String _hinh = cateImg;
+            String _id = cateID;
+            int CateId = 0;
+
+            // Kiểm tra nếu cateID không rỗng thì parse sang int
+            if (_id != null)
+            {
+                CateId = Int32.Parse(_id);
+            }
+
+            // Kiểm tra nếu danh mục đã tồn tại trong cơ sở dữ liệu (theo tên hoặc ID)
+            var existingCategory = db.Danhmucsanphams.FirstOrDefault(c => c.TenDanhMuc == _name || c.MaDanhMuc == CateId);
+
+            if (existingCategory != null)
+            {
+                // Nếu danh mục đã tồn tại, trả về thông báo lỗi
+                ViewBag.ErrorMessage = "Danh mục này đã tồn tại!";
+                return View();  // Trả về lại view AddCate và hiển thị thông báo lỗi
+            }
+
+            // Nếu danh mục chưa tồn tại, tiến hành thêm mới
+            Danhmucsanpham data = new Danhmucsanpham
+            {
+                MaDanhMuc = CateId,
+                TenDanhMuc = _name,
+                HinhDanhMuc = _hinh ?? ""
+            };
+
+            db.Danhmucsanphams.Add(data);
+            db.SaveChanges();
+
+            // Sau khi thêm xong, chuyển về danh sách danh mục
+            return RedirectToAction("ListCategory");
+        }
+
+
+
+        //xoa
+        public IActionResult DeleteCate(int id)
+        {
+            Danhmucsanpham data = db.Danhmucsanphams.Find(id);
+
+            db.Danhmucsanphams.Remove(data);
+            db.SaveChanges();
+
+
+            return RedirectToAction("ListCategory");
+        }
+
+        //edit cate
+        public IActionResult ShowEditCate(int id)
+        {
+            var category = db.Danhmucsanphams
+                .Where(c => c.MaDanhMuc == id)
+                .Select(c => new CateVM
+                {
+                    Id = c.MaDanhMuc,
+                    Name = c.TenDanhMuc,
+                    Hinh = c.HinhDanhMuc // Chuyển c.Image thành Hinh trong ViewModel
+                })
+                .FirstOrDefault(); // Lấy một đối tượng đơn lẻ
+
+            if (category == null)
+            {
+                return NotFound("Danh mục không tồn tại");
+            }
+
+            return View(category); // Truyền đối tượng category vào view
+        }
+
+
+
+        public IActionResult EditCate(int id)
+        {
+            // Tìm danh mục cần chỉnh sửa theo ID
+            var category = db.Danhmucsanphams
+                .Where(c => c.MaDanhMuc == id)
+                .Select(c => new CateVM
+                {
+                    Id = c.MaDanhMuc,
+                    Name = c.TenDanhMuc,
+                    Hinh = c.HinhDanhMuc
+                })
+                .FirstOrDefault();
+
+            if (category == null)
+            {
+                return NotFound("Danh mục không tồn tại");
+            }
+
+            // Truyền thông tin danh mục sang View
+            return View(category);
+        }
+
+
+        public IActionResult SaveEditCate(CateVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                // Kiểm tra các lỗi trong ModelState
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
+                {
+                    Console.WriteLine("Error: " + error.ErrorMessage);
+               }
+
+                return View("ShowEditCate", model);  // Trả lại view với thông báo lỗi
+            }
+
+            // Tìm danh mục cần chỉnh sửa
+            var category = db.Danhmucsanphams.Find(model.Id);
+            if (category == null)
+            {
+                return NotFound("Danh mục không tồn tại");
+            }
+
+            category.TenDanhMuc = model.Name;
+
+            if (model.Hinh != null) 
+            {
+                // Lưu ảnh nếu cần (hoặc để null nếu không cần)
+                // category.HinhDanhMuc = UploadFile(model.CateImg); // Tạm thời không xử lý ảnh
+            }
+            else
+            {
+                category.HinhDanhMuc = null; 
+            }
+            db.Danhmucsanphams.Update(category);
+            db.SaveChanges();
+
+            return RedirectToAction("ListCategory");
+        }
+
+
+
+
+
 
 
         // Lấy danh sách đơn hàng
@@ -154,5 +309,12 @@ namespace WebBanLapTop.Controllers
         {
             return View();
         }
+    }
+
+    internal class DanhMucSanPham
+    {
+        internal int MaDanhMuc;
+        internal string TenDanhMuc;
+        internal string HinhDanhMuc;
     }
 }

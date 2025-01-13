@@ -7,6 +7,8 @@ namespace WebBanLapTop.Data;
 
 public partial class LaptopShopContext : DbContext
 {
+    internal object DanhMucSanPhams;
+
     public LaptopShopContext()
     {
     }

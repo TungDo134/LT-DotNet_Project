@@ -1,0 +1,49 @@
+﻿@{
+    ViewData["Title"] = "them danh muc";
+    Layout = "_LayoutAdmin";
+}
+@section CssAdmin {
+    <link rel="stylesheet" href="~/assets/css/admin/styleAddCate.css" />
+}
+<body class="dark-theme">
+    <div id="main-content">
+        <div class="main-container">
+            <div class="header">
+                <h1>Thêm danh mục</h1>
+            </div>
+            <div id="addNewCate-container">
+                <div class="row align-items-center">
+
+                    <form id="form-editCate" method="post" asp-action="AddCate" asp-controller="Admin">
+                        <div class="row">
+                            <span class="msg text-success"></span>
+                            <input hidden="hidden" value="" name="id">
+                            <div class="col">
+                                
+                                <input value="" id="name" name="name" type="text" class="form-control"
+                                       aria-label="First name">
+
+                                <input type="text" id="cateID" name="cateID">
+                                <input value="" id="cateImg" name="cateImg" type="file"
+                                       onchange="loadImg()"
+                                       class="form-control"
+                                       aria-label="Last name">
+                            </div>
+
+                            @*  <div class="col">
+                            <img id="imgCate" style="width: 150px;"
+                            src="/assets/pic/logo.png">
+                            </div> *@
+                        </div>
+                        <button style="margin-top: 1rem" type="submit" class="btn btn-primary btn-sm px-5 py-2">
+                            Cập nhật
+                        </button>
+                        <button style="margin-top: 1rem" type="button" class="btn btn-success btn-sm px-5 py-2">
+                            <a class="text-white text-decoration-none" href="#">Quay lại</a>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
