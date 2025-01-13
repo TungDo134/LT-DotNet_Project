@@ -10,16 +10,20 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using WebBanLapTop.Helpers;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace WebBanLapTop.Controllers
 {
     public class AccountController : Controller
     {
         private readonly LaptopShopContext db;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AccountController(LaptopShopContext context)
+        public AccountController(LaptopShopContext context, IHttpClientFactory httpClientFactory)
         {
             db = context;
+            _httpClientFactory = httpClientFactory;
         }
 
         // Hiển thị trang đăng ký
@@ -185,7 +189,7 @@ namespace WebBanLapTop.Controllers
 
 
         [Authorize]
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
 
             var email = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
@@ -197,7 +201,48 @@ namespace WebBanLapTop.Controllers
             var phone = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.MobilePhone)?.Value;
             ViewBag.Phone = string.IsNullOrEmpty(phone) ? "" : phone;
 
-            return View();
+            var id= User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+
+            // lấy ra danh sách lịch sử mua hàng của người dùng
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7258/api/OrderAPI/orderUserID/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error", new { Message = "Không tìm thấy đơn hàng" });
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            // Sử dụng JsonSerializer để giải mã JSON vào đối tượng OrderDetailVM
+            var orders = JsonConvert.DeserializeObject<List<Hoadon>>(jsonResponse);
+
+            return View(orders);
+            
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> GetOrderDetail(int id)
+        {
+
+
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7258/api/OrderAPI/detail/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error", new { Message = "Không tìm thấy đơn hàng" });
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+
+            // Sử dụng JsonSerializer để giải mã JSON vào đối tượng OrderDetailVM
+            var orderDetail = JsonConvert.DeserializeObject<OrderDetailVM>(jsonResponse);
+
+            return View(orderDetail);
+
+
         }
 
 

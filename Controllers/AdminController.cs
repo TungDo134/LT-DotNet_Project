@@ -123,6 +123,7 @@ namespace WebBanLapTop.Controllers
 
             return View(orders);
         }
+
         //chi tiet hoa don
         public async Task<IActionResult> OrderDetail(int id)
         {
