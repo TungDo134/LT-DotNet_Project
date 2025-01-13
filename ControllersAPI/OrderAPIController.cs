@@ -37,6 +37,31 @@ namespace WebBanLapTop.ControllersAPI
 
             return Ok(orders);  // Trả về kết quả dưới dạng JSON
         }
+
+
+        [HttpGet("orderUserID/{id}")]
+        public IActionResult GetAllOrdersByUserID(int id)
+        {
+            var orders = _context.Hoadons
+                .Where(o=>o.Iddn==id).Select(o => new Hoadon
+                {
+                    Id = o.Id,
+                    Iddn = o.Iddn,
+                    TenDn = o.TenDn,
+                    Sdt = o.Sdt,
+                    NgayDat = o.NgayDat,
+                    DiaChiNhan = o.DiaChiNhan,
+                    TongTien = o.TongTien,
+                    TrangThai = o.TrangThai
+                })
+                .ToList();
+
+            return Ok(orders);  // Trả về kết quả dưới dạng JSON
+        }
+
+
+
+
         [HttpGet("detail/{id}")]
         public IActionResult GetOrderDetail(int id)
         {

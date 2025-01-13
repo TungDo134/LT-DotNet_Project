@@ -1,17 +1,16 @@
-﻿@using System.Security.Claims
+﻿@model IEnumerable<WebBanLapTop.Data.Hoadon>
+@using System.Security.Claims;
+
 @{
     ViewData["Title"] = "Profile";
 }
 
-
+@section Css {
+    <link href="~/assets/css/StyleProfile.css" rel="stylesheet" />
+}
 
 <body>
-    <!-- Header -->
-    <header id="header" class="header"></header>
-    <script>
-        load("#header", "./templates/header-logined.html");
-    </script>
-
+   
     <!-- MAIN -->
     <main class="profile">
         <div class="container">
@@ -41,27 +40,19 @@
                                 <h3 class="profile-menu__title">Manage Account</h3>
                                 <ul class="profile-menu__list">
                                     <li>
-                                        <a href="~/edit-personal-info.html" class="profile-menu__link">
+                                        <a href="#" class="profile-menu__link profile-menu">
                                             <span class="profile-menu__icon">
                                                 <img src="~/assets/icons/profile.svg" alt="" class="icon" />
                                             </span>
-                                            Personal info
+                                            Thông tin tài khoản
                                         </a>
                                     </li>
                                     <li>
-                                        <a href="#!" class="profile-menu__link">
+                                        <a asp-action="EditProfile" asp-controller="Account" class="profile-menu__link">
                                             <span class="profile-menu__icon">
-                                                <img src="~/assets/icons/location.svg" alt="" class="icon" />
+                                                <img src="~/assets/icons/edit.svg" alt="" class="icon" />
                                             </span>
-                                            Addresses
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#!" class="profile-menu__link">
-                                            <span class="profile-menu__icon">
-                                                <img src="~/assets/icons/message-2.svg" alt="" class="icon" />
-                                            </span>
-                                            Communications & privacy
+                                            Chỉnh sửa 
                                         </a>
                                     </li>
                                 </ul>
@@ -75,14 +66,14 @@
 
                                 <!-- Account info -->
                                 <div class="col-12">
-                                    <h2 class="cart-info__heading">Account info</h2>
+                                    <h2 class="cart-info__heading">Thông tin tài khoản</h2>
                                     <p class="cart-info__desc profile__desc">
-                                        Addresses, contact information and password
+                                       Địa chỉ, thông tin liên lạc 
                                     </p>
                                     <div class="row gy-md-2 row-cols-2 row-cols-lg-1">
                                         <!-- Account info 1 -->
                                         <div class="col">
-                                            <a href="./edit-personal-info.html">
+                                            <a href="#">
                                                 <article class="account-info">
                                                     <div class="account-info__icon">
                                                         <img src="~/assets/icons/message.svg" alt="" class="icon" />
@@ -97,7 +88,7 @@
 
                                         <!-- Account info 2 -->
                                         <div class="col">
-                                            <a href="./edit-personal-info.html">
+                                            <a href="#">
                                                 <article class="account-info">
                                                     <div class="account-info__icon">
                                                         <img src="~/assets/icons/calling.svg" alt="" class="icon" />
@@ -112,7 +103,7 @@
 
                                         <!-- Account info 3 -->
                                         <div class="col">
-                                            <a href="./edit-personal-info.html">
+                                            <a href="#">
                                                 <article class="account-info">
                                                     <div class="account-info__icon">
                                                         <img src="~/assets/icons/location.svg"
@@ -120,7 +111,7 @@
                                                              class="icon" />
                                                     </div>
                                                     <div>
-                                                        <h3 class="account-info__title">Add an address</h3>
+                                                        <h3 class="account-info__title">Address</h3>
                                                         <p class="account-info__desc">
                                                             @ViewBag.Address
                                                         </p>
@@ -131,6 +122,56 @@
                                     </div>
                                 </div>
 
+
+                                <!-- Orders -->
+                                <div class="col-12">
+                                    <h2 class="cart-info__heading">Lịch sử mua hàng</h2>
+                                    <p style="font-size:18px" class="cart-info__desc profile__desc">@Model.Count() đơn hàng</p>
+
+                                    <!-- Orders -->
+                                    @foreach(var o in Model)
+                                    {
+                                        <article class="favourite-item">
+
+                                            <div class="show-orders">
+                                                <h3 class="favourite-item__title">
+                                                    Mã đơn hàng
+                                                </h3>
+                                                <h3 class="favourite-item__title">
+                                                  @o.Id
+                                                </h3>
+                                                <h3 class="favourite-item__title">
+                                                    Ngày đặt hàng
+                                                </h3>
+                                                <h3 class="favourite-item__title">
+                                                   @o.NgayDat
+                                                </h3>
+                                                <h3 class="favourite-item__title">
+                                                    Địa chỉ nhận
+                                                </h3>
+                                                <h3 class="favourite-item__title">
+                                                    @o.DiaChiNhan
+                                                </h3>
+                                                <h3 class="favourite-item__price">
+                                                    Tổng tiền
+                                                </h3>
+                                                <div class="favourite-item__price">
+                                                    @o.TongTien.Value.ToString("#,##0")     
+                                                    
+                                                </div>
+                                                <div class="custom-btn">
+                                                    <a asp-controller="Account" asp-action="GetOrderDetail" asp-route-id="@o.Id" style="font-size:18px" class="favourite-item__price">Xem chi tiết</a>
+                                                </div>
+                                            </div>
+                                        </article>
+                                        <div class="separate" style="--margin: 20px"></div>
+                                    }
+                                   
+
+                                   
+
+                                   
+                                </div>
                             </div>
                         </div>
                     </div>

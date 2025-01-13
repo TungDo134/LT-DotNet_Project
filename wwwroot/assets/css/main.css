@@ -3540,7 +3540,7 @@ html {
   }
 }
 .favourite-item__title {
-  font-size: 1.5rem;
+  font-size: 16px;
   font-weight: 500;
   line-height: 146.667%;
 }
@@ -4581,7 +4581,7 @@ html {
   line-height: 146.667%;
   transition: background-color 0.2s;
 }
-.profile-menu__link:hover {
+.profile-menu__link.profile-menu {
   background: var(--profile-sidebar-link-hover);
 }
 .profile-menu__icon {

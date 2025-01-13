@@ -1,0 +1,182 @@
+﻿
+@{
+    ViewData["Title"] = "EditProfile";
+}
+
+@model IEnumerable<WebBanLapTop.Data.Hoadon>
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+@section Css {
+    <link href="~/assets/css/StyleProfile.css" rel="stylesheet" />
+}
+
+<body>
+
+    <!-- MAIN -->
+    <main class="profile">
+        <div class="container">
+            <!-- Search bar -->
+            <div class="profile-container">
+                <div class="search-bar d-none d-md-flex">
+                    <input type="text" name="" id="" placeholder="Search for item" class="search-bar__input" />
+                    <button class="search-bar__submit">
+                        <img src="~/assets/icons/search.svg" alt="" class="search-bar__icon icon" />
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile content -->
+            <div class="profile-container">
+                <div class="row gy-md-3">
+                    <div class="col-3 col-xl-4 col-lg-5 col-md-12">
+                        <aside class="profile__sidebar">
+                            <!-- User -->
+                            <div class="profile-user">
+                                <img src="~/assets/img/avatar.jpg" alt="" class="profile-user__avatar" />
+                                <h1 class="profile-user__name">@Context.User.Identity.Name</h1>
+                            </div>
+
+                            <!-- Menu 1 -->
+                            <div class="profile-menu">
+                                <h3 class="profile-menu__title">Manage Account</h3>
+                                <ul class="profile-menu__list">
+                                    <li>
+                                        <a asp-action="Profile" asp-controller="Account"  class="profile-menu__link" style="margin-top:30px" >
+                                            <span class="profile-menu__icon">
+                                                <img src="~/assets/icons/profile.svg" alt="" class="icon" />
+                                            </span>
+                                            Thông tin tài khoản
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#" class="profile-menu__link profile-menu" style="margin:0">
+                                            <span class="profile-menu__icon">
+                                                <img src="~/assets/icons/edit.svg" alt="" class="icon" />
+                                            </span>
+                                            Chỉnh sửa
+                                        </a>
+                                    </li>
+                                   
+                                </ul>
+                            </div>
+                        </aside>
+                    </div>
+                    <div class="col-9 col-xl-8 col-lg-7 col-md-12">
+                        <div class="cart-info">
+                            <div class="row gy-3">
+
+
+                          <div class="col-12">
+                                    <form asp-action="UpdateProfile" asp-controller="Account" asp-route-id="@ViewBag.Id" class="form form-card">
+                                        <!-- Form row 1 -->
+                                        <div class="form__row">
+                                            
+
+                                            <div class="form__group">
+                                                <label for="full-name" class="form__label form-card__label">
+                                                    Tên khách hàng
+                                                </label>
+                                                <div class="form__text-input">
+                                                    <input type="text"
+                                                           name="fullname"
+                                                           id="fullname"
+                                                           placeholder="Full name"
+                                                           class="form__input"
+                                                           required
+                                                           value="@Context.User.Identity.Name"
+                                                           autofocus />
+                                                    <img src="./assets/icons/form-error.svg"
+                                                         alt=""
+                                                         class="form__input-icon-error" />
+                                                </div>
+                                                <p class="form__error">Please enter your full name</p>
+                                            </div>
+                                            <div class="form__group">
+                                                <label for="email-adress" class="form__label form-card__label">
+                                                    Địa chỉ email
+                                                </label>
+                                                <div class="form__text-input">
+                                                    <input type="text"
+                                                           name="email"
+                                                           id="email"
+                                                           placeholder="Email address"
+                                                           class="form__input"
+                                                           value="@ViewBag.Email"
+                                                           required />
+                                                    <img src="./assets/icons/form-error.svg"
+                                                         alt=""
+                                                         class="form__input-icon-error" />
+                                                </div>
+                                                <p class="form__error">Please enter a valid email address</p>
+                                            </div>
+                                        </div>
+
+                                        <!-- Form row 2 -->
+                                        <div class="form__row">
+                                            <div class="form__group">
+                                                <label for="phone-number" class="form__label form-card__label">
+                                                    Số điện thoại
+                                                </label>
+                                                <div class="form__text-input">
+                                                    <input type="text"
+                                                           name="phone"
+                                                           id="phone"
+                                                           placeholder="Phone Number"
+                                                           class="form__input"
+                                                           value="@ViewBag.Phone"
+                                                           required />
+                                                    <img src="./assets/icons/form-error.svg"
+                                                         alt=""
+                                                         class="form__input-icon-error" />
+                                                </div>
+                                                <p class="form__error">Please enter a valid phone number</p>
+                                            </div>
+                                            <div class="form__group">
+                                                <label for="phone-number" class="form__label form-card__label">
+                                                    Địa chỉ
+                                                </label>
+                                                <div class="form__text-input">
+                                                    <input type="text"
+                                                           name="address"
+                                                           id="address"
+                                                           placeholder="Địa chỉ"
+                                                           class="form__input"
+                                                           value="@ViewBag.Address"
+                                                           required />
+                                                    <img src="./assets/icons/form-error.svg"
+                                                         alt=""
+                                                         class="form__input-icon-error" />
+                                                </div>
+                                                <p class="form__error">Please enter a valid address</p>
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="form-card__bottom">
+                                            <a class="btn btn--text" asp-action="Profile" asp-controller="Account">Cancel</a>
+                                            <button class="btn btn--primary btn--rounded">Save</button>
+                                        </div>
+                                    </form>
+                          </div>
+
+
+                            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+
+
+</body>
+
+
