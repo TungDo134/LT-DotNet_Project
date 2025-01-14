@@ -27,14 +27,16 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Temp</td>
-                            <td>Temp</td>
-                            <td>Temp</td>
-                            <td>Temp</td>
-                            <td>Temp</td>
+                        @foreach (var user in Model){
+                            <tr>
+                                <td>@user.Name</td>
+                                <td>@user.email</td>
+                                <td>@user.Address</td>
+                                <td>@user.PhoneNumber</td>
+                                <td>@user.Role</td>
                            
-                        </tr>
+                            </tr>
+                        }
                     </tbody>
                 </table>
             </div>

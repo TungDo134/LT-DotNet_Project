@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebBanLapTop.Data;
 using WebBanLapTop.ViewModel;
@@ -285,14 +286,61 @@ namespace WebBanLapTop.Controllers
         // ds ng dung
         public IActionResult listUser()
         {
-            return View();
+            // Lấy danh sách người dùng từ cơ sở dữ liệu
+            var users = db.Users.Select(u => new UserViewModel
+            {
+                Name = u.TenDn,
+                email = u.Email,
+                Address = u.DiaChi,
+                PhoneNumber = u.Sdt,
+                Pass = u.MatkhauDn,
+                Role = u.Quyen == false ? "Người dùng" : "Admin"
+            }).ToList();
+
+            return View(users);
         }
 
         // them ng dung
-        public IActionResult addUser()
+        public IActionResult ShowAddUser()
         {
-            return View();
+            return View(); // Hiển thị form thêm người dùng
         }
+
+        public IActionResult AddUser(UserViewModel newUser)
+        {
+            if (ModelState.IsValid)
+            {
+                // Kiểm tra email đã tồn tại
+                var existingUser = db.Users.FirstOrDefault(u => u.Email == newUser.email);
+                if (existingUser != null)
+                {
+                    ViewBag.ErrorMessage = "Email đã tồn tại!";
+                    return View("ShowAddUser", newUser); // Trả lại form với thông báo lỗi
+                }
+
+                // Tạo người dùng mới
+                var user = new User
+                {
+                    TenDn = newUser.Name,
+                    Email = newUser.email,
+                    DiaChi = newUser.Address,
+                    Sdt = newUser.PhoneNumber,
+                    MatkhauDn = newUser.Pass,
+                    Quyen = newUser.Role == "Admin" // true nếu vai trò là Admin
+                };
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                // Chuyển hướng về danh sách người dùng
+                return RedirectToAction("listUser");
+            }
+
+            // Dữ liệu không hợp lệ, trả lại form
+            return View("ShowAddUser", newUser);
+        }
+
+
     }
 
     internal class DanhMucSanPham
