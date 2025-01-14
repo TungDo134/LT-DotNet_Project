@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "Edit user";
+    Layout = "_LayoutAdmin";
+}
+
+@section CssAdmin {
+    <link rel="stylesheet" href="~/assets/css/admin/styleEditUser.css">
+}
+
+<body class="dark-theme">
+    <main id="main-content">
+        <div class="main-container">
+            <div class="container">
+                <h1>Chỉnh sửa người dùng</h1>
+                <span class="text-info">  </span>
+
+
+                <form asp-action="EditUser" asp-controller="Admin" method="post">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+
+                    <label for="username">Tên đăng nhập</label>
+                    <input type="text" name="Name" value="@Model.Name" placeholder="Nhập tên người dùng" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" name="email" value="@Model.email" placeholder="Nhập email người dùng" required>
+
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" name="Pass" value="@Model.Pass" placeholder="Nhập password người dùng" required>
+
+                    <label for="numberPhone">Số điện thoại</label>
+                    <input type="tel" name="PhoneNumber" value="@Model.PhoneNumber" placeholder="Nhập số điện thoại người dùng">
+
+                    <label for="Address">Địa chỉ</label>
+                    <input type="text" name="Address" value="@Model.Address" placeholder="Nhập địa chỉ người dùng">
+
+                    <label for="role">Vai trò</label>
+                    <select name="Role" required>
+                        <option value="false" >Người dùng</option>
+                        <option value="true" >Admin</option>
+                    </select>
+
+
+
+                    
+                    <button type="submit">Lưu thay đổi</button>
+                </form>
+
+
+            </div>
+        </div>
+    </main>
+</body>
