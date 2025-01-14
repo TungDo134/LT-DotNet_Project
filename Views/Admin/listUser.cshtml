@@ -24,18 +24,40 @@
                             <th>Địa chỉ</th>
                             <th>Sdt</th>
                             <th>Quyền</th>
+                            <th>Hành động</th>
+
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Temp</td>
-                            <td>Temp</td>
-                            <td>Temp</td>
-                            <td>Temp</td>
-                            <td>Temp</td>
-                           
-                        </tr>
+                  
+                            @foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td>@user.Name</td>
+                                    <td>@user.email</td>
+                                    <td>@user.Address</td>
+                                    <td>@user.PhoneNumber</td>
+                                    <td>@user.Role</td>
+                                    <td>
+                                    <a class="btn btn-success btn-customize"
+                                        asp-action="ShowEditUser"
+                                        asp-controller="Admin"
+                                        asp-route-id="@user.Id"
+                                        role="button">Chỉnh sửa</a>
+
+                                     <a class="btn btn-danger btn-customize"
+                                        asp-controller="Admin"
+                                        asp-action="DeleteUser"
+                                        asp-route-id="@user.Id"
+                                        role="button">Xóa</a>
+
+                                    </td>
+                                </tr>
+                            }
+                        
+                      
                     </tbody>
+
                 </table>
             </div>
         </div>

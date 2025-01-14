@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "add user";
+    Layout = "_LayoutAdmin";
+}
+
+@section CssAdmin{
+    <link rel="stylesheet" href="~/assets/css/admin/styleAddUser.css">
+}
+
+<body class="dark-theme">
+    <main id="main-content">
+        <div class="main-container">
+            <div class="container">
+                <h1>Thêm người dùng</h1>
+                <span class="text-info">  </span>
+
+
+                <form asp-action="AddUser" asp-controller="Admin" method="post">
+
+                    <label for="username">Tên đăng nhập</label>
+                    <input type="text" name="Name" placeholder="Nhập tên người dùng" required>
+
+                    <label for="email">Email</label>
+                    <input type="email" name="email" placeholder="Nhập email người dùng" required>
+
+                    <label for="password">Mật khẩu</label>
+                    <input type="password" name="Pass" placeholder="Nhập password người dùng" required>
+
+                    <label for="numberPhone">Số điện thoại</label>
+                    <input type="tel" name="PhoneNumber" placeholder="Nhập số điện thoại người dùng">
+
+                    <label for="Address">Địa chỉ</label>
+                    <input type="text" name="Address" placeholder="Nhập địa chỉ người dùng">
+
+                    <label for="role">Vai trò</label>
+                    <select id="role" name="Role">
+                        <option value="Người dùng">Người dùng</option>
+                        <option value="Admin">Admin</option>
+                    </select>
+
+                    <button type="submit">Thêm người dùng</button>
+                </form>
+
+            </div>
+        </div>
+    </main>
+</body>

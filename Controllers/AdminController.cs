@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebBanLapTop.Data;
 using WebBanLapTop.ViewModel;
@@ -69,7 +70,7 @@ namespace WebBanLapTop.Controllers
         // Hiển thị trang chỉnh sửa sản phẩm 
         public async Task<IActionResult> EditProduct(int id)
         {
-            
+
             var client = _httpClientFactory.CreateClient();
             var response = await client.GetAsync($"https://localhost:7258/api/DetailAPI/{id}");
 
@@ -81,7 +82,7 @@ namespace WebBanLapTop.Controllers
             var product = await response.Content.ReadFromJsonAsync<ProductVM>();
             return View(product); // Trả về View với thông tin sản phẩm
 
-           
+
         }
 
 
@@ -171,8 +172,8 @@ namespace WebBanLapTop.Controllers
                 .Select(c => new CateVM
                 {
                     Id = c.MaDanhMuc,
-                    Name = c.TenDanhMuc??"",
-                    Hinh = c.HinhDanhMuc ??"" // Chuyển c.Image thành Hinh trong ViewModel
+                    Name = c.TenDanhMuc ?? "",
+                    Hinh = c.HinhDanhMuc ?? "" // Chuyển c.Image thành Hinh trong ViewModel
                 })
                 .FirstOrDefault(); // Lấy một đối tượng đơn lẻ
 
@@ -211,7 +212,7 @@ namespace WebBanLapTop.Controllers
 
         public IActionResult SaveEditCate(int id, String name, String cateImg)
         {
-            
+
 
             // Tìm danh mục cần chỉnh sửa
             var category = db.Danhmucsanphams.Find(id);
@@ -220,7 +221,7 @@ namespace WebBanLapTop.Controllers
                 return NotFound("Danh mục không tồn tại");
             }
 
-            
+
             category.TenDanhMuc = name;
 
             category.HinhDanhMuc = cateImg;
@@ -285,14 +286,135 @@ namespace WebBanLapTop.Controllers
         // ds ng dung
         public IActionResult listUser()
         {
-            return View();
+            // Lấy danh sách người dùng từ cơ sở dữ liệu
+            var users = db.Users.Select(u => new UserViewModel
+            {
+                Id = u.Iddn,
+                Name = u.TenDn,
+                email = u.Email,
+                Address = u.DiaChi,
+                PhoneNumber = u.Sdt,
+                Pass = u.MatkhauDn,
+                Role = u.Quyen
+            }).ToList();
+
+            return View(users);
         }
 
         // them ng dung
-        public IActionResult addUser()
+        public IActionResult ShowAddUser()
         {
-            return View();
+            return View(); // Hiển thị form thêm người dùng
         }
+
+        public IActionResult AddUser(UserViewModel newUser)
+        {
+            if (ModelState.IsValid)
+            {
+                // Kiểm tra email đã tồn tại
+                var existingUser = db.Users.FirstOrDefault(u => u.Email == newUser.email);
+                if (existingUser != null)
+                {
+                    ViewBag.ErrorMessage = "Email đã tồn tại!";
+                    return View("ShowAddUser", newUser); // Trả lại form với thông báo lỗi
+                }
+
+                // Tạo người dùng mới
+                var user = new User
+                {
+                    TenDn = newUser.Name,
+                    Email = newUser.email,
+                    DiaChi = newUser.Address,
+                    Sdt = newUser.PhoneNumber,
+                    MatkhauDn = newUser.Pass,
+                    Quyen = newUser.Role // true nếu vai trò là Admin
+                };
+
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                // Chuyển hướng về danh sách người dùng
+                return RedirectToAction("listUser");
+            }
+
+            // Dữ liệu không hợp lệ, trả lại form
+            return View("ShowAddUser", newUser);
+        }
+        public IActionResult ShowEditUser(int id)
+        {
+            var user = db.Users.FirstOrDefault(u => u.Iddn == id);
+            if (user == null)
+            {
+                return NotFound("Người dùng không tồn tại.");
+            }
+
+            var userViewModel = new UserViewModel
+            {
+                Id = user.Iddn,
+                Name = user.TenDn,
+                email = user.Email,
+                Address = user.DiaChi,
+                PhoneNumber = user.Sdt,
+                Pass = user.MatkhauDn,
+                Role = user.Quyen
+            };
+
+            return View(userViewModel); // Đảm bảo userViewModel không phải là null
+        }
+
+
+
+        public IActionResult EditUser(UserViewModel updatedUser)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = db.Users.FirstOrDefault(u => u.Iddn == updatedUser.Id);
+                if (user == null)
+                {
+                    return NotFound("Người dùng không tồn tại.");
+                }
+
+                // Chuyển đổi giá trị từ chuỗi thành bool
+                user.Quyen = updatedUser.Role; // Giá trị Role trong updatedUser là bool (true hoặc false)
+
+                // Cập nhật thông tin khác
+                user.TenDn = updatedUser.Name;
+                user.Email = updatedUser.email;
+                user.DiaChi = updatedUser.Address;
+                user.Sdt = updatedUser.PhoneNumber;
+                user.MatkhauDn = updatedUser.Pass;
+
+                db.Users.Update(user);
+                db.SaveChanges();
+
+                return RedirectToAction("listUser");
+            }
+
+            return View("ShowEditUser", updatedUser);
+        }
+
+        
+        // Xử lý xóa người dùng khi đã xác nhận
+
+        public IActionResult DeleteUser(int id)
+        {
+            // Lấy thông tin người dùng từ cơ sở dữ liệu
+            var user = db.Users.FirstOrDefault(u => u.Iddn == id);
+
+            if (user == null)
+            {
+                return NotFound("Người dùng không tồn tại.");
+            }
+
+            // Xóa người dùng khỏi cơ sở dữ liệu
+            db.Users.Remove(user);
+            db.SaveChanges();
+
+            // Chuyển hướng đến trang danh sách người dùng sau khi xóa thành công
+            return RedirectToAction("ListUser", "Admin");
+        }
+
+
     }
 
     internal class DanhMucSanPham
@@ -302,3 +424,4 @@ namespace WebBanLapTop.Controllers
         internal string HinhDanhMuc;
     }
 }
+
