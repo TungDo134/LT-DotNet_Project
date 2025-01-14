@@ -11,6 +11,7 @@
   border-radius: 10px;
   overflow-x: auto;
   scrollbar-width: none;
+  color: white;
 }
 
 #addNewCate-container .add-cate {

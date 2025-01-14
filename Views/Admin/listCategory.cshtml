@@ -1,67 +1,81 @@
 ﻿@{
-    ViewData["Title"] = "Chi tiet don hang";
+    ViewData["Title"] = "Danh sách danh mục";
     Layout = "_LayoutAdmin";
 }
 
-@section CssAdmin{
-    <link rel="stylesheet" href="~/assets/css/admin/styleListCate.css" />
+@section CssAdmin {
+    <link rel="stylesheet" href="~/assets/css/admin/styAddCate.css" />
 }
 <body class="dark-theme">
-<div id="main-content">
-    <div class="main-container">
-        <div class="header">
-            <h1>Hiển thị danh mục</h1>
-        </div>
-        <div class="add-voucher" style="margin-bottom: 1rem">
-            <form action="" method="post">
-                <div class="row">
-                    
-                    <div class="col col-2">
-                        <label class="pb-2" id="nameCate" for="nameCate">Tên danh mục</label>
-                        <input name="nameCate" type="text" class="form-control" placeholder="Tên danh mục"
-                               aria-label="Last name">
-                    </div>
-                    <div class="col col-2">
-                        <label class="pb-2" for="imgCate">Tên danh mục</label>
-                        <input id="imgCate" name="imgCate" type="file" class="form-control" placeholder="Ảnh danh mục"
-                               aria-label="First name">
-                    </div>
-
-                </div>
-                <button style="margin-top: 1rem" type="submit" class="btn btn-primary btn-sm">Thêm danh mục</button>
-            </form>
-        </div>
-        <div id="list-cate-container">
-            <div class="cate-list">
-                <table id="myTable" class="display" style="width:100%">
-                    <thead>
-                        <tr>
-                            <th>Ảnh</th>
-                            <th>Danh mục</th>
-                            <th>ID danh mục</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      
-                            <tr>
-                                <td><img src="~/assets/pic/logo/png"></td>
-                                <td>Temp</td>
-                                <td>Temp</td>
-                                <td>
-                                    <a class="btn btn-success btn-customize"
-                                       href="#" role="button">Chỉnh sửa</a>
-                                  
-                                    <a class="btn btn-danger btn-customize" href="#"
-                                       role="button">Xóa</a>
-
-                                </td>
-                            </tr>
-                       
-                    </tbody>
-                </table>
+    <div id="main-content">
+        <div class="main-container">
+            <div class="header">
+                <h1>Hiển thị danh mục</h1>
             </div>
+            <div class="add-voucher" style="margin-bottom: 1rem">
+                <form action="" method="post">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="pb-2 " id="nameCate" for="nameCate">Tên danh mục</label>
+                            <input value="" id="name" name="name" type="text" class="form-control " aria-label="Tên danh mục">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="pb-2 " id="nameCateID" for="nameCateID">ID danh mục</label>
+                            <input type="text" id="cateID" name="cateID" class="form-control ">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="pb-2 " for="imgCate">Ảnh danh mục</label>
+                            <input value="" id="cateImg" name="cateImg" type="file" onchange="loadImg()" class="form-control " aria-label="Ảnh danh mục">
+                        </div>
+                    </div>
+
+                    <button asp-action="AddCate" asp-controller="Admin" style="margin-top: 1rem" type="submit" class="btn btn-primary btn-sm">Thêm danh mục</button>
+                </form>
+            </div>
+
+            <div id="list-cate-container">
+                <div class="cate-list">
+                    <table id="myTable" class="display" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Ảnh</th>
+                                <th>Danh mục</th>
+                                <th>ID danh mục</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var category in Model)
+                            {
+                                <tr>
+                                    <td><img src="@category.Hinh" alt="@category.Name" style="width: 50px; height: auto;" /></td>
+                                    <td>@category.Name</td>
+                                    <td>@category.Id</td>
+                                    <td>
+                                       
+                                       <a class="btn btn-success btn-customize"
+                                           asp-action="ShowEditCate"
+                                           asp-controller="Admin"
+                                           asp-route-id="@category.Id"
+                                           role="button">Chỉnh sửa</a>
+
+
+                                        <a class="btn btn-danger btn-customize" asp-controller="Admin" asp-action="DeleteCate"
+                                           asp-route-id="@category.Id"
+                                           role="button">Xóa</a>
+
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
         </div>
     </div>
-</div>
 </body>
