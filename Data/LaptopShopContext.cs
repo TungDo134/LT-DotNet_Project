@@ -27,7 +27,7 @@ public partial class LaptopShopContext : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseMySql("server=localhost;database=laptop_shop;user=root", Microsoft.EntityFrameworkCore.ServerVersion.Parse("8.0.30-mysql"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -53,7 +53,6 @@ public partial class LaptopShopContext : DbContext
 
             entity.HasOne(d => d.IdhdNavigation).WithMany(p => p.Chitiethoadons)
                 .HasForeignKey(d => d.Idhd)
-                .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_ChiTietHoaDon");
 
             entity.HasOne(d => d.MaSpNavigation).WithMany(p => p.Chitiethoadons)
@@ -136,6 +135,7 @@ public partial class LaptopShopContext : DbContext
 
             entity.HasOne(d => d.IddnNavigation).WithMany(p => p.Hoadons)
                 .HasForeignKey(d => d.Iddn)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("fk_HoaDon_KH");
         });
 
@@ -149,10 +149,10 @@ public partial class LaptopShopContext : DbContext
                 .ValueGeneratedNever()
                 .HasColumnName("IDDN");
             entity.Property(e => e.DiaChi)
-                .HasMaxLength(30)
+                .HasMaxLength(255)
                 .HasColumnName("diaChi");
             entity.Property(e => e.Email)
-                .HasMaxLength(30)
+                .HasMaxLength(255)
                 .HasColumnName("email");
             entity.Property(e => e.MatkhauDn)
                 .HasMaxLength(255)
@@ -162,7 +162,7 @@ public partial class LaptopShopContext : DbContext
                 .HasMaxLength(15)
                 .HasColumnName("sdt");
             entity.Property(e => e.TenDn)
-                .HasMaxLength(30)
+                .HasMaxLength(255)
                 .HasColumnName("tenDN");
         });
 

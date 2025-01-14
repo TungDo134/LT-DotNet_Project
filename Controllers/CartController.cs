@@ -84,5 +84,12 @@ namespace WebBanLapTop.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        // lấy tổng số lượng trông cart
+        public int GetCartTotalQuantity()
+        {
+            var cart = Cart;
+            return cart.Sum(item => item.quantity);
+        }
     }
 }

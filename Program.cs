@@ -20,7 +20,7 @@ builder.Services.AddDbContext<LaptopShopContext>(options =>
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout=TimeSpan.FromSeconds(3600);
+    options.IdleTimeout=TimeSpan.FromDays(3600);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });

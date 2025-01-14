@@ -1,0 +1,210 @@
+﻿@model WebBanLapTop.Data.User
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up</title>
+
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="76x76" href="~/assets/favicon/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="~/assets/favicon/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="~/assets/favicon/favicon-16x16.png" />
+    <link rel="manifest" href="~/assets/favicon/site.webmanifest" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!-- Fonts -->
+    <link rel="stylesheet" href="~/assets/fonts/stylesheet.css" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="~/assets/css/main.css" />
+
+</head>
+<body>
+    <main class="auth">
+        <!-- Auth intro -->
+        <div class="auth__intro">
+            <a href="./" class="logo auth__intro-logo d-none d-md-flex">
+                <img src="~/assets/icons/logo.svg" alt="grocerymart" class="logo__img" />
+                <h1 class="logo__title">MY LAPTOP</h1>
+            </a>
+            <img src="~/assets/img/auth/intro.svg" alt="" class="auth__intro-img" />
+            <p class="auth__intro-text">
+                The best of luxury brand values, high quality products, and innovative services
+            </p>
+            <button class="auth__intro-next d-none d-md-flex js-toggle" toggle-target="#auth-content">
+                <img src="~/assets/img/auth/intro-arrow.svg" alt="" />
+            </button>
+        </div>
+
+        <!-- Auth content -->
+        <div id="auth-content" class="auth__content hide">
+            <div class="auth__content-inner">
+                <a href="./" class="logo">
+                    <img src="~/assets/icons/logo.svg" alt="grocerymart" class="logo__img" />
+                    <h1 class="logo__title">MY LAPTOP</h1>
+                </a>
+                <h1 class="auth__heading">Đổi mật khẩu</h1>
+                <form id="registerForm">
+                    <input type="hidden" value="@Model.Iddn" id="iddn" name="iddn"/>
+                    <!-- Old Password -->
+                    <div class="form__group">
+                        <div class="form__text-input">
+                            <input type="password" name="MatkhauDn" class="form-control" id="oldpassword"
+                                   placeholder="Enter your old password"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkOldPassword" style="display: block; color: red; font-size: 0.9em;"></small>
+                        <img src="./assets/icons/lock.svg" alt="" class="form__input-icon" />
+                    </div>
+
+                    <!-- New Password -->
+                    <div class="form__group">
+                        <div class="form__text-input">
+                            <input type="password" name="MatkhauDn" class="form-control" id="password"
+                                   placeholder="Enter your new password"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkPassword" style="display: block; color: red; font-size: 0.9em;"></small>
+                        <img src="./assets/icons/lock.svg" alt="" class="form__input-icon" />
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="form__group" style="margin-top:15px;">
+                        <div class="form__text-input">
+                            <input type="password" class="form-control" id="confirmPassword"
+                                   placeholder="Confirm your password"
+                                   style="width: 370px; padding: 10px; margin-bottom: 5px;" />
+                        </div>
+                        <small id="checkConfirmPassword" style="display: block; color: red; font-size: 0.9em; margin-top: 2px;"></small>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form__group auth__btn-group">
+                        <button type="button" id="registerButton" class="btn btn--primary auth__btn form__submit-btn"
+                                disabled
+                                style="padding: 10px 20px; font-size: 1em;">
+                            Đổi mật khẩu
+                        </button>
+                    </div>
+                </form>
+
+               
+            </div>
+        </div>
+    </main>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            // Hàm kiểm tra tính hợp lệ của tất cả các trường
+            function checkValidity() {
+                const passwordValid = $('#checkPassword').hasClass('text-warning');
+                const confirmPasswordValid = $('#checkConfirmPassword').hasClass('text-warning') && $('#confirmPassword').val().trim() === $('#password').val().trim();
+
+                const allFieldsValid =  passwordValid && confirmPasswordValid;
+
+                if (allFieldsValid) {
+                    $('#registerButton').removeAttr('disabled');  // Kích hoạt nút
+                } else {
+                    $('#registerButton').attr('disabled', true);  // Vô hiệu hóa nút
+                }
+            }
+
+            // Kiểm tra tính hợp lệ của trường khi có sự kiện nhập liệu hoặc mất focus
+            $('input').on('blur input', function () {
+                const value = $(this).val().trim();
+                if (value === '') {
+                    $(this).next('small').attr('class', 'text-danger').text('Trường này không được để trống.');
+                } else {
+                    $(this).next('small').attr('class', 'form-text').text('');
+                }
+                checkValidity();
+            });
+
+            // Kiểm tra khi trường bị để trống và hiển thị thông báo lỗi
+            $('input').blur(function () {
+                if ($(this).val() === '') {
+                    $(this).next('small').attr('class', 'text-danger').text('Trường này không được để trống.');
+                }
+            });
+
+      
+
+            // Kiểm tra mật khẩu qua AJAX
+            $('#password').blur(function () {
+                var password = $('#password').val();
+                $.ajax({
+                    url: '/Account/checkPassword',
+                    type: 'GET',
+                    contentType: 'text/plain; charset=utf-8',
+                    data: { password: password },
+                    success: function (response) {
+                        if (response.includes("không hợp lệ")) {
+                            $('#checkPassword').attr('class', 'text-danger');
+                        } else {
+                            $('#checkPassword').attr('class', 'text-warning');
+                        }
+                        $('#checkPassword').text(response);
+                        checkValidity();
+                    },
+                    error: function () {
+                        $('#checkPassword').attr('class', 'text-danger');
+                        $('#checkPassword').text('Error while checking password.');
+                        checkValidity();
+                    }
+                });
+            });
+
+            // Kiểm tra Confirm Password
+            $('#confirmPassword').blur(function () {
+                var password = $('#password').val();
+                var confirmPassword = $('#confirmPassword').val();
+                if (password !== confirmPassword) {
+                    $('#checkConfirmPassword').attr('class', 'text-danger');
+                    $('#checkConfirmPassword').text('Mật khẩu xác nhận phải khớp với mật khẩu.');
+                } else {
+                    $('#checkConfirmPassword').attr('class', 'text-warning');
+                    $('#checkConfirmPassword').text('');
+                }
+                checkValidity();
+            });
+
+            // Xử lý nút đăng ký
+            $('#registerButton').click(function () {
+                const formData = {
+                    Id: $('#iddn').val(),
+                    oldPassword: $('#oldpassword').val(),
+                    newPassword: $('#password').val()
+                };
+
+                $.ajax({
+                    url: '/Account/ChangePass',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function () {
+                        window.location.href = '/Account/SignIn';
+                    },
+                    error: function (xhr) {
+                        if (xhr.status === 400) {
+                         $('#checkOldPassword').text("Sai mật khẩu cũ");
+                        }
+
+                    }
+                });
+            });
+        });
+    </script>
+    <script>
+
+        window.dispatchEvent(new Event("template-loaded"));
+    </script>
+</body>
+</html>
+

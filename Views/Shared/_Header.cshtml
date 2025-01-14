@@ -95,15 +95,16 @@
 
         <div class="top-act">
             <div class="top-act__group d-md-none top-act__group--single">
-                
+
 
                 <div class="search">
-                <form asp-action="Search" asp-controller="Product" method="get">
-                    <input type="text" id="searchInput" name="txt" placeholder="Nhập từ khóa..." required>
+                    <form asp-action="Search" asp-controller="Product" method="get" style="display:flex">
                         <button type="submit" class="top-act__btn ">
                             <img src="~/assets/icons/search.svg" alt="" class="icon top-act__icon" />
                         </button>
-                </form>
+                        <input type="text" id="searchInput" name="txt" placeholder="Nhập từ khóa..." required>
+                        
+                    </form>
                 </div>
 
 
@@ -119,7 +120,8 @@
                        asp-action="Index"
                        class="top-act__btn">
                         <img src="~/assets/icons/buy.svg" alt="" class="icon top-act__icon" />
-                        @* <span class="top-act__title">$65.42</span> *@
+                        @* Sử dụng Components *@
+                        @await Component.InvokeAsync("CartSummary")
                     </a>
                 </div>
 
@@ -167,34 +169,29 @@
 
                         <ul class="user-menu__list">
                             <li>
-                                <a asp-controller="Account" asp-action="Profile" class="user-menu__link">Profile</a>
-                            </li>
-                            <li class="user-menu__separate">
-                                <a href="#!" class="user-menu__link" id="switch-theme-btn">
-                                    <span>Dark mode</span>
-                                    <img src="~/assets/icons/sun.svg" alt="" class="icon user-menu__icon" />
-                                </a>
-                            </li>
-                            <li class="user-menu__separate">
-                                <a asp-controller="Account" asp-action="AdminPage" class="user-menu__link">Admin</a>
+                                <a asp-controller="Account" asp-action="Profile" class="user-menu__link">Tài Khoản</a>
                             </li>
 
 
+                            @*  check quyen de vo admin *@
 
-                            @* check quyen de vo admin *@
-                            @*  @if (!Context.IsUserLoggedIn())
+                            @if (Context.IsUserLoggedIn())
                             {
-                            <li class="user-menu__separate">
-                            <a asp-controller="Account" asp-action="LogOut" class="user-menu__link">Logout</a>
-                            </li>
 
-                            @if (User.IsInRole("Admin"))
-                            {
+                                @if (User.IsInRole("Admin"))
+                                {
+
+                                    <li class="user-menu__separate">
+                                        <a asp-controller="Account" asp-action="AdminPage" class="user-menu__link">Admin</a>
+                                    </li>
+                                }
+
+                                <li class="user-menu__separate">
+                                    <a asp-controller="Account" asp-action="LogOut" class="user-menu__link">Đăng xuất</a>
+                                </li>
 
 
                             }
-
-                            } *@
 
                         </ul>
                     </div>

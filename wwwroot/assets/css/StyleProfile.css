@@ -484,3 +484,7 @@ p {
 .order_Customer .detail-order:hover{
 
 }
+
+.favourite-item__price.totalPrice{
+    margin-top:10px;
+}

@@ -60,6 +60,17 @@
                                             Chỉnh sửa
                                         </a>
                                     </li>
+
+                                   
+                                    <li>
+                                        <a asp-action="ChangePass" asp-controller="Account"
+                                           asp-route-id="@ViewBag.Id" class="profile-menu__link">
+                                            <span class="profile-menu__icon">
+                                                <img src="~/assets/icons/edit.svg" alt="" class="icon" />
+                                            </span>
+                                            Đổi mật khẩu
+                                        </a>
+                                    </li>
                                    
                                 </ul>
                             </div>
@@ -161,6 +172,8 @@
                                             <button class="btn btn--primary btn--rounded">Save</button>
                                         </div>
                                     </form>
+
+                                    
                           </div>
 
 

@@ -2,6 +2,7 @@ using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebBanLapTop.Data;
+using WebBanLapTop.Helpers;
 using WebBanLapTop.ViewModel;
 namespace WebBanLapTop.Controllers
 {
@@ -147,7 +148,6 @@ namespace WebBanLapTop.Controllers
 
 
 
-
         // Lấy danh sách đơn hàng
         public async Task<IActionResult> ListOrder()
         {
@@ -218,36 +218,35 @@ namespace WebBanLapTop.Controllers
 
         public IActionResult AddUser(UserViewModel newUser)
         {
-            if (ModelState.IsValid)
+            var maxId = db.Users.Max(u => u.Iddn);
+            int newId = maxId + 1;
+
+            // Kiểm tra email đã tồn tại
+            var existingUser = db.Users.FirstOrDefault(u => u.Email == newUser.email);
+            if (existingUser != null)
             {
-                // Kiểm tra email đã tồn tại
-                var existingUser = db.Users.FirstOrDefault(u => u.Email == newUser.email);
-                if (existingUser != null)
-                {
-                    ViewBag.ErrorMessage = "Email đã tồn tại!";
-                    return View("ShowAddUser", newUser); // Trả lại form với thông báo lỗi
-                }
-
-                // Tạo người dùng mới
-                var user = new User
-                {
-                    TenDn = newUser.Name,
-                    Email = newUser.email,
-                    DiaChi = newUser.Address,
-                    Sdt = newUser.PhoneNumber,
-                    MatkhauDn = newUser.Pass,
-                    Quyen = newUser.Role // true nếu vai trò là Admin
-                };
-
-                db.Users.Add(user);
-                db.SaveChanges();
-
-                // Chuyển hướng về danh sách người dùng
-                return RedirectToAction("listUser");
+                ViewBag.ErrorMessage = "Email đã tồn tại!";
+                return View("ShowAddUser", newUser); // Trả lại form với thông báo lỗi
             }
 
-            // Dữ liệu không hợp lệ, trả lại form
-            return View("ShowAddUser", newUser);
+            // Tạo người dùng mới
+            var user = new User
+            {
+                Iddn = newId,
+                TenDn = newUser.Name,
+                Email = newUser.email,
+                DiaChi = newUser.Address ?? "",
+                Sdt = newUser.PhoneNumber ?? "",
+                MatkhauDn = MaHoaMK.ToSHA1(newUser.Pass),
+                Quyen = newUser.Role ?? false // true nếu vai trò là Admin
+            };
+
+            db.Users.Add(user);
+            db.SaveChanges();
+
+            // Chuyển hướng về danh sách người dùng
+            return RedirectToAction("listUser");
+
         }
         public IActionResult ShowEditUser(int id)
         {
@@ -302,7 +301,7 @@ namespace WebBanLapTop.Controllers
             return View("ShowEditUser", updatedUser);
         }
 
-        
+
         // Xử lý xóa người dùng khi đã xác nhận
 
         public IActionResult DeleteUser(int id)
@@ -326,6 +325,6 @@ namespace WebBanLapTop.Controllers
 
     }
 
-   
+
 }
 

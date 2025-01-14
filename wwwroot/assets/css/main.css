@@ -2505,14 +2505,14 @@ html {
 }
 .btn--primary {
   color: #171c28;
-  background: #ffb700;
+  background: #ffb700 !important;
 }
 .btn--outline {
   background: transparent;
   border: 1px solid #d2d1d6;
 }
 .btn--rounded {
-  border-radius: 99px;
+  border-radius: 99px !important;
 }
 .btn--danger {
   color: #fff;

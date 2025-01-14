@@ -32,6 +32,41 @@ namespace WebBanLapTop.Controllers
         {
             return View(new RegisterVM());
         }
+
+        // Hiển thị trang đổi mật khẩu
+        [HttpGet]
+        [Authorize]
+        public IActionResult ChangePass(int id)
+        {
+            var user = db.Users.Find(id);
+            return View(user);
+        }
+
+        // thực hiện thay đổi
+        [HttpPost]
+        [Authorize]
+        public IActionResult ChangePass([FromBody] ChangePass model)
+        {
+
+            var user = db.Users.FirstOrDefault(p => p.Iddn == model.Id &&
+            p.MatkhauDn == MaHoaMK.ToSHA1(model.oldPassword));
+
+            if (user == null)
+            {
+                
+                return BadRequest(ModelState);
+            }
+
+            user.MatkhauDn = MaHoaMK.ToSHA1(model.newPassword); // Mã hóa mật khẩu
+            db.Users.Update(user);
+            db.SaveChanges();
+
+
+            return RedirectToAction("SignIn", "Account");
+        }
+
+
+
         [HttpGet]
         public ContentResult checkUserName(string userName)
         {
@@ -133,12 +168,14 @@ namespace WebBanLapTop.Controllers
             return RedirectToAction("SignIn", "Account");
         }
 
+
         [HttpGet]
         public IActionResult SignIn(String? ReturnUrl)
         {
             ViewBag.ReturnUrl = ReturnUrl;
             return View();
         }
+
         [HttpPost]
         public async Task<IActionResult> SignIn(LoginVM model, String? ReturnUrl)
         {
@@ -161,9 +198,9 @@ namespace WebBanLapTop.Controllers
                 new Claim(ClaimTypes.Name, customers.TenDn ?? ""),
                 new Claim(ClaimTypes.Email, customers.Email ?? ""),
                 new Claim("MatKhau", customers.MatkhauDn),
-                new Claim(ClaimTypes.MobilePhone, customers.Sdt),
-                new Claim (ClaimTypes.StreetAddress,customers.DiaChi),
-                new Claim(ClaimTypes.Role, (bool)customers.Quyen ? "Admin" : "User"),
+                new Claim(ClaimTypes.MobilePhone, customers.Sdt?? ""),
+                new Claim (ClaimTypes.StreetAddress,customers.DiaChi?? ""),
+                 new Claim(ClaimTypes.Role, customers.Quyen.HasValue && customers.Quyen.Value ? "Admin" : "User"),
             };
 
 
@@ -202,6 +239,7 @@ namespace WebBanLapTop.Controllers
             ViewBag.Phone = string.IsNullOrEmpty(phone) ? "" : phone;
 
             var id = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+            ViewBag.Id = string.IsNullOrEmpty(id) ? "" : id;
 
             // lấy ra danh sách lịch sử mua hàng của người dùng
             var client = _httpClientFactory.CreateClient();
@@ -245,7 +283,7 @@ namespace WebBanLapTop.Controllers
         public async Task<IActionResult> UpdateProfile(int id, String fullname, String email, String phone, String address)
         {
 
-            
+
             var user = db.Users.Find(id);
             if (user == null)
             {
@@ -322,7 +360,7 @@ namespace WebBanLapTop.Controllers
         }
 
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminPage()
         {
             // tới trang admin

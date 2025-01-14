@@ -55,6 +55,17 @@
                                             Chỉnh sửa 
                                         </a>
                                     </li>
+
+                                    <li>
+                                        <a asp-action="ChangePass" asp-controller="Account"
+                                           asp-route-id="@ViewBag.Id" class="profile-menu__link">
+                                            <span class="profile-menu__icon">
+                                                <img src="~/assets/icons/edit.svg" alt="" class="icon" />
+                                            </span>
+                                            Đổi mật khẩu
+                                        </a>
+                                    </li>
+
                                 </ul>
                             </div>
                         </aside>
@@ -73,7 +84,7 @@
                                     <div class="row gy-md-2 row-cols-2 row-cols-lg-1">
                                         <!-- Account info 1 -->
                                         <div class="col">
-                                            <a href="#">
+                                            <a asp-action="EditProfile" asp-controller="Account">
                                                 <article class="account-info">
                                                     <div class="account-info__icon">
                                                         <img src="~/assets/icons/message.svg" alt="" class="icon" />
@@ -88,7 +99,7 @@
 
                                         <!-- Account info 2 -->
                                         <div class="col">
-                                            <a href="#">
+                                            <a asp-action="EditProfile" asp-controller="Account">
                                                 <article class="account-info">
                                                     <div class="account-info__icon">
                                                         <img src="~/assets/icons/calling.svg" alt="" class="icon" />
@@ -103,7 +114,7 @@
 
                                         <!-- Account info 3 -->
                                         <div class="col">
-                                            <a href="#">
+                                            <a asp-action="EditProfile" asp-controller="Account">
                                                 <article class="account-info">
                                                     <div class="account-info__icon">
                                                         <img src="~/assets/icons/location.svg"
@@ -152,10 +163,10 @@
                                                 <h3 class="favourite-item__title">
                                                     @o.DiaChiNhan
                                                 </h3>
-                                                <h3 class="favourite-item__price">
+                                                <h3 class="favourite-item__price totalPrice">
                                                     Tổng tiền
                                                 </h3>
-                                                <div class="favourite-item__price">
+                                                <div class="favourite-item__price totalPrice">
                                                     @o.TongTien.Value.ToString("#,##0")     
                                                     
                                                 </div>
