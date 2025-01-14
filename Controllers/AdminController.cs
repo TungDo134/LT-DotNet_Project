@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebBanLapTop.Data;
 using WebBanLapTop.ViewModel;
@@ -48,7 +49,7 @@ namespace WebBanLapTop.Controllers
             return View(products);
         }
 
-        // Hiển thị trang thêm sản phẩm và xử lí sk thêm sp
+        // Hiển thị trang thêm sản phẩm
         public async Task<IActionResult> AddProduct()
         {
             HttpClient client = _httpClientFactory.CreateClient();
@@ -86,158 +87,46 @@ namespace WebBanLapTop.Controllers
 
 
 
-        // ds the loai
-        public IActionResult ListCategory()
+        // ds the loai + them the loai 
+        public async Task<IActionResult> ListCategory()
         {
-            var categories = db.Danhmucsanphams
-                .Select(c => new CateVM
-                {
-                    Id = c.MaDanhMuc,
-                    Name = c.TenDanhMuc,
-                    Hinh = c.HinhDanhMuc
-                })
-                .ToList();
+            var client = _httpClientFactory.CreateClient();
+            // Gọi API để lấy danh sách danh mục
+            var responseC = await client.GetAsync($"https://localhost:7258/api/CateAPI");
+            IEnumerable<CateVM> categories = null;
 
+            if (responseC.IsSuccessStatusCode)
+            {
+                var jsonResponseC = await responseC.Content.ReadAsStringAsync();
+                categories = JsonConvert.DeserializeObject<IEnumerable<CateVM>>(jsonResponseC);
+            }
+
+           
             return View(categories); // Trả về view ListCategory với danh sách danh mục
         }
 
 
-
-        // them the loai
-        public IActionResult ShowAddCate()
-        {
-
-            return View();
-
-        }
-        public IActionResult AddCate(String name, String cateImg, String cateID)
-        {
-            // Lấy giá trị từ form
-            String _name = name;
-            String _hinh = cateImg;
-            String _id = cateID;
-            int CateId = 0;
-
-            // Kiểm tra nếu cateID không rỗng thì parse sang int
-            if (_id != null)
-            {
-                CateId = Int32.Parse(_id);
-            }
-
-            // Kiểm tra nếu danh mục đã tồn tại trong cơ sở dữ liệu (theo tên hoặc ID)
-            var existingCategory = db.Danhmucsanphams.FirstOrDefault(c => c.TenDanhMuc == _name || c.MaDanhMuc == CateId);
-
-            if (existingCategory != null)
-            {
-                // Nếu danh mục đã tồn tại, trả về thông báo lỗi
-                ViewBag.ErrorMessage = "Danh mục này đã tồn tại!";
-                return View();  // Trả về lại view AddCate và hiển thị thông báo lỗi
-            }
-
-            // Nếu danh mục chưa tồn tại, tiến hành thêm mới
-            Danhmucsanpham data = new Danhmucsanpham
-            {
-                MaDanhMuc = CateId,
-                TenDanhMuc = _name,
-                HinhDanhMuc = _hinh ?? ""
-            };
-
-            db.Danhmucsanphams.Add(data);
-            db.SaveChanges();
-
-            // Sau khi thêm xong, chuyển về danh sách danh mục
-            return RedirectToAction("ListCategory");
-        }
-
-
-
-        //xoa
-        public IActionResult DeleteCate(int id)
-        {
-            Danhmucsanpham data = db.Danhmucsanphams.Find(id);
-
-            db.Danhmucsanphams.Remove(data);
-            db.SaveChanges();
-
-
-            return RedirectToAction("ListCategory");
-        }
-
         //hien thi trang edit cate
-        public IActionResult ShowEditCate(int id)
+        public async Task<IActionResult> ShowEditCate(int id)
         {
-            var category = db.Danhmucsanphams
-                .Where(c => c.MaDanhMuc == id)
-                .Select(c => new CateVM
-                {
-                    Id = c.MaDanhMuc,
-                    Name = c.TenDanhMuc??"",
-                    Hinh = c.HinhDanhMuc ??"" // Chuyển c.Image thành Hinh trong ViewModel
-                })
-                .FirstOrDefault(); // Lấy một đối tượng đơn lẻ
+            var client = _httpClientFactory.CreateClient();
+            // Gọi API để lấy danh sách danh mục
+            var responseC = await client.GetAsync($"https://localhost:7258/api/CateAPI/getById/{id}");
+            Danhmucsanpham category = null;
 
-            if (category == null)
+
+            if (responseC.IsSuccessStatusCode)
             {
-                return NotFound("Danh mục không tồn tại");
+                var jsonResponseP = await responseC.Content.ReadAsStringAsync();
+                category = await responseC.Content.ReadFromJsonAsync<Danhmucsanpham>();
             }
 
+            
             return View(category); // Truyền đối tượng category vào view
         }
 
 
-        // thuc hien viejc update cate
-        //public IActionResult EditCate(int id)
-        //{
-        //    // Tìm danh mục cần chỉnh sửa theo ID
-        //    var category = db.Danhmucsanphams
-        //        .Where(c => c.MaDanhMuc == id)
-        //        .Select(c => new CateVM
-        //        {
-        //            Id = c.MaDanhMuc,
-        //            Name = c.TenDanhMuc ?? "",
-        //            Hinh = c.HinhDanhMuc ?? ""
-        //        })
-        //        .FirstOrDefault();
-
-        //    if (category == null)
-        //    {
-        //        return NotFound("Danh mục không tồn tại");
-        //    }
-
-        //    // Truyền thông tin danh mục sang View
-        //    return View(category);
-        //}
-
-
-        public IActionResult SaveEditCate(int id, String name, String cateImg)
-        {
-            
-
-            // Tìm danh mục cần chỉnh sửa
-            var category = db.Danhmucsanphams.Find(id);
-            if (category == null)
-            {
-                return NotFound("Danh mục không tồn tại");
-            }
-
-            
-            category.TenDanhMuc = name;
-
-            category.HinhDanhMuc = cateImg;
-
-            Console.WriteLine();
-
-            db.Danhmucsanphams.Update(category);
-            db.SaveChanges();
-
-            return RedirectToAction("ListCategory");
-        }
-
-
-
-
-
-
+       
 
         // Lấy danh sách đơn hàng
         public async Task<IActionResult> ListOrder()

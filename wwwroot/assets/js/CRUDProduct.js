@@ -53,7 +53,7 @@ j("#BtnUpdate").on("click", function () {
 
     // lay data ve
     const product = {
-        MaSp:j("#id").val(),
+        MaSp: j("#id").val(),
         TenSp: j("#name").val(),
         MaDanhMuc: j("#select").val(),
         DonGia: parseFloat(j("#price").val().trim().replace(/[^\d.-]/g, '')),
@@ -74,7 +74,7 @@ j("#BtnUpdate").on("click", function () {
             // Xử lý khi yêu cầu thành công
             j("#msg").text(response.message) // Hiển thị thông báo từ API
             j("#btnBack").text("Quay về trang sản phẩm");
-            j("#btnBack").css("display","inline-block");
+            j("#btnBack").css("display", "inline-block");
 
         },
         error: function (xhr, status, error) {
@@ -84,3 +84,28 @@ j("#BtnUpdate").on("click", function () {
         }
     });
 })
+
+
+// xoa sp
+function deleteProduct(id) {
+    const url = 'https://localhost:7258/api/ProductAPI/delById/' + id;
+
+    if (!confirm("Bạn có chắc chắn muốn thực hiện hành động này?")) {
+        event.preventDefault(); // Hủy bỏ hành động mặc định
+    } else {
+
+        j.ajax({
+            url: url,
+            type: "DELETE",
+            success: function (response) {
+                alert(response.message); // Thông báo kết quả
+                j(`tr[data-id="${id}"]`).remove();
+
+            },
+            error: function (xhr) {
+                console.error("Error:", xhr.responseText);
+                alert("Có lỗi xảy ra trong quá trình xóa sản phẩm.");
+            }
+        });
+    }
+}

@@ -10,19 +10,23 @@
     <div id="main-content">
         <div class="main-container">
             <div class="header">
-                <h1>Hiển thị danh mục</h1>
+                <h4>Hiển thị - Thêm danh mục</h4>
+                
+
+
             </div>
             <div class="add-voucher" style="margin-bottom: 1rem">
                 <form action="" method="post">
                     <div class="row">
-                        <div class="col-md-4">
-                            <label class="pb-2 " id="nameCate" for="nameCate">Tên danh mục</label>
-                            <input value="" id="name" name="name" type="text" class="form-control " aria-label="Tên danh mục">
-                        </div>
 
                         <div class="col-md-4">
                             <label class="pb-2 " id="nameCateID" for="nameCateID">ID danh mục</label>
                             <input type="text" id="cateID" name="cateID" class="form-control ">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="pb-2 " id="nameCate" for="nameCate">Tên danh mục</label>
+                            <input value="" id="name" name="name" type="text" class="form-control " aria-label="Tên danh mục">
                         </div>
 
                         <div class="col-md-4">
@@ -31,10 +35,11 @@
                         </div>
                     </div>
 
-                    <button asp-action="AddCate" asp-controller="Admin" style="margin-top: 1rem" type="submit" class="btn btn-primary btn-sm">Thêm danh mục</button>
+                    <button style="margin-top: 1rem" type="button" id="submitBtn" class="btn btn-primary btn-sm">Thêm danh mục</button>
                 </form>
             </div>
 
+            @* List category *@
             <div id="list-cate-container">
                 <div class="cate-list">
                     <table id="myTable" class="display" style="width:100%">
@@ -49,7 +54,7 @@
                         <tbody>
                             @foreach (var category in Model)
                             {
-                                <tr>
+                                <tr data-id="@category.Id">
                                     <td><img src="~/assets/img_laptop/@category.Hinh" alt="@category.Name" style="width: 50px; height: auto;" /></td>
                                     <td>@category.Name</td>
                                     <td>@category.Id</td>
@@ -62,8 +67,8 @@
                                            role="button">Chỉnh sửa</a>
 
 
-                                        <a class="btn btn-danger btn-customize" asp-controller="Admin" asp-action="DeleteCate"
-                                           asp-route-id="@category.Id"
+                                        <a class="btn btn-danger"
+                                            onclick="deleteCate(@category.Id)"
                                            role="button">Xóa</a>
 
                                     </td>
@@ -78,4 +83,10 @@
 
         </div>
     </div>
+
+    @section ScriptsAdmin {
+        
+        <script src="~/assets/js/CRUDCategory.js"> </script>
+       
+    }
 </body>

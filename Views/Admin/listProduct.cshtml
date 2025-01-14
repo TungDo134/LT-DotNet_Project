@@ -36,7 +36,7 @@
 
                             @foreach (var p in Model)
                             {
-                                <tr>
+                                <tr data-id="@p.Id">
                                     <td><img src="~/assets/img_laptop/@p.Img" style="width:100px" /></td>
                                     <td>@p.Id</td>
                                     <td>@p.Name</td>
@@ -59,28 +59,6 @@
         </div>
     </div>
     @section ScriptsAdmin {
-        // đoạn script
-        <script>
-            var j = jQuery.noConflict();
-            function deleteProduct(id) {
-                const url = 'https://localhost:7258/api/ProductAPI/delById/' + id;
-                console.log(url);
-
-                
-
-                j.ajax({
-                    url: url,
-                    type: "DELETE", 
-                    success: function (response) {
-                        alert(response.message); // Thông báo kết quả 
-                        location.reload(); 
-                    },
-                    error: function (xhr) {
-                        console.error("Error:", xhr.responseText);
-                        alert("Có lỗi xảy ra trong quá trình xóa sản phẩm.");
-                    }
-                });
-            }
-        </script>
+        <script src="~/assets/js/CRUDProduct.js" ></script>
     }
 </body>
