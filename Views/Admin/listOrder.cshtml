@@ -46,7 +46,8 @@
                                         <td>@order.TongTien?.ToString("N0") đ</td>
                                         <td>@(order.TrangThai == true ? "Đã xử lý" : "Chưa xử lý")</td>
                                         <td>
-                                            <a class="btn btn-info btn-customize"
+                                            <a style="width:125px"
+                                               class="btn btn-info btn-customize"
                                                href="@Url.Action("orderDetail", "Admin", new { id = order.Id })" role="button">
                                                 Xem chi tiết
                                             </a>

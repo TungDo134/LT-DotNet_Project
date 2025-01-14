@@ -1,10 +1,9 @@
-﻿@model WebBanLapTop.ViewModel.HomeVM
+﻿@model IEnumerable<WebBanLapTop.ViewModel.ProductVM>
 
 @{
     ViewData["Title"] = "Home Page";
 
 }
-
 @section Css {
     <link href="~/assets/css/SortBar.css" rel="stylesheet" />
 }
@@ -73,10 +72,10 @@
 
         <!-- Browse Products -->
         <section class="home__container">
-            <h2 class="home__heading"> Tổng @Model.Products.Count() sản phẩm</h2>
+            <h2 class="home__heading"> Tổng @Model.Count() sản phẩm</h2>
             <div class="row row-cols-5 row-cols-lg-2 row-cols-sm-1 g-3">
                 <!-- Product card  -->
-                @foreach (var product in Model.Products)
+                @foreach (var product in Model)
                 {
                     <div class="col">
                         <article class="product-card">

@@ -70,19 +70,40 @@ namespace WebBanLapTop.Controllers
         // Hiển thị trang chỉnh sửa sản phẩm 
         public async Task<IActionResult> EditProduct(int id)
         {
-            
-            var client = _httpClientFactory.CreateClient();
-            var response = await client.GetAsync($"https://localhost:7258/api/DetailAPI/{id}");
 
-            if (!response.IsSuccessStatusCode)
+            var client = _httpClientFactory.CreateClient();
+
+            // Gọi API để lấy danh sách sản phẩm
+            var responseP = await client.GetAsync($"https://localhost:7258/api/DetailAPI/{id}");
+            ProductVM products = null;
+
+            if (responseP.IsSuccessStatusCode)
             {
-                return View("Error", new { Message = "Khong tim thay san pham" }); // Xử lý lỗi nếu không tìm thấy sản phẩm
+                var jsonResponseP = await responseP.Content.ReadAsStringAsync();
+                products = JsonConvert.DeserializeObject<ProductVM>(jsonResponseP);
             }
 
-            var product = await response.Content.ReadFromJsonAsync<ProductVM>();
-            return View(product); // Trả về View với thông tin sản phẩm
+            // Gọi API để lấy danh sách danh mục
+            var responseC = await client.GetAsync($"https://localhost:7258/api/CateAPI");
+            IEnumerable<CateVM> categories = null;
 
-           
+            if (responseC.IsSuccessStatusCode)
+            {
+                var jsonResponseC = await responseC.Content.ReadAsStringAsync();
+                categories = JsonConvert.DeserializeObject<IEnumerable<CateVM>>(jsonResponseC);
+            }
+
+            // Tạo ViewModel và truyền dữ liệu vào View
+            var viewModel = new ProductAdminVM
+            {
+                Product = products ?? new ProductVM(), // Nếu API lỗi, gán danh sách trống
+                Categories = categories ?? new List<CateVM>()
+            };
+
+            ViewBag.SelectedCategory = products.MaDanhMuc;
+
+            return View(viewModel);
+
         }
 
 

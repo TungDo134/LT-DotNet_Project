@@ -21,7 +21,7 @@ html {
 
 .custom-btn {
     padding: 1rem;
-    background: bisque;
+    background: #f6f6f6;
     width: fit-content;
     margin-top: 10px;
     border-radius: 10px;
@@ -94,11 +94,11 @@ html {
     margin-bottom: 5px;
 }
 
-.container-profile .sidebar-profile .menu .menu-item:hover,
-.container-profile .sidebar-profile .menu .menu-item.active {
-    background: #fff;
-    color: #000;
-}
+    .container-profile .sidebar-profile .menu .menu-item:hover,
+    .container-profile .sidebar-profile .menu .menu-item.active {
+        background: #f6f6f6;
+        color: #000;
+    }
 
 .container-profile .content {
     flex: 1;
@@ -209,7 +209,7 @@ p {
     margin-top: 10px;
 }
 
-button {
+.profile button {
     width: 60px;
     font-size: 14px;
     padding: 5px 10px;
@@ -221,18 +221,18 @@ button {
     transition: background 0.3s, color 0.3s;
 }
 
-button > a {
+.profile button > a {
     text-decoration: none;
     color: #000;
     transition: background 0.3s, color 0.3s;
 }
 
-button:hover {
+.profile button:hover {
     background-color: #000;
     color: #fff;
 }
 
-button:hover > a {
+.profile button:hover > a {
     color: #fff;
 }
 

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<WebBanLapTop.ViewModel.CateVM>
+
+<!-- Browse Categories -->
+<section class="home__container">
+    <div class="home__row">
+        <h2 class="home__heading">Danh mục sản phẩm</h2>
+    </div>
+
+    <div class="home__cate row row-cols-3 row-cols-md-1">
+        @foreach (var cate in Model)
+        {
+            <!-- Category item 1 -->
+            <div class="col">
+                <a asp-controller="Product" asp-action="ProductByCate" asp-route-Id="@cate.Id">
+                    <article class="cate-item">
+                        <img src="~/assets/img_laptop/@cate.Hinh" alt="" class="cate-item__thumb" />
+                        <div class="cate-item__info">
+                            <p class="cate-item__desc">@cate.Name</p>
+                        </div>
+                    </article>
+                </a>
+            </div>
+        }
+
+
+
+    </div>
+</section>

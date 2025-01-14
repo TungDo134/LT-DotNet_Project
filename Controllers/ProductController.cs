@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Azure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.MSIdentity.Shared;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebBanLapTop.Data;
@@ -32,7 +34,7 @@ namespace WebBanLapTop.Controllers
 
         public async Task<IActionResult> ProductByCate(int id)
         {
-          
+
             var client = _httpClientFactory.CreateClient();
 
             // Gọi API để lấy danh sách sản phẩm
@@ -58,11 +60,50 @@ namespace WebBanLapTop.Controllers
             // Tạo ViewModel và truyền dữ liệu vào View
             var viewModel = new HomeVM
             {
-                Products = products ?? new List<ProductVM>(), 
+                Products = products ?? new List<ProductVM>(),
                 Categories = categories ?? new List<CateVM>()
             };
 
             return View(viewModel);
+        }
+
+
+        // search
+        public async Task<IActionResult> search(String txt)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7258/api/ProductAPI/search/{txt}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error", new { Message = "Product not found" }); // Xử lý lỗi nếu không tìm thấy sản phẩm
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var products = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonResponse);
+
+
+
+            return View(products);
+        }
+
+
+        // sort
+        public async Task<IActionResult> Sort(int id)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var response = await client.GetAsync($"https://localhost:7258/api/ProductAPI/sort/{id}");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error", new { Message = "Product not found" }); // Xử lý lỗi nếu không tìm thấy sản phẩm
+            }
+
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var products = JsonConvert.DeserializeObject<IEnumerable<ProductVM>>(jsonResponse);
+
+
+            return View(products);
         }
 
     }

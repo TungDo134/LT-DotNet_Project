@@ -27,6 +27,8 @@
                                 <th>Ảnh</th>
                                 <th>ID sản phẩm</th>
                                 <th>Sản phẩm</th>
+                                <th>Mã thể loại</th>
+                                <th>Tên thể loại</th>
                                 <th>Giá</th>
                                 <th>Khối lượng</th>
                                 <th>Hành động</th>
@@ -40,6 +42,8 @@
                                     <td><img src="~/assets/img_laptop/@p.Img" style="width:100px" /></td>
                                     <td>@p.Id</td>
                                     <td>@p.Name</td>
+                                    <td>@p.MaDanhMuc</td>
+                                    <td>@p.TenDanhMuc</td>
                                     <td>@p.Price.ToString("#,##0")</td>
                                     <td>@p.KhoiLuong</td>
                                     <td>

@@ -24,7 +24,9 @@ j("#submitBtn").on("click", function () {
         success: function (response) {
             // Xử lý khi yêu cầu thành công
             j("#msg").text(response.message) // Hiển thị thông báo từ API
-            //alert(response.message); 
+            j("#btnBack").text("Quay về trang sản phẩm");
+            j("#btnBack").css("display", "");
+          
             
         },
         error: function (xhr, status, error) {
@@ -74,7 +76,8 @@ j("#BtnUpdate").on("click", function () {
             // Xử lý khi yêu cầu thành công
             j("#msg").text(response.message) // Hiển thị thông báo từ API
             j("#btnBack").text("Quay về trang sản phẩm");
-            j("#btnBack").css("display", "inline-block");
+            j("#btnBack").css("display", "");
+
 
         },
         error: function (xhr, status, error) {

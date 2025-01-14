@@ -1,4 +1,4 @@
-﻿@model WebBanLapTop.ViewModel.ProductVM
+﻿@model WebBanLapTop.ViewModel.ProductAdminVM
 
 @{
     ViewData["Title"] = "Chỉnh sửa sản phẩm";
@@ -22,6 +22,8 @@
                 <div class="content-inner">
                     <div class="content-wrap">
                         <div class="wrapper">
+
+
                             <form action="" class="form-add-product" id="addProductForm">
                                 <div class="wg-box">
                                     <fieldset class="name">
@@ -31,11 +33,10 @@
                                         </div>
                                         <input id="name"
                                                name="name"
-                                               
                                                type="text"
-                                               value="@Model.Name"
+                                               value="@Model.Product.Name"
                                                placeholder="Vd: Bút bi xanh" />
-                                               <input type="hidden" id="id" name="id" value="@Model.Id"/>
+                                        <input type="hidden" id="id" name="id" value="@Model.Product.Id" />
                                         <p>Không vượt quá 20 ký tự khi nhập tên sản phẩm.</p>
                                     </fieldset>
                                     <div class="cols">
@@ -45,13 +46,13 @@
                                                 <span>*</span>
                                             </div>
                                             <div class="select">
-                                                <select  name="select" id="select">
-                                                    <option value="" disabled selected>
-                                                        -- Vui lòng chọn --
-                                                    </option>
-                                                     
-                                                          <option value="@Model.Id"></option>
-                                                      
+                                                <select name="select" id="select">
+
+                                                    @foreach (var c in Model.Categories)
+                                                    {
+                                                        <option value="@c.Id" selected="@((Model.Product.MaDanhMuc == c.Id) ? "selected" : "")">@c.Name</option>
+                                                    }
+
                                                 </select>
                                             </div>
                                         </fieldset>
@@ -63,7 +64,7 @@
                                             <div class="select">
                                                 <input id="price"
                                                        name="price"
-                                                       value="@Model.Price"
+                                                       value="@Model.Product.Price.ToString("#,##0")"
                                                        type="text"
                                                        placeholder="Vd: 100.000 " />
                                             </div>
@@ -77,7 +78,7 @@
                                         </div>
                                         <textarea id="des"
                                                   name="des"
-                                                  placeholder="Mô tả">@Model.Description</textarea>
+                                                  placeholder="Mô tả">@Model.Product.Description</textarea>
                                         <p>Không vượt quá 100 ký tự khi nhập tên sản phẩm.</p>
                                     </fieldset>
                                 </div>
@@ -85,14 +86,14 @@
                                     <fieldset>
                                         <div class="body-title">Tải hình ảnh lên</div>
                                         <div class="upload-img">
-                                            
+
                                             <div class="item-upload">
                                                 <label class="uploadfile" for="myFile"> </label>
                                                 <input id="img"
                                                        name="img"
-                                                        type="file" id="myFile" />
+                                                       type="file" id="myFile" />
 
-                                                <input id="oldImg" type="hidden"  value="@Model.Img" />
+                                                <input id="oldImg" type="hidden" value="@Model.Product.Img" />
 
                                                 <i class="fa-solid fa-cloud-arrow-up"></i>
                                                 <p>
@@ -120,7 +121,7 @@
                                                 <input id="weight"
                                                        name="weight"
                                                        type="number"
-                                                       value="@Model.KhoiLuong"
+                                                       value="@Model.Product.KhoiLuong"
                                                        placeholder="Vd: 100" />
                                             </div>
                                         </fieldset>
@@ -128,12 +129,13 @@
                                     <div class="col">
                                         <button id="BtnUpdate" class="btn1" type="button">Cập nhật sản phẩm</button>
 
-                                        <a style="display:none" class="btn2" id="btnBack" asp-controller="Admin" asp-action="listProduct">
-                                           
+                                        <a style="display:none" class="text-white bg-success" id="btnBack" asp-controller="Admin" asp-action="listProduct">
+
                                         </a>
                                     </div>
                                 </div>
                             </form>
+
                         </div>
                     </div>
                 </div>
@@ -142,7 +144,7 @@
     </div>
 
 
-     @section ScriptsAdmin {
-          <script src="~/assets/js/CRUDProduct.js"> </script>
-     }
+    @section ScriptsAdmin {
+        <script src="~/assets/js/CRUDProduct.js"> </script>
+    }
 </body>

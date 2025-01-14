@@ -1,0 +1,54 @@
+﻿/* CSS thanh sort */
+
+.custom-select {
+    display: inline-block;
+    position: relative;
+    width: 200px;
+}
+
+    .custom-select:focus .select-selected {
+        border-color: #000;
+    }
+
+.select-selected {
+   /* background-color: #faf7f0;*/
+    padding: 6px 8px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+}
+
+.select-options {
+    display: none;
+    position: absolute;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 100%;
+    border: 1px solid #ccc;
+    z-index: 1;
+    /* box-shadow: 0 0 5px 0 rgba(102, 102, 102, 1); */
+}
+
+.select-option {
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+    .select-option:hover {
+        background: #000;
+        color: #fff;
+    }
+
+.custom-select.active .select-options {
+    display: block;
+}
+
+
+.sort {
+    float: right;
+    margin-top: 4rem;
+    padding: 1rem;
+}
+
+
+/* CSS thanh sort */
