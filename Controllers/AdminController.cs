@@ -52,7 +52,7 @@ namespace WebBanLapTop.Controllers
         public async Task<IActionResult> AddProduct()
         {
             HttpClient client = _httpClientFactory.CreateClient();
-            // Gọi API để lấy danh sách danh mục
+            // Gọi API để lấy danh sách danh mục (để chọn danh mục cho sản phẩm)
             var responseC = await client.GetAsync($"https://localhost:7258/api/CateAPI");
             IEnumerable<CateVM> categories = null;
 
@@ -86,8 +86,6 @@ namespace WebBanLapTop.Controllers
 
 
 
-
-
         // ds the loai
         public IActionResult ListCategory()
         {
@@ -106,7 +104,6 @@ namespace WebBanLapTop.Controllers
 
 
         // them the loai
-
         public IActionResult ShowAddCate()
         {
 
@@ -166,7 +163,7 @@ namespace WebBanLapTop.Controllers
             return RedirectToAction("ListCategory");
         }
 
-        //edit cate
+        //hien thi trang edit cate
         public IActionResult ShowEditCate(int id)
         {
             var category = db.Danhmucsanphams
@@ -174,8 +171,8 @@ namespace WebBanLapTop.Controllers
                 .Select(c => new CateVM
                 {
                     Id = c.MaDanhMuc,
-                    Name = c.TenDanhMuc,
-                    Hinh = c.HinhDanhMuc // Chuyển c.Image thành Hinh trong ViewModel
+                    Name = c.TenDanhMuc??"",
+                    Hinh = c.HinhDanhMuc ??"" // Chuyển c.Image thành Hinh trong ViewModel
                 })
                 .FirstOrDefault(); // Lấy một đối tượng đơn lẻ
 
@@ -188,62 +185,48 @@ namespace WebBanLapTop.Controllers
         }
 
 
+        // thuc hien viejc update cate
+        //public IActionResult EditCate(int id)
+        //{
+        //    // Tìm danh mục cần chỉnh sửa theo ID
+        //    var category = db.Danhmucsanphams
+        //        .Where(c => c.MaDanhMuc == id)
+        //        .Select(c => new CateVM
+        //        {
+        //            Id = c.MaDanhMuc,
+        //            Name = c.TenDanhMuc ?? "",
+        //            Hinh = c.HinhDanhMuc ?? ""
+        //        })
+        //        .FirstOrDefault();
 
-        public IActionResult EditCate(int id)
+        //    if (category == null)
+        //    {
+        //        return NotFound("Danh mục không tồn tại");
+        //    }
+
+        //    // Truyền thông tin danh mục sang View
+        //    return View(category);
+        //}
+
+
+        public IActionResult SaveEditCate(int id, String name, String cateImg)
         {
-            // Tìm danh mục cần chỉnh sửa theo ID
-            var category = db.Danhmucsanphams
-                .Where(c => c.MaDanhMuc == id)
-                .Select(c => new CateVM
-                {
-                    Id = c.MaDanhMuc,
-                    Name = c.TenDanhMuc,
-                    Hinh = c.HinhDanhMuc
-                })
-                .FirstOrDefault();
-
-            if (category == null)
-            {
-                return NotFound("Danh mục không tồn tại");
-            }
-
-            // Truyền thông tin danh mục sang View
-            return View(category);
-        }
-
-
-        public IActionResult SaveEditCate(CateVM model)
-        {
-            if (!ModelState.IsValid)
-            {
-                // Kiểm tra các lỗi trong ModelState
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    Console.WriteLine("Error: " + error.ErrorMessage);
-               }
-
-                return View("ShowEditCate", model);  // Trả lại view với thông báo lỗi
-            }
+            
 
             // Tìm danh mục cần chỉnh sửa
-            var category = db.Danhmucsanphams.Find(model.Id);
+            var category = db.Danhmucsanphams.Find(id);
             if (category == null)
             {
                 return NotFound("Danh mục không tồn tại");
             }
 
-            category.TenDanhMuc = model.Name;
+            
+            category.TenDanhMuc = name;
 
-            if (model.Hinh != null) 
-            {
-                // Lưu ảnh nếu cần (hoặc để null nếu không cần)
-                // category.HinhDanhMuc = UploadFile(model.CateImg); // Tạm thời không xử lý ảnh
-            }
-            else
-            {
-                category.HinhDanhMuc = null; 
-            }
+            category.HinhDanhMuc = cateImg;
+
+            Console.WriteLine();
+
             db.Danhmucsanphams.Update(category);
             db.SaveChanges();
 

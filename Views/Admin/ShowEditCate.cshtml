@@ -14,7 +14,7 @@
             <div id="addNewCate-container">
                 <div class="row align-items-center">
 
-                    <form asp-action="SaveEditCate" asp-controller="Admin" id="form-editCate" method="post" enctype="multipart/form-data">
+                    <form asp-action="SaveEditCate" asp-controller="Admin" asp-route-id="@Model.Id" id="form-editCate" method="post" >
                         <div class="row">
                             <span class="msg text-success"></span>
                             <input type="hidden" value="@Model.Id" name="id" />
